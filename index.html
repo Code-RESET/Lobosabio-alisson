@@ -18,6 +18,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="description" content="Trivia de opción múltiple para dominar la guía LoboSabio. Creada por el Ing. Luis Angel Díaz Bernal.">
 <meta name="author" content="Ing. Luis Angel Díaz Bernal">
+<!-- tailwind:inicio (al publicar, el flujo reemplaza este bloque por el CSS compilado; ver tailwind.config.js) -->
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script>
   if (window.tailwind) tailwind.config = {
@@ -36,6 +37,7 @@
     }
   };
 </script>
+<!-- tailwind:fin -->
 <style>
   /* Layout: app al estilo iOS. Encabezado translúcido con la marca; en pantallas anchas la navegación es un
      control segmentado en el encabezado y en el celular una barra de pestañas fija abajo. El contenido son
@@ -107,11 +109,18 @@
   .nav-btn[aria-current="page"] { background: var(--seg-activo); font-weight: 600; box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 0 0 .5px rgba(0, 0, 0, .04); }
   .icono-btn { width: 36px; height: 36px; border-radius: 999px; display: grid; place-items: center; background: var(--relleno); color: var(--guinda); flex: none; }
   .icono-btn svg { width: 20px; height: 20px; }
-  .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--material); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-top: .5px solid var(--separador); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); }
+  .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--material); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-top: .5px solid var(--separador); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); }
   @media (min-width: 768px) { .tabbar { display: none; } }
   .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 5px; font-size: 10px; font-weight: 500; letter-spacing: .01em; color: var(--tenue); }
   .tab svg { width: 26px; height: 26px; }
   .tab[aria-current="page"] { color: var(--guinda); }
+  .tab > .relative { position: relative; display: inline-flex; }
+  .punto-act { position: absolute; top: -1px; right: -4px; width: 9px; height: 9px; border-radius: 99px; background: #FF3B30; box-shadow: 0 0 0 2px var(--papel); }
+  .crono-chip { flex: none; display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 10px; border-radius: 999px; background: var(--relleno); color: var(--guinda); font-size: .9375rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .crono-chip svg { width: 17px; height: 17px; }
+  .crono-chip.pausado { color: var(--tenue); }
+  .crono-chip.pausado .num::after { content: " ‖"; }
+  .tab span:last-child { white-space: nowrap; }
   .nav-scroll { overflow-x: auto; scrollbar-width: none; }
   .nav-scroll::-webkit-scrollbar { display: none; }
 
@@ -201,7 +210,7 @@
     .accion-fija > div { gap: 6px; }
     .accion-fija .aviso { padding: .45rem .75rem; }
     .accion-fija .btn { min-height: 42px; padding-block: .55rem; }
-    .accion-fija .nota-fb { display: none; }
+    .accion-fija .nota-fb, .accion-fija .desglose, .accion-fija .aviso .tenue { display: none; }
     .accion-fija > div { flex-direction: row; align-items: center; }
     .accion-fija .aviso { flex: 1; min-width: 0; max-height: 4.2em; overflow: hidden; }
     .accion-fija > div > div:last-child { flex: none; }
@@ -302,6 +311,7 @@
     <section id="v-inicio" data-vista-sec="inicio"></section>
     <section id="v-concurso" data-vista-sec="concurso" hidden></section>
     <section id="v-estudio" data-vista-sec="estudio" hidden></section>
+    <section id="v-cultura" data-vista-sec="cultura" hidden></section>
     <section id="v-documentos" data-vista-sec="documentos" hidden></section>
   </main>
 
@@ -417,6 +427,1667 @@
 }
 </script>
 
+<!-- BANCO DE CULTURA GENERAL · 110 preguntas para entrenar (pestaña «Cultura»). Mismo esquema; grupo "cultura". -->
+<script type="application/json" id="banco-cultura">
+{
+  "version": 1,
+  "fuente": {
+    "titulo": "Cultura general · entrenamiento",
+    "autor": "Ing. Luis Angel Díaz Bernal"
+  },
+  "categorias": [
+    {
+      "id": "cg-hun",
+      "codigo": "HUN",
+      "nombre": "Historia universal",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-hun-01",
+          "pregunta": "¿En qué año llegó Cristóbal Colón a América?",
+          "respuesta": "1492",
+          "alias": [],
+          "distractores": [
+            "1519",
+            "1453",
+            "1498"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-hun-02",
+          "pregunta": "¿Qué muro cayó en 1989 y simbolizó el fin de la Guerra Fría en Europa?",
+          "respuesta": "El Muro de Berlín",
+          "alias": [
+            "Muro de Berlín",
+            "Berlín"
+          ],
+          "distractores": [
+            "La Gran Muralla",
+            "El Muro de Adriano",
+            "El Muro de los Lamentos"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-hun-03",
+          "pregunta": "¿En qué año comenzó la Primera Guerra Mundial?",
+          "respuesta": "1914",
+          "alias": [],
+          "distractores": [
+            "1918",
+            "1939",
+            "1905"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-hun-04",
+          "pregunta": "¿En qué año terminó la Segunda Guerra Mundial?",
+          "respuesta": "1945",
+          "alias": [],
+          "distractores": [
+            "1944",
+            "1939",
+            "1950"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-hun-05",
+          "pregunta": "¿Qué civilización construyó las pirámides de Giza?",
+          "respuesta": "Los egipcios",
+          "alias": [
+            "Egipcios",
+            "Antiguo Egipto"
+          ],
+          "distractores": [
+            "Los mayas",
+            "Los persas",
+            "Los romanos"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-hun-06",
+          "pregunta": "¿Quién fue el primer presidente de Estados Unidos?",
+          "respuesta": "George Washington",
+          "alias": [
+            "Washington"
+          ],
+          "distractores": [
+            "Abraham Lincoln",
+            "Thomas Jefferson",
+            "John Adams"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-hun-07",
+          "pregunta": "¿Qué revolución comenzó en 1789 con la toma de la Bastilla?",
+          "respuesta": "La Revolución Francesa",
+          "alias": [
+            "Revolución Francesa"
+          ],
+          "distractores": [
+            "La Revolución Industrial",
+            "La Revolución Rusa",
+            "La Revolución Inglesa"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-hun-08",
+          "pregunta": "¿Qué líder encabezó la independencia de la India con la resistencia no violenta?",
+          "respuesta": "Mahatma Gandhi",
+          "alias": [
+            "Gandhi"
+          ],
+          "distractores": [
+            "Nelson Mandela",
+            "Jawaharlal Nehru",
+            "Martin Luther King"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-hun-09",
+          "pregunta": "¿Cómo se llamaba antiguamente la ciudad de Estambul?",
+          "respuesta": "Constantinopla",
+          "alias": [
+            "Bizancio"
+          ],
+          "distractores": [
+            "Alejandría",
+            "Antioquía",
+            "Cartago"
+          ],
+          "puntos": 60,
+          "nota": "Antes de llamarse Constantinopla fue Bizancio."
+        },
+        {
+          "id": "cg-hun-10",
+          "pregunta": "¿Quién fue el primer emperador de Roma?",
+          "respuesta": "Augusto",
+          "alias": [
+            "César Augusto",
+            "Octavio Augusto",
+            "Octavio"
+          ],
+          "distractores": [
+            "Julio César",
+            "Nerón",
+            "Constantino"
+          ],
+          "puntos": 60,
+          "nota": "Julio César fue dictador, pero nunca emperador."
+        }
+      ]
+    },
+    {
+      "id": "cg-gmu",
+      "codigo": "GMU",
+      "nombre": "Geografía del mundo",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-gmu-01",
+          "pregunta": "¿Cuál es el océano más grande del mundo?",
+          "respuesta": "El océano Pacífico",
+          "alias": [
+            "Pacífico"
+          ],
+          "distractores": [
+            "El océano Atlántico",
+            "El océano Índico",
+            "El océano Ártico"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-gmu-02",
+          "pregunta": "¿Cuál es la montaña más alta del mundo?",
+          "respuesta": "El monte Everest",
+          "alias": [
+            "Everest"
+          ],
+          "distractores": [
+            "El K2",
+            "El Aconcagua",
+            "El Kilimanjaro"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-gmu-03",
+          "pregunta": "¿Cuál es la capital de Japón?",
+          "respuesta": "Tokio",
+          "alias": [
+            "Tokyo"
+          ],
+          "distractores": [
+            "Kioto",
+            "Osaka",
+            "Seúl"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-gmu-04",
+          "pregunta": "¿Cuál es la capital de Canadá?",
+          "respuesta": "Ottawa",
+          "alias": [],
+          "distractores": [
+            "Toronto",
+            "Montreal",
+            "Vancouver"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-gmu-05",
+          "pregunta": "¿Cuál es el desierto cálido más grande del mundo?",
+          "respuesta": "El Sahara",
+          "alias": [
+            "Sahara"
+          ],
+          "distractores": [
+            "El desierto de Gobi",
+            "El desierto de Atacama",
+            "El desierto de Kalahari"
+          ],
+          "puntos": 80,
+          "nota": "Si se cuentan los desiertos fríos, el más grande es la Antártida."
+        },
+        {
+          "id": "cg-gmu-06",
+          "pregunta": "¿Cuál es la capital de Australia?",
+          "respuesta": "Canberra",
+          "alias": [],
+          "distractores": [
+            "Sídney",
+            "Melbourne",
+            "Perth"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-gmu-07",
+          "pregunta": "¿En qué continente se encuentra Egipto?",
+          "respuesta": "África",
+          "alias": [],
+          "distractores": [
+            "Asia",
+            "Europa",
+            "Oceanía"
+          ],
+          "puntos": 100,
+          "nota": "Una pequeña parte, la península del Sinaí, está en Asia."
+        },
+        {
+          "id": "cg-gmu-08",
+          "pregunta": "¿Cuál es el país más poblado de América Latina?",
+          "respuesta": "Brasil",
+          "alias": [],
+          "distractores": [
+            "México",
+            "Argentina",
+            "Colombia"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-gmu-09",
+          "pregunta": "¿Qué cordillera marca el límite tradicional entre Europa y Asia?",
+          "respuesta": "Los montes Urales",
+          "alias": [
+            "Urales"
+          ],
+          "distractores": [
+            "Los Alpes",
+            "Los Andes",
+            "El Himalaya"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-gmu-10",
+          "pregunta": "¿Cuál es la capital de Argentina?",
+          "respuesta": "Buenos Aires",
+          "alias": [],
+          "distractores": [
+            "Córdoba",
+            "Montevideo",
+            "Rosario"
+          ],
+          "puntos": 100
+        }
+      ]
+    },
+    {
+      "id": "cg-cyn",
+      "codigo": "CYN",
+      "nombre": "Ciencia y naturaleza",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-cyn-01",
+          "pregunta": "¿Cuál es la fórmula química del agua?",
+          "respuesta": "H2O",
+          "alias": [
+            "H 2 O"
+          ],
+          "distractores": [
+            "CO2",
+            "H2O2",
+            "O2"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-cyn-02",
+          "pregunta": "¿Qué gas absorben las plantas para hacer la fotosíntesis?",
+          "respuesta": "Dióxido de carbono",
+          "alias": [
+            "CO2",
+            "Bióxido de carbono"
+          ],
+          "distractores": [
+            "Oxígeno",
+            "Nitrógeno",
+            "Hidrógeno"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-cyn-03",
+          "pregunta": "¿A qué temperatura hierve el agua al nivel del mar?",
+          "respuesta": "100 °C",
+          "alias": [
+            "100 grados",
+            "100"
+          ],
+          "distractores": [
+            "90 °C",
+            "80 °C",
+            "120 °C"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-cyn-04",
+          "pregunta": "¿Qué metal es líquido a temperatura ambiente?",
+          "respuesta": "El mercurio",
+          "alias": [
+            "Mercurio"
+          ],
+          "distractores": [
+            "El plomo",
+            "El aluminio",
+            "El estaño"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-cyn-05",
+          "pregunta": "¿Qué científico formuló la ley de la gravitación universal?",
+          "respuesta": "Isaac Newton",
+          "alias": [
+            "Newton"
+          ],
+          "distractores": [
+            "Galileo Galilei",
+            "Albert Einstein",
+            "Johannes Kepler"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-cyn-06",
+          "pregunta": "¿Cuál es el animal más grande del planeta?",
+          "respuesta": "La ballena azul",
+          "alias": [
+            "Ballena azul"
+          ],
+          "distractores": [
+            "El elefante africano",
+            "El tiburón ballena",
+            "La jirafa"
+          ],
+          "puntos": 100,
+          "nota": "El elefante africano es el más grande, pero solo entre los animales terrestres."
+        },
+        {
+          "id": "cg-cyn-07",
+          "pregunta": "¿Cómo se llama el proceso con el que las plantas producen su alimento usando la luz del sol?",
+          "respuesta": "La fotosíntesis",
+          "alias": [
+            "Fotosíntesis"
+          ],
+          "distractores": [
+            "La respiración",
+            "La digestión",
+            "La transpiración"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-cyn-08",
+          "pregunta": "¿Cuál es el símbolo químico del sodio?",
+          "respuesta": "Na",
+          "alias": [],
+          "distractores": [
+            "So",
+            "S",
+            "Sd"
+          ],
+          "puntos": 60,
+          "nota": "Viene del latín natrium."
+        },
+        {
+          "id": "cg-cyn-09",
+          "pregunta": "¿Qué científica ganó dos Premios Nobel por sus estudios sobre la radiactividad?",
+          "respuesta": "Marie Curie",
+          "alias": [
+            "Curie",
+            "Marie Sklodowska Curie"
+          ],
+          "distractores": [
+            "Rosalind Franklin",
+            "Ada Lovelace",
+            "Lise Meitner"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-cyn-10",
+          "pregunta": "¿Cuántas patas tiene un insecto?",
+          "respuesta": "Seis",
+          "alias": [
+            "6"
+          ],
+          "distractores": [
+            "Ocho",
+            "Cuatro",
+            "Diez"
+          ],
+          "puntos": 100,
+          "nota": "Las arañas tienen ocho, pero no son insectos: son arácnidos."
+        }
+      ]
+    },
+    {
+      "id": "cg-sal",
+      "codigo": "SAL",
+      "nombre": "Cuerpo humano y salud",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-sal-01",
+          "pregunta": "¿Qué órgano bombea la sangre por todo el cuerpo?",
+          "respuesta": "El corazón",
+          "alias": [
+            "Corazón"
+          ],
+          "distractores": [
+            "Los pulmones",
+            "El hígado",
+            "Los riñones"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-sal-02",
+          "pregunta": "¿Cuántos dientes tiene un adulto con la dentadura completa?",
+          "respuesta": "32",
+          "alias": [
+            "treinta y dos"
+          ],
+          "distractores": [
+            "28",
+            "30",
+            "36"
+          ],
+          "puntos": 80,
+          "nota": "Incluye las cuatro muelas del juicio."
+        },
+        {
+          "id": "cg-sal-03",
+          "pregunta": "¿Qué vitamina produce el cuerpo al exponerse al sol?",
+          "respuesta": "La vitamina D",
+          "alias": [
+            "Vitamina D",
+            "D"
+          ],
+          "distractores": [
+            "La vitamina C",
+            "La vitamina A",
+            "La vitamina B12"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-sal-04",
+          "pregunta": "¿Cuál es el hueso más largo del cuerpo humano?",
+          "respuesta": "El fémur",
+          "alias": [
+            "Fémur"
+          ],
+          "distractores": [
+            "La tibia",
+            "El húmero",
+            "El peroné"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-sal-05",
+          "pregunta": "¿Qué órganos filtran la sangre y producen la orina?",
+          "respuesta": "Los riñones",
+          "alias": [
+            "Riñones",
+            "Riñón"
+          ],
+          "distractores": [
+            "El hígado",
+            "El páncreas",
+            "El bazo"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-sal-06",
+          "pregunta": "¿Cuántas cavidades tiene el corazón humano?",
+          "respuesta": "Cuatro",
+          "alias": [
+            "4"
+          ],
+          "distractores": [
+            "Dos",
+            "Tres",
+            "Seis"
+          ],
+          "puntos": 80,
+          "nota": "Dos aurículas y dos ventrículos."
+        },
+        {
+          "id": "cg-sal-07",
+          "pregunta": "¿Qué parte del ojo le da su color?",
+          "respuesta": "El iris",
+          "alias": [
+            "Iris"
+          ],
+          "distractores": [
+            "La pupila",
+            "La retina",
+            "La córnea"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-sal-08",
+          "pregunta": "¿Quién descubrió la penicilina?",
+          "respuesta": "Alexander Fleming",
+          "alias": [
+            "Fleming"
+          ],
+          "distractores": [
+            "Louis Pasteur",
+            "Edward Jenner",
+            "Robert Koch"
+          ],
+          "puntos": 80,
+          "nota": "Fue en 1928."
+        },
+        {
+          "id": "cg-sal-09",
+          "pregunta": "¿Qué órgano produce la insulina?",
+          "respuesta": "El páncreas",
+          "alias": [
+            "Páncreas"
+          ],
+          "distractores": [
+            "El hígado",
+            "El estómago",
+            "La tiroides"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-sal-10",
+          "pregunta": "¿Cuál es el músculo principal de la respiración?",
+          "respuesta": "El diafragma",
+          "alias": [
+            "Diafragma"
+          ],
+          "distractores": [
+            "Los abdominales",
+            "El pectoral",
+            "El trapecio"
+          ],
+          "puntos": 60
+        }
+      ]
+    },
+    {
+      "id": "cg-art",
+      "codigo": "ART",
+      "nombre": "Arte y música",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-art-01",
+          "pregunta": "¿Quién pintó la Mona Lisa?",
+          "respuesta": "Leonardo da Vinci",
+          "alias": [
+            "Da Vinci",
+            "Leonardo"
+          ],
+          "distractores": [
+            "Miguel Ángel",
+            "Rafael",
+            "Sandro Botticelli"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-art-02",
+          "pregunta": "¿Quién pintó la bóveda de la Capilla Sixtina?",
+          "respuesta": "Miguel Ángel",
+          "alias": [
+            "Miguel Ángel Buonarroti",
+            "Michelangelo"
+          ],
+          "distractores": [
+            "Leonardo da Vinci",
+            "Rafael",
+            "Caravaggio"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-art-03",
+          "pregunta": "¿Qué compositor ya estaba sordo cuando escribió su Novena Sinfonía?",
+          "respuesta": "Ludwig van Beethoven",
+          "alias": [
+            "Beethoven"
+          ],
+          "distractores": [
+            "Wolfgang Amadeus Mozart",
+            "Johann Sebastian Bach",
+            "Frédéric Chopin"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-art-04",
+          "pregunta": "¿Qué pintor español creó el «Guernica»?",
+          "respuesta": "Pablo Picasso",
+          "alias": [
+            "Picasso"
+          ],
+          "distractores": [
+            "Salvador Dalí",
+            "Diego Velázquez",
+            "Joan Miró"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-art-05",
+          "pregunta": "¿Qué pintora mexicana es famosa por sus autorretratos?",
+          "respuesta": "Frida Kahlo",
+          "alias": [
+            "Frida"
+          ],
+          "distractores": [
+            "María Izquierdo",
+            "Remedios Varo",
+            "Leonora Carrington"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-art-06",
+          "pregunta": "¿Cuántas cuerdas tiene una guitarra clásica?",
+          "respuesta": "Seis",
+          "alias": [
+            "6"
+          ],
+          "distractores": [
+            "Cuatro",
+            "Cinco",
+            "Doce"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-art-07",
+          "pregunta": "¿Qué movimiento artístico encabezó Salvador Dalí?",
+          "respuesta": "El surrealismo",
+          "alias": [
+            "Surrealismo"
+          ],
+          "distractores": [
+            "El cubismo",
+            "El impresionismo",
+            "El barroco"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-art-08",
+          "pregunta": "¿Quién pintó «Las meninas»?",
+          "respuesta": "Diego Velázquez",
+          "alias": [
+            "Velázquez"
+          ],
+          "distractores": [
+            "Francisco de Goya",
+            "El Greco",
+            "Pablo Picasso"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-art-09",
+          "pregunta": "¿Qué compositor austriaco escribió la ópera «La flauta mágica»?",
+          "respuesta": "Wolfgang Amadeus Mozart",
+          "alias": [
+            "Mozart"
+          ],
+          "distractores": [
+            "Ludwig van Beethoven",
+            "Joseph Haydn",
+            "Richard Wagner"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-art-10",
+          "pregunta": "¿Qué instrumento tiene 88 teclas?",
+          "respuesta": "El piano",
+          "alias": [
+            "Piano"
+          ],
+          "distractores": [
+            "El órgano",
+            "El acordeón",
+            "El clavecín"
+          ],
+          "puntos": 80
+        }
+      ]
+    },
+    {
+      "id": "cg-lun",
+      "codigo": "LUN",
+      "nombre": "Literatura universal",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-lun-01",
+          "pregunta": "¿Quién escribió «Hamlet»?",
+          "respuesta": "William Shakespeare",
+          "alias": [
+            "Shakespeare"
+          ],
+          "distractores": [
+            "Christopher Marlowe",
+            "Molière",
+            "Lope de Vega"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-lun-02",
+          "pregunta": "¿A quién se atribuye «La Odisea»?",
+          "respuesta": "Homero",
+          "alias": [],
+          "distractores": [
+            "Virgilio",
+            "Sófocles",
+            "Platón"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-lun-03",
+          "pregunta": "¿Quién escribió «Pedro Páramo»?",
+          "respuesta": "Juan Rulfo",
+          "alias": [
+            "Rulfo"
+          ],
+          "distractores": [
+            "Carlos Fuentes",
+            "Octavio Paz",
+            "Juan José Arreola"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-lun-04",
+          "pregunta": "¿Qué escritor creó al detective Sherlock Holmes?",
+          "respuesta": "Arthur Conan Doyle",
+          "alias": [
+            "Conan Doyle"
+          ],
+          "distractores": [
+            "Agatha Christie",
+            "Edgar Allan Poe",
+            "Charles Dickens"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-lun-05",
+          "pregunta": "¿Quién escribió la novela «1984»?",
+          "respuesta": "George Orwell",
+          "alias": [
+            "Orwell"
+          ],
+          "distractores": [
+            "Aldous Huxley",
+            "Ray Bradbury",
+            "H. G. Wells"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-lun-06",
+          "pregunta": "¿Qué escritora novohispana fue llamada «la Décima Musa»?",
+          "respuesta": "Sor Juana Inés de la Cruz",
+          "alias": [
+            "Sor Juana",
+            "Juana Inés de la Cruz"
+          ],
+          "distractores": [
+            "Rosario Castellanos",
+            "Elena Poniatowska",
+            "Laura Esquivel"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-lun-07",
+          "pregunta": "¿Quién escribió «La metamorfosis», donde un hombre despierta convertido en insecto?",
+          "respuesta": "Franz Kafka",
+          "alias": [
+            "Kafka"
+          ],
+          "distractores": [
+            "Albert Camus",
+            "Hermann Hesse",
+            "Thomas Mann"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-lun-08",
+          "pregunta": "¿Quién escribió «Los miserables»?",
+          "respuesta": "Victor Hugo",
+          "alias": [
+            "Víctor Hugo"
+          ],
+          "distractores": [
+            "Alejandro Dumas",
+            "Gustave Flaubert",
+            "Émile Zola"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-lun-09",
+          "pregunta": "¿Qué escritor argentino escribió «El Aleph»?",
+          "respuesta": "Jorge Luis Borges",
+          "alias": [
+            "Borges"
+          ],
+          "distractores": [
+            "Julio Cortázar",
+            "Ernesto Sabato",
+            "Adolfo Bioy Casares"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-lun-10",
+          "pregunta": "¿Qué escritor mexicano ganó el Premio Nobel de Literatura en 1990?",
+          "respuesta": "Octavio Paz",
+          "alias": [
+            "Paz"
+          ],
+          "distractores": [
+            "Carlos Fuentes",
+            "Juan Rulfo",
+            "Alfonso Reyes"
+          ],
+          "puntos": 80
+        }
+      ]
+    },
+    {
+      "id": "cg-dep",
+      "codigo": "DEP",
+      "nombre": "Deportes",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-dep-01",
+          "pregunta": "¿Cuántos jugadores de un equipo de fútbol están en la cancha?",
+          "respuesta": "11",
+          "alias": [
+            "once"
+          ],
+          "distractores": [
+            "10",
+            "9",
+            "12"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-dep-02",
+          "pregunta": "¿Cada cuántos años se celebran los Juegos Olímpicos de verano?",
+          "respuesta": "Cada 4 años",
+          "alias": [
+            "4",
+            "cuatro años"
+          ],
+          "distractores": [
+            "Cada 2 años",
+            "Cada 3 años",
+            "Cada 5 años"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-dep-03",
+          "pregunta": "¿En qué deporte se usa el término «home run»?",
+          "respuesta": "Béisbol",
+          "alias": [
+            "Beisbol"
+          ],
+          "distractores": [
+            "Fútbol americano",
+            "Golf",
+            "Tenis"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-dep-04",
+          "pregunta": "¿Cuántos puntos vale un tiro desde fuera de la línea de tres en baloncesto?",
+          "respuesta": "3",
+          "alias": [
+            "tres"
+          ],
+          "distractores": [
+            "2",
+            "4",
+            "1"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-dep-05",
+          "pregunta": "¿Qué país ha ganado más Copas del Mundo de fútbol?",
+          "respuesta": "Brasil",
+          "alias": [],
+          "distractores": [
+            "Alemania",
+            "Italia",
+            "Argentina"
+          ],
+          "puntos": 80,
+          "nota": "Brasil tiene cinco títulos."
+        },
+        {
+          "id": "cg-dep-06",
+          "pregunta": "¿Qué país organizó y ganó el primer Mundial de fútbol, en 1930?",
+          "respuesta": "Uruguay",
+          "alias": [],
+          "distractores": [
+            "Brasil",
+            "Italia",
+            "Argentina"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-dep-07",
+          "pregunta": "¿Cuántos aros tiene la bandera olímpica?",
+          "respuesta": "Cinco",
+          "alias": [
+            "5"
+          ],
+          "distractores": [
+            "Cuatro",
+            "Seis",
+            "Siete"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-dep-08",
+          "pregunta": "¿En qué deporte destacó el mexicano Julio César Chávez?",
+          "respuesta": "Boxeo",
+          "alias": [
+            "El boxeo"
+          ],
+          "distractores": [
+            "Lucha libre",
+            "Fútbol",
+            "Atletismo"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-dep-09",
+          "pregunta": "¿Cuánto mide un maratón?",
+          "respuesta": "42.195 km",
+          "alias": [
+            "42 km",
+            "42 kilómetros"
+          ],
+          "distractores": [
+            "40 km",
+            "21.097 km",
+            "50 km"
+          ],
+          "puntos": 60,
+          "nota": "21.097 km es la medida del medio maratón."
+        },
+        {
+          "id": "cg-dep-10",
+          "pregunta": "¿En qué deporte se juega el torneo de Wimbledon?",
+          "respuesta": "Tenis",
+          "alias": [
+            "El tenis"
+          ],
+          "distractores": [
+            "Golf",
+            "Críquet",
+            "Bádminton"
+          ],
+          "puntos": 80
+        }
+      ]
+    },
+    {
+      "id": "cg-mex",
+      "codigo": "MEX",
+      "nombre": "México: cultura y tradiciones",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-mex-01",
+          "pregunta": "¿Qué día se conmemora el inicio de la Independencia de México?",
+          "respuesta": "El 16 de septiembre",
+          "alias": [
+            "16 de septiembre"
+          ],
+          "distractores": [
+            "El 15 de septiembre",
+            "El 20 de noviembre",
+            "El 5 de mayo"
+          ],
+          "puntos": 100,
+          "nota": "La noche del 15 se da el Grito; el 16 es el aniversario del inicio de la lucha en 1810."
+        },
+        {
+          "id": "cg-mex-02",
+          "pregunta": "¿Qué batalla se conmemora el 5 de mayo?",
+          "respuesta": "La Batalla de Puebla",
+          "alias": [
+            "Batalla de Puebla",
+            "Puebla"
+          ],
+          "distractores": [
+            "La Batalla de Celaya",
+            "La Batalla de Chapultepec",
+            "La Batalla de Zacatecas"
+          ],
+          "puntos": 100,
+          "nota": "Fue en 1862, contra el ejército francés."
+        },
+        {
+          "id": "cg-mex-03",
+          "pregunta": "¿Qué animal aparece en el escudo nacional devorando una serpiente?",
+          "respuesta": "El águila",
+          "alias": [
+            "Águila",
+            "Águila real"
+          ],
+          "distractores": [
+            "El jaguar",
+            "El halcón",
+            "El cóndor"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-mex-04",
+          "pregunta": "¿Cuántas entidades federativas tiene México?",
+          "respuesta": "32",
+          "alias": [
+            "treinta y dos"
+          ],
+          "distractores": [
+            "31",
+            "30",
+            "33"
+          ],
+          "puntos": 80,
+          "nota": "Son 31 estados más la Ciudad de México."
+        },
+        {
+          "id": "cg-mex-05",
+          "pregunta": "¿Qué cultura prehispánica construyó Chichén Itzá?",
+          "respuesta": "Los mayas",
+          "alias": [
+            "Mayas",
+            "Maya"
+          ],
+          "distractores": [
+            "Los mexicas",
+            "Los olmecas",
+            "Los zapotecas"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-mex-06",
+          "pregunta": "¿Qué celebración honra a los difuntos el 1 y 2 de noviembre?",
+          "respuesta": "El Día de Muertos",
+          "alias": [
+            "Día de Muertos",
+            "Día de los Muertos"
+          ],
+          "distractores": [
+            "La Candelaria",
+            "Las Posadas",
+            "La Guelaguetza"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-mex-07",
+          "pregunta": "¿Cuál es la moneda oficial de México?",
+          "respuesta": "El peso mexicano",
+          "alias": [
+            "Peso",
+            "Peso mexicano"
+          ],
+          "distractores": [
+            "El dólar",
+            "El colón",
+            "El sol"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-mex-08",
+          "pregunta": "¿Cuál es la montaña más alta de México?",
+          "respuesta": "El Pico de Orizaba",
+          "alias": [
+            "Pico de Orizaba",
+            "Citlaltépetl",
+            "Orizaba"
+          ],
+          "distractores": [
+            "El Popocatépetl",
+            "El Iztaccíhuatl",
+            "El Nevado de Toluca"
+          ],
+          "puntos": 60,
+          "nota": "También se llama Citlaltépetl; está entre Puebla y Veracruz."
+        },
+        {
+          "id": "cg-mex-09",
+          "pregunta": "¿Quién compuso la música del Himno Nacional Mexicano?",
+          "respuesta": "Jaime Nunó",
+          "alias": [
+            "Nunó"
+          ],
+          "distractores": [
+            "Francisco González Bocanegra",
+            "Agustín Lara",
+            "Juventino Rosas"
+          ],
+          "puntos": 60,
+          "nota": "La letra es de Francisco González Bocanegra."
+        },
+        {
+          "id": "cg-mex-10",
+          "pregunta": "¿En qué estado se celebra la Guelaguetza?",
+          "respuesta": "Oaxaca",
+          "alias": [],
+          "distractores": [
+            "Chiapas",
+            "Michoacán",
+            "Guerrero"
+          ],
+          "puntos": 80
+        }
+      ]
+    },
+    {
+      "id": "cg-len",
+      "codigo": "LEN",
+      "nombre": "Lengua y comunicación",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-len-01",
+          "pregunta": "¿Cómo se llama una palabra que significa lo mismo que otra?",
+          "respuesta": "Sinónimo",
+          "alias": [
+            "Sinónimos"
+          ],
+          "distractores": [
+            "Antónimo",
+            "Homónimo",
+            "Parónimo"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-len-02",
+          "pregunta": "¿Cómo se llama una palabra de significado contrario a otra?",
+          "respuesta": "Antónimo",
+          "alias": [
+            "Antónimos"
+          ],
+          "distractores": [
+            "Sinónimo",
+            "Homófono",
+            "Hiperónimo"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-len-03",
+          "pregunta": "¿Cuántas letras tiene el abecedario del español?",
+          "respuesta": "27",
+          "alias": [
+            "veintisiete"
+          ],
+          "distractores": [
+            "26",
+            "28",
+            "29"
+          ],
+          "puntos": 80,
+          "nota": "Así lo establece la Real Academia Española desde 2010."
+        },
+        {
+          "id": "cg-len-04",
+          "pregunta": "¿Cómo se llaman las palabras con el acento en la penúltima sílaba?",
+          "respuesta": "Graves (llanas)",
+          "alias": [
+            "Graves",
+            "Llanas"
+          ],
+          "distractores": [
+            "Agudas",
+            "Esdrújulas",
+            "Sobresdrújulas"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-len-05",
+          "pregunta": "¿Qué tipo de palabra es «rápidamente»?",
+          "respuesta": "Un adverbio",
+          "alias": [
+            "Adverbio"
+          ],
+          "distractores": [
+            "Un adjetivo",
+            "Un verbo",
+            "Un sustantivo"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-len-06",
+          "pregunta": "¿Cuál es el plural de «lápiz»?",
+          "respuesta": "Lápices",
+          "alias": [
+            "Lapices"
+          ],
+          "distractores": [
+            "Lápizes",
+            "Lápiz",
+            "Lápizs"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-len-07",
+          "pregunta": "¿Qué figura literaria exagera la realidad, como en «te lo dije un millón de veces»?",
+          "respuesta": "La hipérbole",
+          "alias": [
+            "Hipérbole"
+          ],
+          "distractores": [
+            "La metáfora",
+            "El símil",
+            "La onomatopeya"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-len-08",
+          "pregunta": "¿Qué lengua indígena tiene más hablantes en México?",
+          "respuesta": "El náhuatl",
+          "alias": [
+            "Náhuatl",
+            "Nahuatl"
+          ],
+          "distractores": [
+            "El maya",
+            "El zapoteco",
+            "El mixteco"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-len-09",
+          "pregunta": "¿Cómo se llama la figura que imita sonidos, como «tic tac»?",
+          "respuesta": "La onomatopeya",
+          "alias": [
+            "Onomatopeya"
+          ],
+          "distractores": [
+            "La aliteración",
+            "La hipérbole",
+            "La metáfora"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-len-10",
+          "pregunta": "¿Cuál de estas palabras es esdrújula?",
+          "respuesta": "Brújula",
+          "alias": [],
+          "distractores": [
+            "Canción",
+            "Árbol",
+            "Reloj"
+          ],
+          "puntos": 60,
+          "nota": "Las esdrújulas llevan el acento en la antepenúltima sílaba y siempre llevan tilde."
+        }
+      ]
+    },
+    {
+      "id": "cg-inv",
+      "codigo": "INV",
+      "nombre": "Inventos y tecnología",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-inv-01",
+          "pregunta": "¿Quién patentó el teléfono en 1876?",
+          "respuesta": "Alexander Graham Bell",
+          "alias": [
+            "Graham Bell",
+            "Bell"
+          ],
+          "distractores": [
+            "Thomas Edison",
+            "Nikola Tesla",
+            "Guglielmo Marconi"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-inv-02",
+          "pregunta": "¿Quién perfeccionó y comercializó la bombilla incandescente en 1879?",
+          "respuesta": "Thomas Edison",
+          "alias": [
+            "Edison",
+            "Thomas Alva Edison"
+          ],
+          "distractores": [
+            "Nikola Tesla",
+            "Benjamin Franklin",
+            "Alessandro Volta"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-inv-03",
+          "pregunta": "¿Qué invento se atribuye a Johannes Gutenberg?",
+          "respuesta": "La imprenta de tipos móviles",
+          "alias": [
+            "Imprenta",
+            "La imprenta"
+          ],
+          "distractores": [
+            "El telescopio",
+            "La brújula",
+            "El papel"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-inv-04",
+          "pregunta": "¿Qué hermanos hicieron el primer vuelo en avión con motor, en 1903?",
+          "respuesta": "Los hermanos Wright",
+          "alias": [
+            "Wright",
+            "Hermanos Wright"
+          ],
+          "distractores": [
+            "Los hermanos Lumière",
+            "Los hermanos Montgolfier",
+            "Los hermanos Grimm"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cg-inv-05",
+          "pregunta": "¿Quién creó la World Wide Web?",
+          "respuesta": "Tim Berners-Lee",
+          "alias": [
+            "Berners-Lee",
+            "Berners Lee"
+          ],
+          "distractores": [
+            "Bill Gates",
+            "Steve Jobs",
+            "Vint Cerf"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-inv-06",
+          "pregunta": "¿Qué inventor mexicano creó un sistema de televisión a color?",
+          "respuesta": "Guillermo González Camarena",
+          "alias": [
+            "González Camarena"
+          ],
+          "distractores": [
+            "Luis Ernesto Miramontes",
+            "Mario Molina",
+            "Rodolfo Neri Vela"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-inv-07",
+          "pregunta": "¿Qué químico mexicano sintetizó la noretisterona, base de la primera píldora anticonceptiva?",
+          "respuesta": "Luis Ernesto Miramontes",
+          "alias": [
+            "Miramontes"
+          ],
+          "distractores": [
+            "Mario Molina",
+            "Guillermo González Camarena",
+            "Rodolfo Neri Vela"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-inv-08",
+          "pregunta": "¿Qué científico mexicano ganó el Premio Nobel de Química en 1995?",
+          "respuesta": "Mario Molina",
+          "alias": [
+            "Molina"
+          ],
+          "distractores": [
+            "Luis Ernesto Miramontes",
+            "Octavio Paz",
+            "Rodolfo Neri Vela"
+          ],
+          "puntos": 80,
+          "nota": "Lo ganó por sus estudios sobre el daño a la capa de ozono."
+        },
+        {
+          "id": "cg-inv-09",
+          "pregunta": "¿Qué significan las siglas «PDF»?",
+          "respuesta": "Portable Document Format",
+          "alias": [],
+          "distractores": [
+            "Public Data File",
+            "Printable Document Form",
+            "Personal Digital File"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cg-inv-10",
+          "pregunta": "¿Cuántos bits forman un byte?",
+          "respuesta": "8",
+          "alias": [
+            "ocho"
+          ],
+          "distractores": [
+            "4",
+            "16",
+            "10"
+          ],
+          "puntos": 80
+        }
+      ]
+    },
+    {
+      "id": "cg-esp",
+      "codigo": "ESP",
+      "nombre": "Espacio y astronomía",
+      "grupo": "cultura",
+      "preguntas": [
+        {
+          "id": "cg-esp-01",
+          "pregunta": "¿En qué año llegó el ser humano a la Luna por primera vez?",
+          "respuesta": "1969",
+          "alias": [],
+          "distractores": [
+            "1965",
+            "1972",
+            "1961"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-esp-02",
+          "pregunta": "¿Quién fue el primer ser humano en pisar la Luna?",
+          "respuesta": "Neil Armstrong",
+          "alias": [
+            "Armstrong"
+          ],
+          "distractores": [
+            "Buzz Aldrin",
+            "Yuri Gagarin",
+            "Michael Collins"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-esp-03",
+          "pregunta": "¿Quién fue el primer ser humano en viajar al espacio?",
+          "respuesta": "Yuri Gagarin",
+          "alias": [
+            "Gagarin"
+          ],
+          "distractores": [
+            "Neil Armstrong",
+            "Alan Shepard",
+            "John Glenn"
+          ],
+          "puntos": 80,
+          "nota": "Fue en 1961, a bordo de la nave Vostok 1."
+        },
+        {
+          "id": "cg-esp-04",
+          "pregunta": "¿Cuál es el planeta más cercano al Sol?",
+          "respuesta": "Mercurio",
+          "alias": [],
+          "distractores": [
+            "Venus",
+            "Marte",
+            "La Tierra"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-esp-05",
+          "pregunta": "¿Cuál es la estrella más cercana a la Tierra?",
+          "respuesta": "El Sol",
+          "alias": [
+            "Sol"
+          ],
+          "distractores": [
+            "Próxima Centauri",
+            "Sirio",
+            "Betelgeuse"
+          ],
+          "puntos": 80,
+          "nota": "Después del Sol, la más cercana es Próxima Centauri."
+        },
+        {
+          "id": "cg-esp-06",
+          "pregunta": "¿Cuántos planetas tiene el sistema solar?",
+          "respuesta": "Ocho",
+          "alias": [
+            "8"
+          ],
+          "distractores": [
+            "Nueve",
+            "Siete",
+            "Diez"
+          ],
+          "puntos": 100,
+          "nota": "Plutón dejó de considerarse planeta en 2006."
+        },
+        {
+          "id": "cg-esp-07",
+          "pregunta": "¿Cómo se llama nuestra galaxia?",
+          "respuesta": "La Vía Láctea",
+          "alias": [
+            "Vía Láctea"
+          ],
+          "distractores": [
+            "Andrómeda",
+            "La galaxia del Triángulo",
+            "La Gran Nube de Magallanes"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cg-esp-08",
+          "pregunta": "¿Qué planeta es famoso por sus grandes anillos?",
+          "respuesta": "Saturno",
+          "alias": [],
+          "distractores": [
+            "Júpiter",
+            "Urano",
+            "Neptuno"
+          ],
+          "puntos": 100,
+          "nota": "Júpiter, Urano y Neptuno también tienen anillos, pero mucho más tenues."
+        },
+        {
+          "id": "cg-esp-09",
+          "pregunta": "¿Quién fue el primer astronauta mexicano?",
+          "respuesta": "Rodolfo Neri Vela",
+          "alias": [
+            "Neri Vela"
+          ],
+          "distractores": [
+            "José Hernández",
+            "Mario Molina",
+            "Guillermo González Camarena"
+          ],
+          "puntos": 60,
+          "nota": "Viajó en 1985. José Hernández, de padres mexicanos, voló en 2009."
+        },
+        {
+          "id": "cg-esp-10",
+          "pregunta": "¿Cuánto tarda la Tierra en dar una vuelta completa alrededor del Sol?",
+          "respuesta": "Un año (365 días)",
+          "alias": [
+            "365 días",
+            "Un año",
+            "365"
+          ],
+          "distractores": [
+            "30 días",
+            "24 horas",
+            "28 días"
+          ],
+          "puntos": 100,
+          "nota": "Son unos 365 días y 6 horas; por eso existen los años bisiestos."
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 <script>
 (() => {
 'use strict';
@@ -434,6 +2105,11 @@ const almacen = {
 };
 
 const BASE = JSON.parse($('#banco-base').textContent);
+const CULTURA = JSON.parse($('#banco-cultura').textContent);
+// Versión de la app. Al publicar una actualización, sube APP_VERSION (y VERSION en sw.js).
+// El flujo de GitHub Pages reemplaza APP_BUILD por el commit publicado.
+const APP_VERSION = '1.4.0';
+const APP_BUILD = 'local';
 
 /* ---------- estado ---------- */
 const S = {
@@ -446,7 +2122,8 @@ const S = {
   record: { concurso: 0, ...almacen.get('record', {}) },
   cfg: { cqNum: 10, cqTiempo: 15, cqCat: 'todas', cqElim: true, modoResp: 'opciones', ...almacen.get('cfg', {}) },
   concurso: null,
-  estudio: { tab: 'practica', cat: 'todas', cola: [], idx: 0, fase: 'pregunta', res: null, girada: false, busqueda: '', vuelta: false },
+  act: { estado: 'idle', revisado: null },
+  estudio: { crono: { acum: 0, desde: null, pausadoUsuario: false }, tab: 'practica', cat: 'todas', cola: [], idx: 0, fase: 'pregunta', res: null, girada: false, busqueda: '', vuelta: false },
   docsUI: { preview: null, procesando: false, error: null, confirmar: null, verJson: false }
 };
 const guardarStats = () => almacen.set('stats', S.stats);
@@ -454,15 +2131,29 @@ const guardarStats = () => almacen.set('stats', S.stats);
 /* ---------- banco activo ---------- */
 function banco() {
   const cats = [];
-  if (S.baseActiva) BASE.categorias.forEach(c => cats.push({ ...c, docId: 'base', docNombre: BASE.fuente.titulo }));
-  S.docs.filter(d => d.activo).forEach(d => d.categorias.forEach(c => cats.push({ ...c, docId: d.id, docNombre: d.nombre })));
+  if (S.baseActiva) BASE.categorias.forEach(c => cats.push({ ...c, grupo: 'guia', docId: 'base', docNombre: BASE.fuente.titulo }));
+  S.docs.filter(d => d.activo).forEach(d => d.categorias.forEach(c => cats.push({ ...c, grupo: 'guia', docId: d.id, docNombre: d.nombre })));
+  CULTURA.categorias.forEach(c => cats.push({ ...c, grupo: 'cultura', docId: 'cultura', docNombre: 'Cultura general' }));
   return { cats };
 }
-function todasPreguntas(catId) {
-  return banco().cats.filter(c => !catId || catId === 'todas' || c.id === catId)
-    .flatMap(c => c.preguntas.map(p => ({ ...p, catId: c.id, catNombre: c.nombre, codigo: c.codigo })));
+// Selección de categorías: 'todas' = la guía (y documentos subidos); 'grupo:cultura' = cultura general; o el id de una categoría.
+function catsDe(sel) {
+  const cats = banco().cats;
+  if (sel === '*') return cats;
+  if (!sel || sel === 'todas') return cats.filter(c => c.grupo !== 'cultura');
+  if (sel.startsWith('grupo:')) return cats.filter(c => c.grupo === sel.slice(6));
+  return cats.filter(c => c.id === sel);
 }
-function preguntaPorId(id) { return todasPreguntas().find(p => p.id === id) || null; }
+function todasPreguntas(catId) {
+  return catsDe(catId).flatMap(c => c.preguntas.map(p => ({ ...p, catId: c.id, catNombre: c.nombre, codigo: c.codigo, grupo: c.grupo })));
+}
+function preguntaPorId(id) { return todasPreguntas('*').find(p => p.id === id) || null; }
+function opcionesCategoria(valor) {
+  const op = (v, l) => `<option value="${esc(v)}" ${valor === v ? 'selected' : ''}>${esc(l)}</option>`;
+  const guia = catsDe('todas'), cult = catsDe('grupo:cultura');
+  return `<optgroup label="Guía LoboSabio">${op('todas', 'Toda la guía')}${guia.map(c => op(c.id, c.nombre)).join('')}</optgroup>`
+    + `<optgroup label="Cultura general">${op('grupo:cultura', 'Toda la cultura general')}${cult.map(c => op(c.id, c.nombre)).join('')}</optgroup>`;
+}
 const dominada = id => (S.stats[id]?.r || 0) >= 2;
 function estadoPregunta(id) {
   const s = S.stats[id];
@@ -681,6 +2372,10 @@ function logoSVG(size = 44, vivo = true) {
 
 /* ---------- navegación ---------- */
 const ICONOS = {
+  cultura: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/>',
+  crono: '<circle cx="12" cy="13.5" r="7.5"/><path d="M12 10v3.5l2.5 1.5"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/>',
+  reiniciar: '<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.3h4.3"/>',
+  actualizar: '<path d="M20 12a8 8 0 0 1-14.2 5"/><path d="M4 12a8 8 0 0 1 14.2-5"/><path d="M18.5 3v4h-4"/><path d="M5.5 21v-4h4"/>',
   inicio: '<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
   concurso: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
   estudio: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20"/>',
@@ -695,11 +2390,12 @@ const ICONOS = {
 };
 const icono = (n, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n]}</svg>`;
 const chevron = () => `<svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS.chevron}</svg>`;
-const VISTAS = [['inicio', 'Inicio'], ['concurso', 'Concurso'], ['estudio', 'Estudio'], ['documentos', 'Documentos']];
+const VISTAS = [['inicio', 'Inicio'], ['concurso', 'Concurso'], ['estudio', 'Estudio'], ['cultura', 'Cultura'], ['documentos', 'Documentos']];
 function pintarNav() {
   const cur = id => S.vista === id ? 'aria-current="page"' : '';
   $('#nav-escritorio').innerHTML = VISTAS.map(([id, txt]) => `<button type="button" class="nav-btn" data-accion="ir" data-vista="${id}" ${cur(id)}>${txt}</button>`).join('');
-  $('#nav-movil').innerHTML = VISTAS.map(([id, txt]) => `<button type="button" class="tab" data-accion="ir" data-vista="${id}" ${cur(id)}>${icono(id)}<span>${txt}</span></button>`).join('');
+  const punto = id => id === 'inicio' && S.act.estado.startsWith('nueva') ? '<i class="punto-act" aria-label="Actualización disponible"></i>' : '';
+  $('#nav-movil').innerHTML = VISTAS.map(([id, txt]) => `<button type="button" class="tab" data-accion="ir" data-vista="${id}" ${cur(id)}><span class="relative">${icono(id)}${punto(id)}</span><span>${txt}</span></button>`).join('');
   const b = $('#btn-sonido'); b.innerHTML = icono(S.sonido ? 'sonido' : 'silencio'); b.setAttribute('aria-label', S.sonido ? 'Silenciar' : 'Activar sonido'); b.setAttribute('aria-pressed', String(S.sonido));
   const bt = $('#btn-tema'); bt.innerHTML = icono(S.tema === 'dark' ? 'sol' : 'luna'); bt.setAttribute('aria-label', S.tema === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
 }
@@ -719,7 +2415,8 @@ function render() {
   const y = window.scrollY, misma = vistaPintada === S.vista, mismaPantalla = pantallaPintada === clavePantalla();
   $$('[data-vista-sec]').forEach(s => { s.hidden = s.dataset.vistaSec !== S.vista; });
   pintarNav();
-  ({ inicio: renderInicio, concurso: renderConcurso, estudio: renderEstudio, documentos: renderDocumentos })[S.vista]();
+  ({ inicio: renderInicio, concurso: renderConcurso, estudio: renderEstudio, cultura: renderCultura, documentos: renderDocumentos })[S.vista]();
+  gestionarCronos();
   const sec = $('#v-' + S.vista);
   document.body.classList.toggle('con-accion', !!sec.querySelector('.accion-fija'));
   if (misma) window.scrollTo(0, mismaPantalla ? y : 0);
@@ -766,7 +2463,7 @@ function anillo(pct, size = 168) {
   </svg>`;
 }
 function renderInicio() {
-  const { cats } = banco();
+  const cats = catsDe('todas');
   const g = dominio();
   const filas = cats.map(c => ({ c, d: dominio(c.id) }));
   const debil = [...filas].sort((a, b) => a.d.pct - b.d.pct)[0];
@@ -805,11 +2502,11 @@ function renderInicio() {
           ${modo('estudio', '#007AFF', 'estudio', 'Modo Estudio', 'Práctica, tarjetas y repaso de errores')}
           ${modo('documentos', '#8E8E93', 'documentos', 'Documentos', 'Sube tu propia guía en PDF, DOCX o TXT')}
         </div>
-        ${instalacionHTML()}
         ${debil && debil.d.pct < 100 ? `<p class="text-[.8125rem] tenue px-4">Te conviene empezar por <button type="button" class="font-semibold" style="color:var(--guinda)" data-accion="estudiar-cat" data-cat="${esc(debil.c.id)}">${esc(debil.c.nombre)}</button> (${debil.d.pct}&nbsp;% dominado).</p>` : ''}
       </section>
     </div>
 
+    ${S.act.estado.startsWith('nueva') ? `<div class="aviso flex items-center gap-3" style="background:var(--guinda-suave)"><span class="flex-1 text-[.9375rem]"><strong>Hay una versión nueva de Lobitos.</strong> Se instala en un segundo y conserva tu progreso.</span><button type="button" class="btn btn-guinda btn-sm" data-accion="actualizar">Actualizar</button></div>` : ''}
     <section class="flex flex-col gap-2">
       <h2 class="eyebrow px-4">Categorías</h2>
       <div class="lista">
@@ -821,6 +2518,11 @@ function renderInicio() {
           </button>`).join('') || '<p class="fila tenue">No hay categorías activas. Activa la guía o carga un documento.</p>'}
       </div>
     </section>
+    <section class="flex flex-col gap-2">
+      <h2 class="eyebrow px-4">App</h2>
+      <div class="lista">${actualizacionHTML()}</div>
+      ${instalacionHTML()}
+    </section>
   </div>`;
 }
 
@@ -828,6 +2530,55 @@ function avisoHTML(m) {
   if (!m) return '';
   const cls = { ok: 'aviso-ok', mal: 'aviso-mal', casi: 'aviso-casi', info: '' }[m.tipo] || '';
   return `<div class="aviso ${cls}">${m.html}</div>`;
+}
+
+/* ============================================================
+   CULTURA GENERAL (entrenamiento extra)
+   ============================================================ */
+function renderCultura() {
+  const cats = catsDe('grupo:cultura');
+  const g = dominio('grupo:cultura');
+  const accion = (acc, color, ic, titulo, sub, extra = '') => `<button type="button" class="fila" style="--sangria:58px" data-accion="${acc}" ${extra}>
+      <span class="icono-cuadro" style="background:${color}">${icono(ic)}</span>
+      <span class="min-w-0"><span class="block font-semibold">${titulo}</span><span class="block text-sm tenue">${sub}</span></span>${chevron()}</button>`;
+  $('#v-cultura').innerHTML = `
+  <div class="flex flex-col gap-7">
+    <div>
+      <p class="eyebrow">Entrenamiento extra</p>
+      <h2 class="text-[2.125rem]">Cultura general</h2>
+      <p class="tenue mt-1">${g.total} preguntas de cultura general en ${cats.length} categorías para entrenar más allá de la guía. Tu avance aquí se cuenta aparte.</p>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-7">
+      <section class="flex flex-col gap-2">
+        <h3 class="eyebrow px-4">Tu avance</h3>
+        <div class="panel p-5 flex items-center gap-5">
+          ${anillo(g.pct, 112)}
+          <div class="min-w-0"><p class="num text-[2rem] font-bold leading-none">${g.dom}<span class="tenue text-xl">/${g.total}</span></p><p class="tenue">preguntas dominadas</p></div>
+        </div>
+      </section>
+      <section class="flex flex-col gap-2">
+        <h3 class="eyebrow px-4">Entrenar</h3>
+        <div class="lista">
+          ${accion('cultura-ronda', '#FF9500', 'concurso', 'Ronda rápida', `${S.cfg.cqNum} preguntas al azar contra reloj`)}
+          ${accion('cultura-estudio', '#007AFF', 'estudio', 'Práctica guiada', 'Primero las que aún no dominas')}
+          ${accion('cultura-estudio', '#AF52DE', 'cultura', 'Tarjetas', 'Repaso rápido volteando tarjetas', 'data-tab="tarjetas"')}
+        </div>
+      </section>
+    </div>
+    <section class="flex flex-col gap-2">
+      <h3 class="eyebrow px-4">Categorías</h3>
+      <div class="lista">
+        ${cats.map(c => { const d = dominio(c.id); return `
+          <div class="fila" style="--sangria:72px">
+            <span class="chip chip-cod w-11 justify-center">${esc(c.codigo)}</span>
+            <span class="min-w-0 flex-1"><span class="block font-medium leading-tight">${esc(c.nombre)}</span><span class="barra mt-1.5 block"><span style="width:${d.pct}%"></span></span></span>
+            <span class="num text-[.9375rem] tenue w-10 text-right">${d.dom}/${d.total}</span>
+            <button type="button" class="btn btn-linea btn-sm" data-accion="cultura-ronda" data-cat="${esc(c.id)}" aria-label="Ronda rápida de ${esc(c.nombre)}">Jugar</button>
+          </div>`; }).join('')}
+      </div>
+      <p class="text-[.8125rem] tenue px-4">También puedes elegir estas categorías en Modo Concurso y en Estudio.</p>
+    </section>
+  </div>`;
 }
 
 /* ============================================================
@@ -845,7 +2596,7 @@ function renderConcurso() {
     <div class="flex items-center gap-3">
       <button type="button" class="text-[1.0625rem] shrink-0" style="color:var(--guinda)" data-accion="abandonar-concurso">‹ Salir</button>
       <div class="flex-1 min-w-0 flex flex-col gap-1">
-        <span class="text-xs tenue text-center num">Pregunta ${C.i + 1} de ${n}</span>
+        <span class="text-xs tenue text-center num">Pregunta ${C.i + 1} de ${n} · <span class="inline-flex items-center gap-0.5 align-middle" style="color:var(--guinda)"><span class="inline-block w-3.5 h-3.5">${icono('crono')}</span><span data-crono="cq">${fmtCrono(msCrono(C.crono))}</span></span></span>
         <div class="flex gap-[3px]" aria-hidden="true">${C.lista.map((_, k) => `<span style="flex:1;height:4px;border-radius:9px;background:${k < C.i ? (C.res[k] ? 'var(--exito)' : 'var(--error)') : k === C.i ? 'var(--guinda)' : 'var(--relleno)'}"></span>`).join('')}</div>
       </div>
       ${S.cfg.cqElim ? `<div class="flex gap-1 shrink-0" role="img" aria-label="${C.strikes} de 3 strikes">${[0, 1, 2].map(k => `<span class="strike strike-mini ${k < C.strikes ? 'strike-on' : ''}">✕</span>`).join('')}</div>` : ''}
@@ -890,7 +2641,7 @@ function renderConfigConcurso() {
     <section class="flex flex-col gap-2">
       <h3 class="eyebrow px-4">Configuración</h3>
       <div class="lista">
-        <label class="fila" for="cfg-cq-cat"><span>Categoría</span>${sel('cfg-cq-cat', 'cqCat', [['todas', 'Todas'], ...cats.map(k => [k.id, k.nombre])])}</label>
+        <label class="fila" for="cfg-cq-cat"><span>Categoría</span><select id="cfg-cq-cat" class="campo-fila" data-cfg="cqCat">${opcionesCategoria(c.cqCat)}</select></label>
         <label class="fila" for="cfg-cq-num"><span>Preguntas</span>${sel('cfg-cq-num', 'cqNum', [5, 10, 15, 20, 30].map(v => [v, String(v)]))}</label>
         <label class="fila" for="cfg-cq-tiempo"><span>Tiempo por pregunta</span>${sel('cfg-cq-tiempo', 'cqTiempo', [[10, '10 s'], [15, '15 s'], [20, '20 s'], [0, 'Sin tiempo']])}</label>
         <label class="fila" for="cfg-cq-elim"><span>Eliminación con 3 strikes</span><input id="cfg-cq-elim" type="checkbox" class="interruptor" data-cfg="cqElim" ${c.cqElim ? 'checked' : ''}></label>
@@ -904,7 +2655,7 @@ function iniciarConcurso() {
   const pool = priorizar(todasPreguntas(S.cfg.cqCat));
   if (!pool.length) return;
   const lista = barajar(pool.slice(0, Math.min(S.cfg.cqNum, pool.length)));
-  S.concurso = { lista, i: 0, puntos: 0, strikes: 0, racha: 0, mejorRacha: 0, res: [], tiempos: [], fallos: [], fase: 'pregunta', msg: null };
+  S.concurso = { lista, i: 0, puntos: 0, strikes: 0, racha: 0, mejorRacha: 0, res: [], tiempos: [], fallos: [], fase: 'pregunta', msg: null, crono: { acum: 0, desde: Date.now() } };
   preguntaConcurso();
 }
 function preguntaConcurso() {
@@ -929,12 +2680,12 @@ function responderConcurso(texto, agotado = false, okForzado) {
     const bono = S.cfg.cqTiempo ? Math.round(50 * Math.max(0, 1 - seg / S.cfg.cqTiempo)) : 0;
     const pts = Math.round((q.puntos + bono) * mult);
     C.ultimosPts = pts; C.puntos += pts; C.res.push(true);
-    C.msg = { tipo: 'ok', html: `<strong>¡Correcto! +${pts}</strong> (${q.puntos} base${bono ? ` + ${bono} por velocidad` : ''}${mult > 1 ? ` × ${mult} de racha` : ''}). Respuesta: «${esc(sinParentesis(q.respuesta))}».${q.nota ? ` <span class="tenue">${esc(q.nota)}</span>` : ''}` };
+    C.msg = { tipo: 'ok', html: `<strong>¡Correcto! +${pts}</strong> <span class="desglose">(${q.puntos} base${bono ? ` + ${bono} por velocidad` : ''}${mult > 1 ? ` × ${mult} de racha` : ''}). </span>Respuesta: «${esc(sinParentesis(q.respuesta))}».${q.nota ? ` <span class="tenue">${esc(q.nota)}</span>` : ''}` };
     sonar('ok');
   } else {
     C.racha = 0; C.res.push(false); C.fallos.push({ id: q.id, texto: t });
     if (S.cfg.cqElim) C.strikes++;
-    C.msg = { tipo: 'mal', html: `<strong>${agotado ? 'Se acabó el tiempo.' : t ? 'Incorrecta.' : 'Pregunta saltada.'}</strong> La respuesta es «${esc(q.respuesta)}».${t ? ` ${C.porOpcion ? 'Elegiste' : 'Escribiste'} «${esc(t)}».` : ''}${q.nota ? ` <span class="tenue">${esc(q.nota)}</span>` : ''}` };
+    C.msg = { tipo: 'mal', html: `<strong>${agotado ? 'Se acabó el tiempo.' : t ? 'Incorrecta.' : 'Pregunta saltada.'}</strong> La respuesta es «${esc(q.respuesta)}».${t ? `<span class="desglose"> ${C.porOpcion ? 'Elegiste' : 'Escribiste'} «${esc(t)}».</span>` : ''}${q.nota ? ` <span class="tenue">${esc(q.nota)}</span>` : ''}` };
     sonar('mal');
   }
   C.terminarYa = S.cfg.cqElim && C.strikes >= 3;
@@ -948,7 +2699,7 @@ function siguienteConcurso() {
   if (!C) return;
   clearTimeout(C.auto);
   if (C.terminarYa || C.i + 1 >= C.lista.length) {
-    C.fase = 'fin';
+    C.fase = 'fin'; cronoPausar(C.crono);
     if (C.puntos > S.record.concurso) { S.record.concurso = C.puntos; C.nuevoRecord = true; almacen.set('record', S.record); }
     sonar('fin'); render(); return;
   }
@@ -976,8 +2727,8 @@ function renderResultadosConcurso() {
       <p class="num font-bold leading-none" style="font-size:clamp(3.5rem,12vw,5.5rem);color:var(--guinda)">${C.puntos}</p>
       <p class="tenue">puntos${C.nuevoRecord ? ' · ¡Nuevo récord!' : ` · Récord: ${S.record.concurso}`}</p>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      ${[['Aciertos', `${ok}/${n}`], ['Precisión', `${n ? Math.round(ok / n * 100) : 0}%`], ['Mejor racha', C.mejorRacha], ['Tiempo medio', `${prom} s`]].map(([l, v]) => `<div class="panel p-4 text-center"><p class="eyebrow">${l}</p><p class="num text-3xl font-extrabold">${v}</p></div>`).join('')}
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+      ${[['Aciertos', `${ok}/${n}`], ['Precisión', `${n ? Math.round(ok / n * 100) : 0}%`], ['Mejor racha', C.mejorRacha], ['Tiempo total', fmtCrono(msCrono(C.crono))], ['Por pregunta', `${prom} s`]].map(([l, v]) => `<div class="panel p-4 text-center"><p class="eyebrow">${l}</p><p class="num text-3xl font-extrabold">${v}</p></div>`).join('')}
     </div>
     <div class="panel p-5">
       <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
@@ -1035,13 +2786,14 @@ function renderEstudio() {
   }
   $('#v-estudio').innerHTML = `
   <div class="flex flex-col gap-3">
-    <div class="flex items-center justify-between gap-3">
-      <h2 class="quiz-titulo text-[1.75rem] md:text-[2.125rem]">Estudio</h2>
+    <div class="flex items-center gap-2 md:gap-3">
+      <h2 class="quiz-titulo hidden md:block text-[2.125rem] mr-auto">Estudio</h2>
       <label for="est-cat" class="sr-only">Categoría</label>
-      <select id="est-cat" class="campo w-auto max-w-[55%] py-2 text-[.9375rem]" data-accion-cambio="cat-estudio">
-        <option value="todas">Todas las categorías</option>
-        ${cats.map(c => `<option value="${esc(c.id)}" ${E.cat === c.id ? 'selected' : ''}>${esc(c.nombre)}</option>`).join('')}
+      <select id="est-cat" class="campo flex-1 min-w-0 md:flex-none md:w-72 py-2 text-[.9375rem]" data-accion-cambio="cat-estudio">
+        ${opcionesCategoria(E.cat)}
       </select>
+      <button type="button" class="crono-chip ${E.crono.desde ? '' : 'pausado'}" data-accion="crono-est" aria-label="${E.crono.desde ? 'Pausar cronómetro' : 'Reanudar cronómetro'}" title="Tiempo de estudio: toca para pausar o reanudar">${icono('crono')}<span class="num" data-crono="est">${fmtCrono(msCrono(E.crono))}</span></button>
+      <button type="button" class="icono-btn" style="width:32px;height:32px" data-accion="crono-reset" aria-label="Reiniciar cronómetro" title="Reiniciar cronómetro">${icono('reiniciar')}</button>
     </div>
     <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
       <div class="segmento nav-scroll" role="tablist">${tabs.map(([id, l]) => `<button type="button" role="tab" aria-selected="${E.tab === id}" data-accion="tab-estudio" data-tab="${id}">${l}</button>`).join('')}</div>
@@ -1122,7 +2874,7 @@ function tarjetaHTML(q) {
 }
 function guiaHTML() {
   const E = S.estudio, b = normalizar(E.busqueda);
-  const cats = banco().cats.filter(c => E.cat === 'todas' || c.id === E.cat);
+  const cats = catsDe(E.cat);
   const bloques = cats.map(c => {
     const qs = c.preguntas.filter(q => !b || normalizar(q.pregunta + ' ' + q.respuesta + ' ' + (q.alias || []).join(' ')).includes(b));
     if (!qs.length) return '';
@@ -1391,8 +3143,8 @@ function previewHTML(P) {
   </div>`;
 }
 function bancoExportable() {
-  const { cats } = banco();
-  return { version: 1, generado: new Date().toISOString(), categorias: cats.map(({ docId, docNombre, ...c }) => c) };
+  const cats = catsDe('todas');
+  return { version: 1, generado: new Date().toISOString(), categorias: cats.map(({ docId, docNombre, grupo, ...c }) => c) };
 }
 
 /* ---------- foco ---------- */
@@ -1413,6 +3165,11 @@ document.addEventListener('click', e => {
   const a = b.dataset.accion;
   const acciones = {
     'ir': () => ir(b.dataset.vista),
+    'crono-est': () => { const c = S.estudio.crono; if (c.desde) { cronoPausar(c); c.pausadoUsuario = true; } else { c.pausadoUsuario = false; cronoCorrer(c); } render(); },
+    'crono-reset': () => { const c = S.estudio.crono; c.acum = 0; c.desde = c.pausadoUsuario ? null : Date.now(); render(); },
+    'cultura-ronda': () => { S.cfg.cqCat = b.dataset.cat || 'grupo:cultura'; almacen.set('cfg', S.cfg); detenerRelojes(); S.vista = 'concurso'; iniciarConcurso(); window.scrollTo({ top: 0 }); },
+    'cultura-estudio': () => { detenerRelojes(); S.estudio.cat = b.dataset.cat || 'grupo:cultura'; S.estudio.tab = b.dataset.tab || 'practica'; armarCola(); ir('estudio'); },
+    'actualizar': buscarActualizacion,
     'instalar': instalar,
     'tema': () => { S.tema = S.tema === 'dark' ? 'light' : 'dark'; almacen.set('tema', S.tema); aplicarTema(); pintarNav(); },
     'sonido': () => { S.sonido = !S.sonido; almacen.set('sonido', S.sonido); pintarNav(); if (S.sonido) sonar('ok'); },
@@ -1526,6 +3283,27 @@ document.addEventListener('keydown', e => {
   if (ev === 'drop' && e.dataTransfer.files[0]) procesarArchivo(e.dataTransfer.files[0]);
 }));
 
+/* ---------- cronómetro ---------- */
+const msCrono = c => c ? c.acum + (c.desde ? Date.now() - c.desde : 0) : 0;
+function fmtCrono(ms) {
+  const t = Math.floor(ms / 1000), h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), s = String(t % 60).padStart(2, '0');
+  return h ? `${h}:${String(m).padStart(2, '0')}:${s}` : `${m}:${s}`;
+}
+const cronoCorrer = c => { if (c && !c.desde) c.desde = Date.now(); };
+const cronoPausar = c => { if (c && c.desde) { c.acum += Date.now() - c.desde; c.desde = null; } };
+// El cronómetro de estudio corre mientras practicas y se detiene solo al salir de Estudio o al abrir la Guía.
+function gestionarCronos() {
+  const c = S.estudio.crono;
+  if (S.vista === 'estudio' && S.estudio.tab !== 'guia' && !c.pausadoUsuario) cronoCorrer(c); else cronoPausar(c);
+}
+setInterval(() => {
+  $$('[data-crono]').forEach(el => {
+    const c = el.dataset.crono === 'cq' ? S.concurso?.crono : S.estudio.crono;
+    el.textContent = fmtCrono(msCrono(c));
+  });
+}, 500);
+document.addEventListener('visibilitychange', () => { if (document.hidden) cronoPausar(S.estudio.crono); else gestionarCronos(); });
+
 /* ---------- instalación como app (PWA) ---------- */
 let avisoInstalar = null;           // evento de Android/Chrome para mostrar el diálogo de instalación
 const enIframe = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
@@ -1558,8 +3336,54 @@ async function instalar() {
 }
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); avisoInstalar = e; });
 window.addEventListener('appinstalled', () => { avisoInstalar = null; if (S.vista === 'inicio') render(); });
+/* ---------- actualizaciones ---------- */
+let regSW = null, swEsperando = null, recargando = false;
+const esperar = ms => new Promise(r => setTimeout(r, ms));
+function avisarNueva(w) { swEsperando = w; S.act.estado = 'nueva'; if (S.vista === 'inicio') render(); else pintarNav(); }
+function vigilarSW(reg) {
+  if (reg.waiting && navigator.serviceWorker.controller) avisarNueva(reg.waiting);
+  reg.addEventListener('updatefound', () => {
+    const nw = reg.installing;
+    if (nw) nw.addEventListener('statechange', () => { if (nw.state === 'installed' && navigator.serviceWorker.controller) avisarNueva(nw); });
+  });
+}
+async function buscarActualizacion() {
+  if (S.act.estado.startsWith('nueva')) return aplicarActualizacion();
+  if (enIframe) { location.reload(); return; }
+  S.act.estado = 'buscando'; render();
+  try {
+    if (regSW) { await regSW.update(); await esperar(1500); }
+    if (!swEsperando) {
+      // Sin service worker nuevo: compara la versión publicada de la página con la que está abierta.
+      const txt = await (await fetch(location.pathname + '?comprobar=' + Date.now(), { cache: 'no-store' })).text();
+      // Las expresiones se arman por partes para que el flujo de publicación no las reescriba.
+      const leer = k => (txt.match(new RegExp('const APP_' + k + " = '([^']*)'")) || [])[1];
+      const v = leer('VERSION'), b = leer('BUILD');
+      S.act.estado = v && (v !== APP_VERSION || b !== APP_BUILD) ? 'nueva-pagina' : 'aldia';
+    }
+  } catch (e) { S.act.estado = 'error'; }
+  S.act.revisado = Date.now(); render();
+}
+function aplicarActualizacion() {
+  S.act.estado = 'aplicando'; render();
+  if (swEsperando) { swEsperando.postMessage('activar'); setTimeout(() => location.reload(), 2500); }
+  else location.reload();
+}
+function actualizacionHTML() {
+  const e = S.act.estado;
+  const sub = { idle: 'Toca para buscar una versión nueva', buscando: 'Buscando…', aldia: 'Tienes la versión más reciente', nueva: 'Hay una versión nueva. Toca para instalarla', 'nueva-pagina': 'Hay una versión nueva. Toca para cargarla', aplicando: 'Actualizando…', error: 'No se pudo comprobar. Revisa tu conexión' }[e];
+  const nueva = e.startsWith('nueva');
+  return `<button type="button" class="fila" style="--sangria:58px" data-accion="actualizar" ${e === 'buscando' || e === 'aplicando' ? 'disabled' : ''}>
+      <span class="icono-cuadro" style="background:${nueva ? '#FF3B30' : '#5856D6'}">${icono('actualizar')}</span>
+      <span class="min-w-0"><span class="block font-semibold">${nueva ? 'Actualizar ahora' : 'Buscar actualizaciones'}</span><span class="block text-sm tenue">${sub}</span></span>
+      <span class="ml-auto text-sm tenue num whitespace-nowrap">v${APP_VERSION}</span></button>`;
+}
 if ('serviceWorker' in navigator && !enIframe && /^(https:|http:\/\/(localhost|127\.0\.0\.1))/.test(location.href)) {
-  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => { /* sin soporte: la app sigue funcionando en línea */ }); });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => { regSW = reg; vigilarSW(reg); }).catch(() => { /* sin soporte: la app sigue funcionando en línea */ });
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (!recargando && S.act.estado === 'aplicando') { recargando = true; location.reload(); } });
+    setInterval(() => { if (regSW && !document.hidden) regSW.update().catch(() => {}); }, 30 * 60 * 1000);
+  });
 }
 
 /* ---------- arranque ---------- */

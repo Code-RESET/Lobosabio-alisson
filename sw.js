@@ -1,6 +1,7 @@
 // Service worker de Lobitos: guarda la app para que funcione sin conexión.
-// Al publicar una versión nueva, cambia VERSION para que los teléfonos descarguen los archivos nuevos.
-const VERSION = 'lobitos-v1';
+// Al publicar una versión nueva, cambia VERSION (el flujo de GitHub Pages le agrega el commit automáticamente).
+// La app detecta la versión nueva y muestra «Actualizar ahora»; al tocarlo se activa sin perder el progreso.
+const VERSION = 'lobitos-1.4.0';
 const APP = [
   './',
   './index.html',
@@ -20,9 +21,12 @@ self.addEventListener('install', e => {
     const c = await caches.open(VERSION);
     await c.addAll(APP);
     await Promise.all(CDN.map(u => fetch(u, { mode: 'no-cors' }).then(r => c.put(u, r)).catch(() => {})));
-    await self.skipWaiting();
+    // La primera instalación se activa sola; las actualizaciones esperan a que el usuario toque «Actualizar ahora».
+    if (!self.registration.active) await self.skipWaiting();
   })());
 });
+
+self.addEventListener('message', e => { if (e.data === 'activar') self.skipWaiting(); });
 
 self.addEventListener('activate', e => {
   e.waitUntil((async () => {

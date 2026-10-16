@@ -2,9 +2,9 @@
 
 Desarrollado por el **Ing. Luis Angel Díaz Bernal**.
 
-Aplicación web de estudio para preparar el concurso **LoboSabio**: preguntas de opción múltiple contra reloj y práctica guiada hasta dominar las 70 preguntas de la guía.
+Aplicación web de estudio para preparar el concurso **LoboSabio**: preguntas de opción múltiple contra reloj y práctica guiada hasta dominar las 70 preguntas de la guía, más **110 preguntas de cultura general** para entrenar.
 
-Todo vive en un solo archivo: **`index.html`** (HTML5 + Tailwind CSS por CDN + JavaScript sin frameworks). Ábrelo en el navegador y ya funciona. Arranca en **modo oscuro**; el botón del encabezado cambia a modo claro y la elección se recuerda.
+Todo vive en un solo archivo: **`index.html`** (HTML5 + Tailwind CSS + JavaScript sin frameworks). Al editar usa Tailwind por CDN; al publicar, el CSS se compila e incrusta para que la app instalada no dependa de internet. Ábrelo en el navegador y ya funciona. Arranca en **modo oscuro**; el botón del encabezado cambia a modo claro y la elección se recuerda.
 
 **Tamaños de pantalla:** probada en celulares de 320×568 a 430×932. En pantallas bajas la interfaz se compacta y el resultado se muestra en una sola línea, de modo que la pregunta y las tres opciones siempre quedan a la vista.
 
@@ -17,13 +17,26 @@ Lobitos es una **app web instalable (PWA)**: se agrega a la pantalla de inicio c
 - **iPhone / iPad:** abre la dirección en **Safari** → botón **Compartir** → **Agregar a pantalla de inicio**.
 - **Android:** abre la dirección en **Chrome** → menú **⋮** → **Instalar app**. Si Chrome ofrece el aviso de instalación, la fila «Instalar en tu celular» del inicio lo abre directamente.
 
-Para instalarla, la app tiene que estar publicada en una dirección **https**. Con GitHub Pages:
+Para instalarla, la app tiene que estar publicada en una dirección **https**. Se publica sola con GitHub Pages:
 
 1. En GitHub abre **Settings → Pages**.
-2. En **Build and deployment** elige **Deploy from a branch**, rama **main**, carpeta **/ (root)** y guarda.
-3. En un par de minutos queda en `https://code-reset.github.io/Lobosabio-alisson/`. Abre esa dirección en el celular e instálala.
+2. En **Build and deployment → Source** elige **GitHub Actions** (una sola vez).
+3. Cada fusión a `main` ejecuta el flujo **Publicar app** (`.github/workflows/publicar.yml`). En un par de minutos queda en `https://code-reset.github.io/Lobosabio-alisson/`. Abre esa dirección en el celular e instálala.
 
-Archivos de la PWA: `manifest.webmanifest` (nombre, colores e íconos), `sw.js` (guarda la app para usarla sin conexión) e `icons/` (ícono de 192 y 512 px, versión adaptable para Android, ícono de Apple de 180 px y favicon). Al publicar una versión nueva, cambia `VERSION` en `sw.js` para que los teléfonos descarguen la actualización.
+Archivos de la PWA: `manifest.webmanifest` (nombre, colores e íconos), `sw.js` (guarda la app para usarla sin conexión) e `icons/` (ícono de 192 y 512 px, versión adaptable para Android, ícono de Apple de 180 px y favicon).
+
+## Actualizaciones
+
+En **Inicio → App** está **Buscar actualizaciones**, con el número de versión. La app también revisa sola cada 30 minutos: cuando hay una versión nueva aparece un aviso en el inicio y un punto rojo en la pestaña Inicio. Al tocar **Actualizar**, la versión nueva se instala en un segundo y **se conserva todo el progreso**.
+
+Para subir una actualización:
+
+1. Haz los cambios en `index.html` (y en `data/` si cambian preguntas).
+2. Sube `APP_VERSION` en `index.html` (por ejemplo, de `1.4.0` a `1.5.0`) y `VERSION` en `sw.js` al mismo número.
+3. Fusiona a `main`. El flujo **Publicar app** compila los estilos, marca la versión con el commit y la publica.
+4. Los celulares con la app instalada ven el aviso «Hay una versión nueva» y la instalan con un toque.
+
+Aunque olvides cambiar el número de versión, el flujo agrega el commit a la versión, así que los celulares siempre detectan la publicación nueva. Para probar la versión publicada en tu computadora: `scripts/preparar_publicacion.sh prueba _site` y sirve la carpeta `_site`.
 
 ## Forma de responder
 
@@ -31,6 +44,17 @@ Por defecto se responde con **opciones A · B · C**: botones grandes que no abr
 
 - Cada pregunta de la guía trae 3 distractores escritos a mano (`distractores`), del mismo tipo que la respuesta (años con años, personajes con personajes). En cada ronda salen 2 al azar, así que las opciones cambian.
 - Para los documentos que subas, los distractores se generan solos a partir de otras respuestas del mismo tipo, y las fechas y números se generan cercanos al correcto.
+
+## Cultura general (pestaña «Cultura»)
+
+110 preguntas extra en 11 categorías: historia universal, geografía del mundo, ciencia y naturaleza, cuerpo humano y salud, arte y música, literatura universal, deportes, México (cultura y tradiciones), lengua y comunicación, inventos y tecnología, y espacio y astronomía. Cada una trae 3 opciones incorrectas escritas a mano y, cuando hace falta, una nota que aclara el dato.
+
+Desde la pestaña puedes jugar una **ronda rápida** (de todas las categorías o de una sola), hacer **práctica guiada** o repasar con **tarjetas**. El avance de cultura general se cuenta aparte, así que no altera tu porcentaje de la guía. Estas categorías también aparecen en los selectores de Modo Concurso y Estudio. El banco está en `data/banco-cultura-general.json`.
+
+## Cronómetro
+
+- **Modo Concurso:** junto al número de pregunta corre el tiempo total de la ronda; al terminar aparece como **Tiempo total**, junto al tiempo promedio por pregunta.
+- **Estudio:** un cronómetro de sesión mide cuánto llevas practicando. Toca el cronómetro para pausarlo o reanudarlo, y ↺ para reiniciarlo. Se pausa solo al salir de Estudio, al abrir la Guía o al cambiar de app.
 
 ## Modos de juego
 

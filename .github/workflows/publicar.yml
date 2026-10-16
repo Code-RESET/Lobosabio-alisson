@@ -24,13 +24,24 @@ jobs:
       url: ${{ steps.despliegue.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
+      - run: npm ci
 
-      - name: Preparar archivos, compilar estilos y marcar la versión
-        run: scripts/preparar_publicacion.sh "${GITHUB_SHA::7}" _site
+      - name: Revisar antes de publicar
+        run: npm run lint && npm test
+
+      # El build lleva el commit: así los celulares detectan cada publicación como versión nueva.
+      - name: Construir con la versión del commit
+        run: LOBITOS_BUILD="${GITHUB_SHA::7}" npm run build
+
+      - name: Preparar la carpeta publicada
+        run: |
+          mkdir _site
+          cp -r index.html sw.js version.json manifest.webmanifest icons assets _site/
+          touch _site/.nojekyll
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

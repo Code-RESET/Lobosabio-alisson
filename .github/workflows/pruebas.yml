@@ -1,0 +1,42 @@
+# Pruebas automáticas: corren en cada push y en cada pull request.
+name: Pruebas
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Análisis estático (ESLint)
+        run: npm run lint
+
+      - name: Construir y comprobar que index.html está al día con src/
+        run: |
+          npm run build
+          git diff --exit-code -- index.html sw.js version.json || {
+            echo "::error::Los archivos generados no coinciden con src/. Ejecuta «npm run build» y sube el resultado."
+            exit 1
+          }
+
+      - name: Pruebas unitarias
+        run: npm test
+
+      - name: Instalar Chromium para las pruebas de punta a punta
+        run: npx playwright install --with-deps chromium
+
+      - name: Pruebas de punta a punta
+        run: npm run test:e2e

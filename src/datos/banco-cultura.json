@@ -1291,7 +1291,8 @@
             "Lápiz",
             "Lápizs"
           ],
-          "puntos": 100
+          "puntos": 100,
+          "exacta": true
         },
         {
           "id": "cg-len-07",

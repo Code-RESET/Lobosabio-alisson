@@ -1,6 +1,6 @@
-// Configuración de Tailwind para compilar el CSS al publicar (la misma que usa index.html con el CDN).
-module.exports = {
-  content: ['./index.html'],
+// Configuración de Tailwind. «npm run build» compila solo las clases que aparecen en src/.
+export default {
+  content: ['./src/**/*.{html,js}'],
   theme: {
     extend: {
       fontFamily: {

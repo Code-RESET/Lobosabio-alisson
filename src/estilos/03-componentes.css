@@ -1,0 +1,44 @@
+/* Superficies y listas agrupadas */
+.panel { background: var(--superficie); border-radius: 14px; box-shadow: var(--sombra); }
+.lista { background: var(--superficie); border-radius: 14px; box-shadow: var(--sombra); overflow: hidden; }
+.fila { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 10px 16px; text-align: left; color: var(--tinta); }
+.fila + .fila::before { content: ""; position: absolute; top: 0; right: 0; left: var(--sangria, 16px); border-top: .5px solid var(--separador); }
+button.fila:active, a.fila:active { background: var(--hundido); }
+.chevron { flex: none; margin-left: auto; color: var(--linea); }
+.icono-cuadro { flex: none; width: 30px; height: 30px; border-radius: 7px; display: grid; place-items: center; color: #fff; }
+.icono-cuadro svg { width: 18px; height: 18px; }
+.campo-fila { margin-left: auto; max-width: 60%; background: transparent; border: 0; color: var(--tenue); font: inherit; text-align: right; text-align-last: right; padding: 4px 0; cursor: pointer; }
+.interruptor { -webkit-appearance: none; appearance: none; flex: none; margin-left: auto; width: 51px; height: 31px; border-radius: 999px; background: var(--relleno); position: relative; cursor: pointer; transition: background .2s; }
+.interruptor::before { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 999px; background: #fff; box-shadow: 0 3px 8px rgba(0, 0, 0, .15), 0 1px 1px rgba(0, 0, 0, .16); transition: transform .2s; }
+.interruptor:checked { background: #34C759; }
+.interruptor:checked::before { transform: translateX(20px); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 48px; padding: .75rem 1.25rem; border-radius: 12px; font-family: var(--f-texto); font-weight: 600; font-size: 1.0625rem; letter-spacing: -.01em; line-height: 1.1; white-space: nowrap; border: 0; cursor: pointer; transition: opacity .15s, transform .08s; }
+.btn:active { opacity: .7; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn-guinda, .btn-oro { background: var(--guinda); color: var(--sobre-guinda); }
+.btn-linea { background: var(--relleno); color: var(--guinda); }
+.btn-sm { min-height: 34px; padding: .4rem .9rem; font-size: .9375rem; border-radius: 999px; }
+.campo { width: 100%; background: var(--relleno); color: var(--tinta); border: 0; border-radius: 10px; padding: .75rem .9rem; font-size: 1.0625rem; font-family: inherit; }
+.campo::placeholder { color: var(--tenue); }
+.campo:focus { outline: none; box-shadow: 0 0 0 3px var(--guinda-suave), inset 0 0 0 1px var(--guinda); }
+.chip { display: inline-flex; align-items: center; gap: .3rem; font-size: .75rem; font-weight: 600; padding: .15rem .5rem; border-radius: 6px; background: var(--relleno); color: var(--tenue); }
+.chip-cod { background: var(--guinda-suave); color: var(--guinda); }
+.chip-ok { background: var(--exito-fondo); color: var(--exito); }
+.chip-mal { background: var(--error-fondo); color: var(--error); }
+.chip-oro { background: var(--oro-fondo); color: var(--oro); }
+.barra { height: 6px; border-radius: 99px; background: var(--relleno); overflow: hidden; }
+.barra > span { display: block; height: 100%; border-radius: 99px; background: var(--guinda); transition: width .5s ease; }
+.tarjeta-opcion { text-align: left; transition: transform .12s; }
+.tarjeta-opcion:active { transform: scale(.98); }
+.aviso { border-radius: 12px; padding: .8rem 1rem; background: var(--relleno); }
+.aviso-ok { background: var(--exito-fondo); }
+.aviso-mal { background: var(--error-fondo); }
+.aviso-casi { background: var(--oro-fondo); }
+
+/* Paginación */
+.paginacion { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding-top: 4px; }
+[data-lista-ancla] { scroll-margin-top: calc(72px + env(safe-area-inset-top, 0px)); }
+
+/* Aviso de error (registro de errores) */
+.toast-error { position: fixed; z-index: 70; left: 50%; transform: translateX(-50%); top: calc(64px + env(safe-area-inset-top, 0px)); width: min(92vw, 30rem); padding: .7rem 1rem; border-radius: 12px; background: var(--error); color: #fff; font-size: .9375rem; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, .5); }

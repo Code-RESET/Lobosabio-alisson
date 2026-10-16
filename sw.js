@@ -1,7 +1,8 @@
+// ARCHIVO GENERADO por «npm run build» a partir de src/sw.js. No lo edites a mano.
 // Service worker de Lobitos: guarda la app para que funcione sin conexión.
-// Al publicar una versión nueva, cambia VERSION (el flujo de GitHub Pages le agrega el commit automáticamente).
+// Plantilla: «npm run build» genera /sw.js reemplazando 1.5.0-local por la versión de package.json y el build.
 // La app detecta la versión nueva y muestra «Actualizar ahora»; al tocarlo se activa sin perder el progreso.
-const VERSION = 'lobitos-1.4.0';
+const VERSION = 'lobitos-__VERSION__';
 const APP = [
   './',
   './index.html',
@@ -13,14 +14,12 @@ const APP = [
   './icons/favicon-32.png',
   './icons/icono.svg'
 ];
-// Bibliotecas externas: Tailwind siempre; pdf.js y mammoth se guardan la primera vez que se usan.
-const CDN = ['https://cdn.tailwindcss.com/3.4.17'];
+// Bibliotecas externas (pdf.js y mammoth) se guardan la primera vez que se usan; los estilos ya vienen compilados.
 
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
     const c = await caches.open(VERSION);
     await c.addAll(APP);
-    await Promise.all(CDN.map(u => fetch(u, { mode: 'no-cors' }).then(r => c.put(u, r)).catch(() => {})));
     // La primera instalación se activa sola; las actualizaciones esperan a que el usuario toque «Actualizar ahora».
     if (!self.registration.active) await self.skipWaiting();
   })());
@@ -39,6 +38,8 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
+  // version.json siempre va a la red: es como la app sabe si hay una versión nueva.
+  if (url.origin === location.origin && url.pathname.endsWith('/version.json')) return;
   // Páginas: primero la red (para recibir actualizaciones); sin conexión, la copia guardada.
   if (req.mode === 'navigate') {
     e.respondWith((async () => {
@@ -46,7 +47,7 @@ self.addEventListener('fetch', e => {
         const r = await fetch(req);
         const c = await caches.open(VERSION); c.put('./index.html', r.clone());
         return r;
-      } catch (err) {
+      } catch {
         return (await caches.match('./index.html')) || (await caches.match('./'));
       }
     })());
@@ -54,7 +55,7 @@ self.addEventListener('fetch', e => {
   }
   // Archivos propios y bibliotecas: la copia guardada al instante y se actualiza en segundo plano.
   const propio = url.origin === location.origin;
-  const cdn = /(^|\.)(cdn\.tailwindcss\.com|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net)$/.test(url.hostname);
+  const cdn = /(^|\.)(cdn\.jsdelivr\.net|cdnjs\.cloudflare\.com)$/.test(url.hostname);
   if (!propio && !cdn) return;
   e.respondWith((async () => {
     const c = await caches.open(VERSION);

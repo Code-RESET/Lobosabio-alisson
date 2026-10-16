@@ -1,0 +1,60 @@
+/* Layout: app al estilo iOS. Encabezado translúcido con la marca; en pantallas anchas la navegación es un
+   control segmentado en el encabezado y en el celular una barra de pestañas fija abajo. El contenido son
+   tarjetas y listas agrupadas sobre fondo gris agrupado (claro) o negro (oscuro). */
+:root {
+  --papel: #F2F2F7;        /* fondo agrupado */
+  --superficie: #FFFFFF;
+  --hundido: #E5E5EA;
+  --relleno: rgba(118, 118, 128, .12);
+  --seg-activo: #FFFFFF;
+  --tinta: #1C1C1E;
+  --tenue: #6C6C70;
+  --linea: #C7C7CC;
+  --separador: rgba(60, 60, 67, .2);
+  --guinda: #9B1C3C;       /* color de acento */
+  --guinda-suave: #F7E7EB;
+  --oro: #A2741A;
+  --exito: #248A3D;  --exito-fondo: #E4F5E8;
+  --error: #D70015;  --error-fondo: #FDE7E9;
+  --oro-fondo: #FBF0DA;
+  --sobre-guinda: #FFFFFF;
+  --material: rgba(249, 249, 251, .8);
+  --sombra: 0 1px 2px rgba(0, 0, 0, .04), 0 4px 16px -8px rgba(0, 0, 0, .12);
+  --f-texto: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papel: #000000; --superficie: #1C1C1E; --hundido: #2C2C2E; --relleno: rgba(118, 118, 128, .24); --seg-activo: #636366;
+    --tinta: #FFFFFF; --tenue: #98989F; --linea: #48484A; --separador: rgba(84, 84, 88, .65);
+    --guinda: #F0577C; --guinda-suave: #3A1620; --oro: #E5B24E;
+    --exito: #30D158; --exito-fondo: #10301A; --error: #FF453A; --error-fondo: #3B1513; --oro-fondo: #362A10;
+    --material: rgba(22, 22, 24, .78); --sombra: none;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --papel: #000000; --superficie: #1C1C1E; --hundido: #2C2C2E; --relleno: rgba(118, 118, 128, .24); --seg-activo: #636366;
+  --tinta: #FFFFFF; --tenue: #98989F; --linea: #48484A; --separador: rgba(84, 84, 88, .65);
+  --guinda: #F0577C; --guinda-suave: #3A1620; --oro: #E5B24E;
+  --exito: #30D158; --exito-fondo: #10301A; --error: #FF453A; --error-fondo: #3B1513; --oro-fondo: #362A10;
+  --material: rgba(22, 22, 24, .78); --sombra: none;
+  color-scheme: dark;
+}
+
+html, body { min-height: 100%; }
+body { background: var(--papel); color: var(--tinta); font-family: var(--f-texto); font-size: 17px; line-height: 1.4; letter-spacing: -.01em; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--material); }
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+body h1, body h2, body h3 { font-family: var(--f-display); font-weight: 700; letter-spacing: -.022em; line-height: 1.12; text-wrap: balance; }
+.font-extrabold { font-weight: 700; }
+.num { font-variant-numeric: tabular-nums; }
+.eyebrow { font-size: .8125rem; font-weight: 500; text-transform: uppercase; letter-spacing: .02em; color: var(--tenue); }
+.tenue { color: var(--tenue); }
+:focus-visible { outline: 3px solid var(--guinda); outline-offset: 2px; border-radius: 10px; }
+.app { padding-bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 768px) { .app { padding-bottom: 0; } }
+@media (display-mode: standalone) { .encabezado { top: 0; padding-top: env(safe-area-inset-top, 0px); } body::before { display: none; } }
+.pasos { counter-reset: paso; display: flex; flex-direction: column; gap: .55rem; }
+.pasos li { counter-increment: paso; display: flex; gap: .65rem; align-items: flex-start; }
+.pasos li::before { content: counter(paso); flex: none; width: 22px; height: 22px; border-radius: 999px; display: grid; place-items: center; font-size: .75rem; font-weight: 600; background: var(--guinda); color: #fff; margin-top: 1px; }

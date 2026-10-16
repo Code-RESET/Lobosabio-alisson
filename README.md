@@ -4,7 +4,7 @@ Desarrollado por el **Ing. Luis Angel Díaz Bernal**.
 
 Aplicación web de estudio para preparar el concurso **LoboSabio**: preguntas de opción múltiple contra reloj y práctica guiada hasta dominar las 70 preguntas de la guía, más **110 preguntas de cultura general** para entrenar.
 
-Todo vive en un solo archivo: **`index.html`** (HTML5 + Tailwind CSS + JavaScript sin frameworks). Al editar usa Tailwind por CDN; al publicar, el CSS se compila e incrusta para que la app instalada no dependa de internet. Ábrelo en el navegador y ya funciona. Arranca en **modo oscuro**; el botón del encabezado cambia a modo claro y la elección se recuerda.
+La app que se publica es un solo archivo, **`index.html`** (HTML5 + Tailwind CSS + JavaScript sin frameworks), que se **genera** a partir del código organizado por módulos en `src/` (ver [Estructura del proyecto](#estructura-del-proyecto)). Ábrelo en el navegador y ya funciona, incluso sin internet. Arranca en **modo oscuro**; el botón del encabezado cambia a modo claro y la elección se recuerda.
 
 **Tamaños de pantalla:** probada en celulares de 320×568 a 430×932. En pantallas bajas la interfaz se compacta y el resultado se muestra en una sola línea, de modo que la pregunta y las tres opciones siempre quedan a la vista.
 
@@ -23,7 +23,7 @@ Para instalarla, la app tiene que estar publicada en una dirección **https**. S
 2. En **Build and deployment → Source** elige **GitHub Actions** (una sola vez).
 3. Cada fusión a `main` ejecuta el flujo **Publicar app** (`.github/workflows/publicar.yml`). En un par de minutos queda en `https://code-reset.github.io/Lobosabio-alisson/`. Abre esa dirección en el celular e instálala.
 
-Archivos de la PWA: `manifest.webmanifest` (nombre, colores e íconos), `sw.js` (guarda la app para usarla sin conexión) e `icons/` (ícono de 192 y 512 px, versión adaptable para Android, ícono de Apple de 180 px y favicon).
+Archivos de la PWA: `manifest.webmanifest` (nombre, colores e íconos), `sw.js` (guarda la app para usarla sin conexión; se genera desde `src/sw.js`), `version.json` (versión publicada) e `icons/` (ícono de 192 y 512 px, versión adaptable para Android, ícono de Apple de 180 px y favicon).
 
 ## Actualizaciones
 
@@ -31,12 +31,13 @@ En **Inicio → App** está **Buscar actualizaciones**, con el número de versi�
 
 Para subir una actualización:
 
-1. Haz los cambios en `index.html` (y en `data/` si cambian preguntas).
-2. Sube `APP_VERSION` en `index.html` (por ejemplo, de `1.4.0` a `1.5.0`) y `VERSION` en `sw.js` al mismo número.
-3. Fusiona a `main`. El flujo **Publicar app** compila los estilos, marca la versión con el commit y la publica.
-4. Los celulares con la app instalada ven el aviso «Hay una versión nueva» y la instalan con un toque.
+1. Haz los cambios en `src/` (preguntas en `src/datos/`).
+2. Sube el número de `"version"` en `package.json` (por ejemplo, de `1.5.0` a `1.6.0`). Es la única fuente de la versión: la usan la app, el service worker y `version.json`.
+3. Ejecuta `npm run verificar` (análisis, construcción y pruebas) y sube los cambios junto con el `index.html` generado.
+4. Fusiona a `main`. El flujo **Pruebas** revisa todo y **Publicar app** construye con el commit y lo publica.
+5. Los celulares con la app instalada ven el aviso «Hay una versión nueva» y la instalan con un toque.
 
-Aunque olvides cambiar el número de versión, el flujo agrega el commit a la versión, así que los celulares siempre detectan la publicación nueva. Para probar la versión publicada en tu computadora: `scripts/preparar_publicacion.sh prueba _site` y sirve la carpeta `_site`.
+Aunque olvides subir el número de versión, la publicación agrega el commit al build, así que los celulares siempre detectan la versión nueva.
 
 ## Forma de responder
 
@@ -49,7 +50,7 @@ Por defecto se responde con **opciones A · B · C**: botones grandes que no abr
 
 110 preguntas extra en 11 categorías: historia universal, geografía del mundo, ciencia y naturaleza, cuerpo humano y salud, arte y música, literatura universal, deportes, México (cultura y tradiciones), lengua y comunicación, inventos y tecnología, y espacio y astronomía. Cada una trae 3 opciones incorrectas escritas a mano y, cuando hace falta, una nota que aclara el dato.
 
-Desde la pestaña puedes jugar una **ronda rápida** (de todas las categorías o de una sola), hacer **práctica guiada** o repasar con **tarjetas**. El avance de cultura general se cuenta aparte, así que no altera tu porcentaje de la guía. Estas categorías también aparecen en los selectores de Modo Concurso y Estudio. El banco está en `data/banco-cultura-general.json`.
+Desde la pestaña puedes jugar una **ronda rápida** (de todas las categorías o de una sola), hacer **práctica guiada** o repasar con **tarjetas**. El avance de cultura general se cuenta aparte, así que no altera tu porcentaje de la guía. Estas categorías también aparecen en los selectores de Modo Concurso y Estudio. El banco está en `src/datos/banco-cultura.json`.
 
 ## Cronómetro
 
@@ -65,7 +66,7 @@ Desde la pestaña puedes jugar una **ronda rápida** (de todas las categorías o
 
 Una pregunta queda **dominada** cuando la contestas bien dos veces seguidas. La pantalla de inicio muestra el porcentaje dominado por categoría y te sugiere la más débil. En el concurso y la práctica salen primero las preguntas nuevas o falladas.
 
-Si el calificador rechaza un sinónimo válido, el botón **«Mi respuesta era correcta»** corrige el resultado. La comparación ignora acentos, mayúsculas y artículos, acepta errores de dedo pequeños y convierte números escritos («cinco» → 5).
+Si el calificador rechaza un sinónimo válido, el botón **«Mi respuesta era correcta»** corrige el resultado. La comparación ignora acentos, mayúsculas y artículos, acepta errores de dedo pequeños y convierte números escritos («cinco» → 5). Tolera respuestas incompletas en nombres («Miguel Hidalgo»), pero no acepta palabras cambiadas («Universal Service Bus»), números distintos («1/2» por «1») ni listas incompletas («Rojo y blanco»).
 
 ## Documentos
 
@@ -79,13 +80,13 @@ P: ¿Pregunta?  R: Respuesta   ← formato alterno
 Fotosíntesis: proceso por…    ← definición; se convierte en pregunta
 ```
 
-También asigna puntos y extrae un índice de conceptos. Antes de agregar el documento puedes revisar la vista previa y quitar preguntas. Si subes el PDF original de la guía, salen sus 7 categorías y 70 preguntas.
+También asigna puntos y extrae un índice de conceptos. Antes de agregar el documento puedes revisar la vista previa (paginada, 15 preguntas por página) y quitar preguntas. Si subes el PDF original de la guía, salen sus 7 categorías y 70 preguntas.
 
-El progreso, los documentos subidos y los récords se guardan en el `localStorage` de cada navegador.
+El progreso, los documentos subidos y los récords se guardan en el `localStorage` de cada navegador. En **Documentos → Diagnóstico** se ven la versión instalada y los últimos errores que haya registrado la app (se pueden copiar para reportarlos).
 
 ## Estructura de datos
 
-El banco base está dentro de `index.html` (`<script type="application/json" id="banco-base">`) y también en [`data/banco-lobosabio.json`](data/banco-lobosabio.json):
+Los bancos están en [`src/datos/banco-guia.json`](src/datos/banco-guia.json) (70 preguntas de la guía) y [`src/datos/banco-cultura.json`](src/datos/banco-cultura.json) (110 de cultura general):
 
 ```jsonc
 {
@@ -100,7 +101,8 @@ El banco base está dentro de `index.html` (`<script type="application/json" id=
       "alias": ["mil ochocientos diez"], // otras formas aceptadas al escribir
       "distractores": ["1821", "1910", "1800"], // opciones incorrectas A·B·C
       "puntos": 100,                   // relevancia 20–100: puntos base en el concurso
-      "nota": "..."                    // opcional: aclaración que se muestra al revisar
+      "nota": "...",                   // opcional: aclaración que se muestra al revisar
+      "exacta": true                   // opcional: sin tolerancia a errores de dedo (preguntas de ortografía)
     }]
   }]
 }
@@ -113,3 +115,50 @@ Algunas preguntas tienen una **nota**. La respuesta oficial de la guía se respe
 ## Marca
 
 `assets/logo-lobitos.svg`: escudo guinda con marco dorado, un lobo de facetas con una red de nodos en la frente, un destello y una barra de respuestas 100 / 80 / 60, al estilo de un tablero de trivia. Es animado: los nodos laten y, al pasar el cursor, la red se dibuja y los ojos brillan. Dentro de la app, el logo también responde al clic.
+
+## Estructura del proyecto
+
+```
+src/                      ← código fuente (aquí se edita)
+  index.html              plantilla de la página
+  sw.js                   plantilla del service worker
+  datos/                  bancos de preguntas (JSON)
+  estilos/                CSS por secciones: tokens, navegación, componentes, pregunta, opciones…
+  js/
+    main.js               arranque: registra páginas, eventos, PWA y pinta la vista inicial
+    config.js             versión y build (los inyecta la construcción)
+    estado.js · util.js   estado de la app y utilidades
+    banco.js              bancos activos, grupos (guía / cultura), progreso y dominio
+    calificar.js          calificador de respuestas escritas
+    opciones.js           opciones A·B·C y distractores
+    paginacion.js         paginación de listas largas
+    reloj.js              temporizador por pregunta y cronómetros
+    ui.js · iconos.js     navegación, pintado y piezas comunes
+    eventos.js            delegación de eventos; junta las acciones de cada página
+    errores.js            registro de errores (Documentos → Diagnóstico)
+    sonido.js · logo.js
+    vistas/               una página por pestaña: inicio, concurso, estudio, cultura, documentos
+    documentos/           lector de PDF/DOCX y parser de guías
+    pwa/                  instalación y actualizaciones
+scripts/construir.mjs     genera index.html, sw.js y version.json
+tests/unit/               pruebas unitarias (Node)
+tests/e2e/                pruebas de punta a punta (Chromium con Playwright)
+index.html · sw.js · version.json   ← GENERADOS por «npm run build»; no se editan a mano
+```
+
+Cada página exporta su función de pintado y sus **acciones** (`data-accion="…"` en los botones). `eventos.js` las junta y avisa si dos páginas usan el mismo nombre. Para agregar una pestaña: crea `src/js/vistas/nueva.js` con `renderNueva` y `accionesNueva`, regístrala en `main.js` y `eventos.js`, y agrégala a `VISTAS` en `ui.js`.
+
+## Desarrollo y pruebas
+
+Requisitos: Node 20 o superior.
+
+```bash
+npm install            # una vez
+npm run dev            # reconstruye index.html cada vez que guardas algo en src/
+npm run lint           # análisis estático (ESLint)
+npm test               # pruebas unitarias
+npm run test:e2e       # pruebas de punta a punta (instala Chromium antes: npx playwright install chromium)
+npm run verificar      # todo lo anterior, en orden; córrelo antes de subir cambios
+```
+
+En GitHub, el flujo **Pruebas** corre todo esto en cada cambio y avisa si `index.html` no se regeneró después de editar `src/`. El informe de la última revisión está en [`docs/INFORME_ENTREGA.md`](docs/INFORME_ENTREGA.md).

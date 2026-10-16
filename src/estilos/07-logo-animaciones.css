@@ -1,0 +1,25 @@
+/* Logo interactivo */
+.logo { display: block; flex: none; overflow: visible; }
+.logo .nodo { transform-box: fill-box; transform-origin: center; }
+.logo .chispa { transform-box: fill-box; transform-origin: center; }
+.logo-vivo .nodo { animation: pulso 2.6s ease-in-out infinite; }
+.logo-vivo .nodo:nth-of-type(2) { animation-delay: .3s; } .logo-vivo .nodo:nth-of-type(3) { animation-delay: .6s; }
+.logo-vivo .nodo:nth-of-type(4) { animation-delay: .9s; } .logo-vivo .nodo:nth-of-type(5) { animation-delay: 1.2s; }
+.logo-vivo .nodo:nth-of-type(6) { animation-delay: 1.5s; }
+.logo-vivo .chispa { animation: destello 3.4s ease-in-out infinite; }
+.logo-vivo .red path { stroke-dasharray: 40; stroke-dashoffset: 0; }
+.logo-vivo:hover .red path, .logo-vivo.activo .red path { animation: trazo 1.2s ease forwards; }
+.logo-vivo:hover .ojo, .logo-vivo.activo .ojo { filter: drop-shadow(0 0 5px #F6DC8E); }
+.logo-vivo.activo .chispa { animation: estallido .7s ease; }
+.logo-vivo { cursor: pointer; }
+@keyframes pulso { 0%, 100% { transform: scale(1); opacity: .85; } 50% { transform: scale(1.5); opacity: 1; } }
+@keyframes destello { 0%, 100% { transform: scale(.85) rotate(0); opacity: .8; } 50% { transform: scale(1.12) rotate(45deg); opacity: 1; } }
+@keyframes estallido { 0% { transform: scale(1); } 50% { transform: scale(1.9) rotate(90deg); } 100% { transform: scale(1); } }
+@keyframes trazo { from { stroke-dashoffset: 40; } to { stroke-dashoffset: 0; } }
+
+@keyframes entrar { from { transform: translateY(6px); } to { transform: none; } }
+[data-vista-sec].nueva > * { animation: entrar .3s ease both; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }

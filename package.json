@@ -1,0 +1,29 @@
+{
+  "name": "lobitos-trivia",
+  "version": "1.5.0",
+  "private": true,
+  "description": "Lobitos Trivia: app de estudio para la guía LoboSabio. Desarrollada por el Ing. Luis Angel Díaz Bernal.",
+  "author": "Ing. Luis Angel Díaz Bernal",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/construir.mjs",
+    "dev": "node scripts/construir.mjs --vigilar",
+    "lint": "eslint .",
+    "test": "node --test \"tests/unit/*.test.mjs\"",
+    "test:e2e": "node --test --test-concurrency=1 \"tests/e2e/*.test.mjs\"",
+    "verificar": "npm run lint && npm run build && npm test && npm run test:e2e"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "esbuild": "0.25.12",
+    "eslint": "9.39.5",
+    "globals": "15.11.0",
+    "mammoth": "1.12.3",
+    "pdfjs-dist": "4.10.38",
+    "playwright": "1.56.1",
+    "tailwindcss": "3.4.17"
+  }
+}

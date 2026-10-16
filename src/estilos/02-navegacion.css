@@ -1,0 +1,23 @@
+/* Encabezado y navegación */
+.encabezado { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--material); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: .5px solid var(--separador); }
+.marca { white-space: nowrap; font-family: var(--f-display); font-weight: 700; font-size: 1.25rem; letter-spacing: -.02em; line-height: 1; }
+.marca b { color: var(--guinda); font-weight: 700; }
+.nav-seg { display: inline-flex; padding: 2px; border-radius: 9px; background: var(--relleno); }
+.nav-btn { font-size: .875rem; font-weight: 500; padding: .38rem 1rem; border-radius: 7px; color: var(--tinta); white-space: nowrap; transition: background .2s; }
+.nav-btn[aria-current="page"] { background: var(--seg-activo); font-weight: 600; box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 0 0 .5px rgba(0, 0, 0, .04); }
+.icono-btn { width: 36px; height: 36px; border-radius: 999px; display: grid; place-items: center; background: var(--relleno); color: var(--guinda); flex: none; }
+.icono-btn svg { width: 20px; height: 20px; }
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--material); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-top: .5px solid var(--separador); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 768px) { .tabbar { display: none; } }
+.tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 5px; font-size: 10px; font-weight: 500; letter-spacing: .01em; color: var(--tenue); }
+.tab svg { width: 26px; height: 26px; }
+.tab[aria-current="page"] { color: var(--guinda); }
+.tab > .relative { position: relative; display: inline-flex; }
+.punto-act { position: absolute; top: -1px; right: -4px; width: 9px; height: 9px; border-radius: 99px; background: #FF3B30; box-shadow: 0 0 0 2px var(--papel); }
+.crono-chip { flex: none; display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 10px; border-radius: 999px; background: var(--relleno); color: var(--guinda); font-size: .9375rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.crono-chip svg { width: 17px; height: 17px; }
+.crono-chip.pausado { color: var(--tenue); }
+.crono-chip.pausado .num::after { content: " ‖"; }
+.tab span:last-child { white-space: nowrap; }
+.nav-scroll { overflow-x: auto; scrollbar-width: none; }
+.nav-scroll::-webkit-scrollbar { display: none; }

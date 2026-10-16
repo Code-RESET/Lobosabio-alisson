@@ -1,0 +1,18 @@
+/* Tarjetas de estudio */
+.flash { perspective: 1200px; }
+.flash-int { position: relative; min-height: 15rem; transition: transform .5s ease; transform-style: preserve-3d; }
+.flash.girada .flash-int { transform: rotateY(180deg); }
+.flash-cara { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 1.5rem; border-radius: 20px; }
+.flash-frente { background: var(--superficie); box-shadow: var(--sombra); }
+.flash-reverso { transform: rotateY(180deg); background: var(--guinda); color: #fff; }
+.flash-reverso .eyebrow { color: rgba(255, 255, 255, .75); }
+
+/* Zona de carga */
+.soltar { border: 2px dashed var(--linea); border-radius: 14px; background: var(--superficie); transition: border-color .15s, background .15s; }
+.soltar.encima { border-color: var(--guinda); background: var(--guinda-suave); }
+
+/* Anillo de dominio */
+.anillo-fondo { stroke: var(--relleno); }
+.anillo-valor { stroke: var(--guinda); transition: stroke-dashoffset .8s ease; }
+.anillo-texto { fill: var(--tinta); font-family: var(--f-display); font-weight: 700; }
+.anillo-sub { fill: var(--tenue); font-family: var(--f-texto); font-weight: 500; letter-spacing: .06em; }

@@ -3,11 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Loboitos Trivia</title>
+<title>Lobitos Trivia</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lobitos">
+<meta name="application-name" content="Lobitos">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icons/icono.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="description" content="Trivia de opción múltiple para dominar la guía LoboSabio. Creada por el Ing. Luis Angel Díaz Bernal.">
 <meta name="author" content="Ing. Luis Angel Díaz Bernal">
@@ -86,6 +93,10 @@
   :focus-visible { outline: 3px solid var(--guinda); outline-offset: 2px; border-radius: 10px; }
   .app { padding-bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }
   @media (min-width: 768px) { .app { padding-bottom: 0; } }
+  @media (display-mode: standalone) { .encabezado { top: 0; padding-top: env(safe-area-inset-top, 0px); } body::before { display: none; } }
+  .pasos { counter-reset: paso; display: flex; flex-direction: column; gap: .55rem; }
+  .pasos li { counter-increment: paso; display: flex; gap: .65rem; align-items: flex-start; }
+  .pasos li::before { content: counter(paso); flex: none; width: 22px; height: 22px; border-radius: 999px; display: grid; place-items: center; font-size: .75rem; font-weight: 600; background: var(--guinda); color: #fff; margin-top: 1px; }
 
   /* Encabezado y navegación */
   .encabezado { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--material); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: .5px solid var(--separador); }
@@ -158,10 +169,51 @@
   @keyframes xgolpe { 0% { transform: scale(.4); opacity: 0; } 20% { transform: scale(1); opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; transform: scale(.94); } }
 
   /* Barra de resultado fija: el resultado aparece abajo sin mover la pregunta ni las opciones */
-  .accion-fija { position: fixed; left: 0; right: 0; z-index: 45; bottom: calc(57px + env(safe-area-inset-bottom, 0px)); background: var(--material); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-top: .5px solid var(--separador); padding-top: 10px; padding-bottom: 10px; animation: subir .22s ease-out; }
-  @media (min-width: 768px) { .accion-fija { bottom: 0; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); } }
-  .accion-fija .aviso { max-height: 32vh; overflow-y: auto; padding: .6rem .85rem; font-size: .9375rem; }
-  .espacio-accion { height: 190px; }
+  .accion-fija { position: fixed; left: 0; right: 0; z-index: 55; bottom: 0; background: var(--material); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-top: .5px solid var(--separador); padding-top: 10px; padding-bottom: 10px; animation: subir .22s ease-out; }
+  .accion-fija { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+  body.con-accion .tabbar { visibility: hidden; }
+  body.con-accion .app { padding-bottom: 0; }
+  .accion-fija .aviso { max-height: 26vh; overflow-y: auto; padding: .6rem .85rem; font-size: .9375rem; line-height: 1.35; }
+  .espacio-accion { height: 180px; }
+
+  /* Celulares con poca altura (o con la barra del navegador visible): todo más compacto */
+  @media (max-width: 767px) and (max-height: 780px) {
+    .principal { padding-top: 10px; padding-bottom: 12px; }
+    .encabezado .logo { width: 32px; height: 32px; }
+    .encabezado .marca { font-size: 1.1rem; }
+    .icono-btn { width: 32px; height: 32px; }
+    .tab { padding: 5px 0 3px; }
+    .tab svg { width: 23px; height: 23px; }
+    .app { padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px)); }
+    .escena { padding: 14px 16px; border-radius: 16px; }
+    .escena-pregunta { font-size: clamp(1.1rem, 2.4vh + .45rem, 1.55rem); }
+    .opciones { gap: 8px; }
+    .opcion { min-height: 46px; padding: .5rem .8rem; font-size: 1rem; border-radius: 12px; }
+    .opcion-letra { width: 26px; height: 26px; font-size: .85rem; }
+    .quiz-titulo { display: none; }
+    #est-cat { flex: 1; max-width: none; }
+    .accion-fija .btn { min-height: 44px; }
+    .accion-fija .aviso { max-height: 20vh; font-size: .875rem; }
+    .espacio-accion { height: 150px; }
+  }
+  @media (max-width: 767px) and (max-height: 700px) {
+    .accion-fija { padding-top: 8px; }
+    .accion-fija > div { gap: 6px; }
+    .accion-fija .aviso { padding: .45rem .75rem; }
+    .accion-fija .btn { min-height: 42px; padding-block: .55rem; }
+    .accion-fija .nota-fb { display: none; }
+    .accion-fija > div { flex-direction: row; align-items: center; }
+    .accion-fija .aviso { flex: 1; min-width: 0; max-height: 4.2em; overflow: hidden; }
+    .accion-fija > div > div:last-child { flex: none; }
+    .accion-fija .btn { flex: none; padding-inline: 1.1rem; }
+    .opcion { min-height: 44px; }
+    .escena { padding: 12px 14px; }
+  }
+  @media (max-width: 767px) and (max-height: 640px) {
+    .solo-alto { display: none !important; }
+    .accion-fija .aviso .tenue, .accion-fija .nota-fb { display: none; }
+    .fila-chips { display: none !important; }
+  }
   @keyframes subir { from { transform: translateY(100%); } to { transform: none; } }
   .pts-mini { font-size: 1.25rem; font-weight: 700; color: var(--guinda); font-variant-numeric: tabular-nums; line-height: 1; }
   .strike-mini { width: 20px; height: 20px; font-size: .65rem; }
@@ -236,7 +288,7 @@
     <div class="gutter max-w-6xl mx-auto flex items-center gap-3 py-2">
       <button type="button" class="flex items-center gap-2 min-w-0" data-accion="ir" data-vista="inicio" aria-label="Ir al inicio">
         <span id="logo-mini"></span>
-        <span class="marca">Lobo<b>itos</b></span>
+        <span class="marca">Lob<b>itos</b></span>
       </button>
       <nav class="hidden md:inline-flex nav-seg mx-auto" aria-label="Secciones" id="nav-escritorio"></nav>
       <div class="flex items-center gap-2 ml-auto md:ml-0">
@@ -246,7 +298,7 @@
     </div>
   </header>
 
-  <main class="gutter max-w-6xl mx-auto w-full flex-1 py-6 md:py-8">
+  <main class="principal gutter max-w-6xl mx-auto w-full flex-1 py-6 md:py-8">
     <section id="v-inicio" data-vista-sec="inicio"></section>
     <section id="v-concurso" data-vista-sec="concurso" hidden></section>
     <section id="v-estudio" data-vista-sec="estudio" hidden></section>
@@ -255,7 +307,7 @@
 
   <footer class="gutter w-full py-6 text-center text-sm tenue">
     <p>Desarrollado por <strong style="color:var(--tinta)">Ing. Luis Angel Díaz Bernal</strong></p>
-    <p class="text-xs mt-1">Loboitos · © 2026</p>
+    <p class="text-xs mt-1">Lobitos · © 2026</p>
   </footer>
 
   <nav class="tabbar" aria-label="Secciones" id="nav-movil"></nav>
@@ -589,7 +641,7 @@ function sonar(tipo) {
 let logoN = 0;
 function logoSVG(size = 44, vivo = true) {
   const k = 'lq' + (logoN++);
-  return `<svg class="logo ${vivo ? 'logo-vivo' : ''}" width="${size}" height="${size}" viewBox="0 0 240 240" role="img" aria-label="Logotipo Loboitos: lobo con red neuronal" data-logo>
+  return `<svg class="logo ${vivo ? 'logo-vivo' : ''}" width="${size}" height="${size}" viewBox="0 0 240 240" role="img" aria-label="Logotipo Lobitos: lobo con red neuronal" data-logo>
   <defs>
     <linearGradient id="${k}e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#94243F"/><stop offset="1" stop-color="#4A0E1E"/></linearGradient>
     <linearGradient id="${k}o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6DE95"/><stop offset=".55" stop-color="#C8A04A"/><stop offset="1" stop-color="#8F6B22"/></linearGradient>
@@ -637,7 +689,9 @@ const ICONOS = {
   silencio: '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/>',
   luna: '<path d="M20.5 13.5A8.5 8.5 0 1 1 10.5 3.5a6.5 6.5 0 0 0 10 10z"/>',
   sol: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
-  chevron: '<path d="m9 6 6 6-6 6"/>'
+  chevron: '<path d="m9 6 6 6-6 6"/>',
+  instalar: '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>',
+  compartir: '<path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/>'
 };
 const icono = (n, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n]}</svg>`;
 const chevron = () => `<svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS.chevron}</svg>`;
@@ -659,16 +713,18 @@ function ir(vista) {
   render();
   window.scrollTo({ top: 0 });
 }
-let vistaPintada = null;
+let vistaPintada = null, pantallaPintada = null;
+const clavePantalla = () => S.vista + ':' + (S.vista === 'concurso' ? (!S.concurso ? 'config' : S.concurso.fase === 'fin' ? 'fin' : 'quiz') : S.vista === 'estudio' ? S.estudio.tab : '');
 function render() {
-  const y = window.scrollY, misma = vistaPintada === S.vista;
+  const y = window.scrollY, misma = vistaPintada === S.vista, mismaPantalla = pantallaPintada === clavePantalla();
   $$('[data-vista-sec]').forEach(s => { s.hidden = s.dataset.vistaSec !== S.vista; });
   pintarNav();
   ({ inicio: renderInicio, concurso: renderConcurso, estudio: renderEstudio, documentos: renderDocumentos })[S.vista]();
   const sec = $('#v-' + S.vista);
-  if (misma) window.scrollTo(0, y);
+  document.body.classList.toggle('con-accion', !!sec.querySelector('.accion-fija'));
+  if (misma) window.scrollTo(0, mismaPantalla ? y : 0);
   else { sec.classList.add('nueva'); setTimeout(() => sec.classList.remove('nueva'), 400); }
-  vistaPintada = S.vista;
+  vistaPintada = S.vista; pantallaPintada = clavePantalla();
 }
 // Al pasar a otra pregunta, si el usuario bajó, vuelve a mostrar la pregunta completa.
 function mostrarPregunta(sel) {
@@ -749,6 +805,7 @@ function renderInicio() {
           ${modo('estudio', '#007AFF', 'estudio', 'Modo Estudio', 'Práctica, tarjetas y repaso de errores')}
           ${modo('documentos', '#8E8E93', 'documentos', 'Documentos', 'Sube tu propia guía en PDF, DOCX o TXT')}
         </div>
+        ${instalacionHTML()}
         ${debil && debil.d.pct < 100 ? `<p class="text-[.8125rem] tenue px-4">Te conviene empezar por <button type="button" class="font-semibold" style="color:var(--guinda)" data-accion="estudiar-cat" data-cat="${esc(debil.c.id)}">${esc(debil.c.nombre)}</button> (${debil.d.pct}&nbsp;% dominado).</p>` : ''}
       </section>
     </div>
@@ -795,7 +852,7 @@ function renderConcurso() {
       <div class="text-right shrink-0"><div class="pts-mini">${C.puntos}</div><div class="text-[.7rem] tenue">pts${mult > 1 ? ` · ×${mult}` : ''}</div></div>
     </div>
     <div class="escena flex flex-col gap-3">
-      <div class="flex items-center justify-between gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="text-sm tenue truncate">${esc(q.catNombre)} · ${q.puntos} pts</span></div>
+      <div class="fila-chips flex items-center justify-between gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="text-sm tenue truncate">${esc(q.catNombre)} · ${q.puntos} pts</span></div>
       <div class="escena-pregunta">${esc(q.pregunta)}</div>
       ${S.cfg.cqTiempo ? `<div class="flex items-center gap-3" style="${C.fase === 'pregunta' ? '' : 'visibility:hidden'}"><div class="reloj flex-1" id="reloj-cq"><span style="width:100%"></span></div><span class="num text-sm tenue w-9 text-right" id="reloj-cq-num">${S.cfg.cqTiempo} s</span></div>` : ''}
       ${C.fase === 'feedback' && !C.ultimoOk ? '<div class="x-capa" aria-hidden="true"><span class="x">✕</span></div>' : ''}
@@ -979,7 +1036,7 @@ function renderEstudio() {
   $('#v-estudio').innerHTML = `
   <div class="flex flex-col gap-3">
     <div class="flex items-center justify-between gap-3">
-      <h2 class="text-[1.75rem] md:text-[2.125rem]">Estudio</h2>
+      <h2 class="quiz-titulo text-[1.75rem] md:text-[2.125rem]">Estudio</h2>
       <label for="est-cat" class="sr-only">Categoría</label>
       <select id="est-cat" class="campo w-auto max-w-[55%] py-2 text-[.9375rem]" data-accion-cambio="cat-estudio">
         <option value="todas">Todas las categorías</option>
@@ -988,7 +1045,7 @@ function renderEstudio() {
     </div>
     <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
       <div class="segmento nav-scroll" role="tablist">${tabs.map(([id, l]) => `<button type="button" role="tab" aria-selected="${E.tab === id}" data-accion="tab-estudio" data-tab="${id}">${l}</button>`).join('')}</div>
-      <div class="flex-1 min-w-[10rem] flex items-center gap-2"><div class="barra flex-1"><span style="width:${d.pct}%"></span></div><span class="num text-xs tenue">${d.dom}/${d.total} dominadas</span></div>
+      <div class="solo-alto flex-1 min-w-[10rem] flex items-center gap-2"><div class="barra flex-1"><span style="width:${d.pct}%"></span></div><span class="num text-xs tenue">${d.dom}/${d.total} dominadas</span></div>
     </div>
     ${E.vuelta && E.tab !== 'guia' ? '<div class="aviso aviso-casi text-sm">Completaste una vuelta. La nueva empieza por las preguntas que aún no dominas.</div>' : ''}
     ${cuerpo}
@@ -1006,7 +1063,7 @@ function practicaHTML(q) {
   <div class="grid lg:grid-cols-[1fr_300px] gap-4" id="quiz-est">
     <div class="flex flex-col gap-3 min-w-0">
       <div class="escena flex flex-col gap-3">
-        <div class="flex flex-wrap items-center gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="chip ${st.cls}">${st.txt}</span><span class="text-sm tenue ml-auto num">${E.idx + 1} de ${E.cola.length}</span></div>
+        <div class="fila-chips flex flex-wrap items-center gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="chip ${st.cls}">${st.txt}</span><span class="text-sm tenue ml-auto num">${E.idx + 1} de ${E.cola.length}</span></div>
         <h3 class="escena-pregunta">${esc(q.pregunta)}</h3>
       </div>
       ${usaOpciones() ? opcionesHTML(opsEstudio(q), 'opcion-est', { revelar: fb }) : !fb ? `
@@ -1026,7 +1083,7 @@ function practicaHTML(q) {
       <div class="aviso ${r.ok ? 'aviso-ok' : 'aviso-mal'} flex flex-col gap-1">
         <p class="font-bold" style="color:${r.ok ? 'var(--exito)' : 'var(--error)'}">${r.ok ? (r.corregida ? 'Marcada como correcta' : '¡Correcto!') : r.texto ? 'Incorrecto' : 'Respuesta revelada'}</p>
         <p><span class="tenue">Respuesta de la guía:</span> <strong>${esc(q.respuesta)}</strong>${r.texto && !r.ok ? ` <span class="tenue">· tú: ${esc(r.texto)}</span>` : ''}</p>
-        ${q.nota ? `<p class="text-sm"><span class="tenue">Para recordar:</span> ${esc(q.nota)}</p>` : ''}
+        ${q.nota ? `<p class="nota-fb text-sm"><span class="tenue">Para recordar:</span> ${esc(q.nota)}</p>` : ''}
         ${!usaOpciones() && q.alias && q.alias.length ? `<p class="text-sm"><span class="tenue">También se acepta:</span> ${q.alias.map(esc).join(' · ')}</p>` : ''}
       </div>
       <div class="flex gap-2">
@@ -1356,6 +1413,7 @@ document.addEventListener('click', e => {
   const a = b.dataset.accion;
   const acciones = {
     'ir': () => ir(b.dataset.vista),
+    'instalar': instalar,
     'tema': () => { S.tema = S.tema === 'dark' ? 'light' : 'dark'; almacen.set('tema', S.tema); aplicarTema(); pintarNav(); },
     'sonido': () => { S.sonido = !S.sonido; almacen.set('sonido', S.sonido); pintarNav(); if (S.sonido) sonar('ok'); },
     'estudiar-cat': () => { detenerRelojes(); S.estudio.cat = b.dataset.cat; S.estudio.tab = 'practica'; armarCola(); ir('estudio'); },
@@ -1468,6 +1526,42 @@ document.addEventListener('keydown', e => {
   if (ev === 'drop' && e.dataTransfer.files[0]) procesarArchivo(e.dataTransfer.files[0]);
 }));
 
+/* ---------- instalación como app (PWA) ---------- */
+let avisoInstalar = null;           // evento de Android/Chrome para mostrar el diálogo de instalación
+const enIframe = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+const comoApp = () => window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const esIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function instalacionHTML() {
+  if (comoApp()) return '';
+  if (enIframe) return `<p class="text-[.8125rem] tenue px-4">Para instalarla en tu celular, ábrela desde su dirección propia en el navegador.</p>`;
+  const fila = `<button type="button" class="fila" style="--sangria:58px" data-accion="instalar">
+      <span class="icono-cuadro" style="background:#34C759">${icono('instalar')}</span>
+      <span class="min-w-0"><span class="block font-semibold">Instalar en tu celular</span><span class="block text-sm tenue">Ícono en tu pantalla de inicio y uso sin internet</span></span>${chevron()}</button>`;
+  let pasos = '';
+  if (S.verPasos) {
+    pasos = esIOS()
+      ? `<ol class="pasos text-[.9375rem]"><li><span>Abre esta página en <strong>Safari</strong>.</span></li><li><span>Toca <strong>Compartir</strong> <span class="inline-block align-middle w-5 h-5" style="color:var(--guinda)">${icono('compartir')}</span> en la barra de abajo.</span></li><li><span>Elige <strong>Agregar a pantalla de inicio</strong> y toca <strong>Agregar</strong>.</span></li></ol>`
+      : `<ol class="pasos text-[.9375rem]"><li><span>Abre esta página en <strong>Chrome</strong>.</span></li><li><span>Toca el menú <strong>⋮</strong> arriba a la derecha.</span></li><li><span>Elige <strong>Instalar app</strong> (o <strong>Agregar a pantalla principal</strong>) y confirma.</span></li></ol>`;
+    pasos = `<div class="panel p-4 flex flex-col gap-3">${pasos}<p class="text-[.8125rem] tenue">La app se abre a pantalla completa, sin barra del navegador, y tu progreso se conserva.</p></div>`;
+  }
+  return `<div class="lista">${fila}</div>${pasos}`;
+}
+async function instalar() {
+  if (avisoInstalar) {
+    avisoInstalar.prompt();
+    const r = await avisoInstalar.userChoice.catch(() => null);
+    avisoInstalar = null;
+    if (r && r.outcome === 'accepted') { S.verPasos = false; render(); return; }
+  }
+  S.verPasos = !S.verPasos; render();
+  if (S.verPasos) requestAnimationFrame(() => $('.pasos')?.closest('.panel')?.scrollIntoView({ block: 'center', behavior: 'smooth' }));
+}
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); avisoInstalar = e; });
+window.addEventListener('appinstalled', () => { avisoInstalar = null; if (S.vista === 'inicio') render(); });
+if ('serviceWorker' in navigator && !enIframe && /^(https:|http:\/\/(localhost|127\.0\.0\.1))/.test(location.href)) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => { /* sin soporte: la app sigue funcionando en línea */ }); });
+}
+
 /* ---------- arranque ---------- */
 aplicarTema();
 $('#logo-mini').innerHTML = logoSVG(40);
@@ -1476,7 +1570,7 @@ if (VISTAS.some(([id]) => id === ancla)) S.vista = ancla;
 render();
 
 // Expuesto para pruebas y depuración desde la consola.
-window.Loboitos = { evaluar, opcionesPara, todasPreguntas, parsearTexto, banco: () => bancoExportable(), BASE };
+window.Lobitos = { evaluar, opcionesPara, todasPreguntas, parsearTexto, banco: () => bancoExportable(), BASE };
 })();
 </script>
 </body>

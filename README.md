@@ -1,4 +1,4 @@
-# Loboitos · Trivia Master
+# Lobitos · Trivia Master
 
 Desarrollado por el **Ing. Luis Angel Díaz Bernal**.
 
@@ -6,7 +6,24 @@ Aplicación web de estudio para preparar el concurso **LoboSabio**: preguntas de
 
 Todo vive en un solo archivo: **`index.html`** (HTML5 + Tailwind CSS por CDN + JavaScript sin frameworks). Ábrelo en el navegador y ya funciona. Arranca en **modo oscuro**; el botón del encabezado cambia a modo claro y la elección se recuerda.
 
+**Tamaños de pantalla:** probada en celulares de 320×568 a 430×932. En pantallas bajas la interfaz se compacta y el resultado se muestra en una sola línea, de modo que la pregunta y las tres opciones siempre quedan a la vista.
+
 **Estilo iOS:** fuente del sistema (San Francisco en iPhone y Mac), encabezado translúcido, listas agrupadas, interruptores y controles segmentados. En el celular la navegación es una barra de pestañas abajo. Al responder, la pantalla no se mueve: el resultado y el botón «Siguiente» aparecen en una barra fija abajo, sin tapar la pregunta ni las opciones. El nombre del desarrollador aparece fijo al final de cada pantalla.
+
+## Instalar en el celular (iPhone y Android)
+
+Lobitos es una **app web instalable (PWA)**: se agrega a la pantalla de inicio con su propio ícono, abre a pantalla completa sin barra del navegador y funciona **sin internet** después de la primera visita.
+
+- **iPhone / iPad:** abre la dirección en **Safari** → botón **Compartir** → **Agregar a pantalla de inicio**.
+- **Android:** abre la dirección en **Chrome** → menú **⋮** → **Instalar app**. Si Chrome ofrece el aviso de instalación, la fila «Instalar en tu celular» del inicio lo abre directamente.
+
+Para instalarla, la app tiene que estar publicada en una dirección **https**. Con GitHub Pages:
+
+1. En GitHub abre **Settings → Pages**.
+2. En **Build and deployment** elige **Deploy from a branch**, rama **main**, carpeta **/ (root)** y guarda.
+3. En un par de minutos queda en `https://code-reset.github.io/Lobosabio-alisson/`. Abre esa dirección en el celular e instálala.
+
+Archivos de la PWA: `manifest.webmanifest` (nombre, colores e íconos), `sw.js` (guarda la app para usarla sin conexión) e `icons/` (ícono de 192 y 512 px, versión adaptable para Android, ícono de Apple de 180 px y favicon). Al publicar una versión nueva, cambia `VERSION` en `sw.js` para que los teléfonos descarguen la actualización.
 
 ## Forma de responder
 
@@ -71,4 +88,4 @@ Algunas preguntas tienen una **nota**. La respuesta oficial de la guía se respe
 
 ## Marca
 
-`assets/logo-loboitos.svg`: escudo guinda con marco dorado, un lobo de facetas con una red de nodos en la frente, un destello y una barra de respuestas 100 / 80 / 60, al estilo de un tablero de trivia. Es animado: los nodos laten y, al pasar el cursor, la red se dibuja y los ojos brillan. Dentro de la app, el logo también responde al clic.
+`assets/logo-lobitos.svg`: escudo guinda con marco dorado, un lobo de facetas con una red de nodos en la frente, un destello y una barra de respuestas 100 / 80 / 60, al estilo de un tablero de trivia. Es animado: los nodos laten y, al pasar el cursor, la red se dibuja y los ojos brillan. Dentro de la app, el logo también responde al clic.

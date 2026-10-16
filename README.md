@@ -1,29 +1,28 @@
 # Loboitos · Trivia Master
 
-Creado por el **Ing. Luis Angel Díaz Bernal**.
+Desarrollado por el **Ing. Luis Angel Díaz Bernal**.
 
-Aplicación web de estudio gamificada para preparar el concurso **LoboSabio**. Funciona como un concurso de encuestas: las respuestas están ocultas en un tablero, ordenadas por puntos, y tres strikes terminan la ronda.
+Aplicación web de estudio para preparar el concurso **LoboSabio**: preguntas de opción múltiple contra reloj y práctica guiada hasta dominar las 70 preguntas de la guía.
 
 Todo vive en un solo archivo: **`index.html`** (HTML5 + Tailwind CSS por CDN + JavaScript sin frameworks). Ábrelo en el navegador y ya funciona. Arranca en **modo oscuro**; el botón del encabezado cambia a modo claro y la elección se recuerda.
+
+**Estilo iOS:** fuente del sistema (San Francisco en iPhone y Mac), encabezado translúcido, listas agrupadas, interruptores y controles segmentados. En el celular la navegación es una barra de pestañas abajo. Al responder, la pantalla no se mueve: el resultado y el botón «Siguiente» aparecen en una barra fija abajo, sin tapar la pregunta ni las opciones. El nombre del desarrollador aparece fijo al final de cada pantalla.
 
 ## Forma de responder
 
 Por defecto se responde con **opciones A · B · C**: botones grandes que no abren el teclado del celular. En computadora también puedes usar las teclas **A/B/C** o **1/2/3**. En cada modo hay un selector **Opciones A·B·C / Escribir** por si prefieres teclear la respuesta; la app recuerda tu elección.
 
 - Cada pregunta de la guía trae 3 distractores escritos a mano (`distractores`), del mismo tipo que la respuesta (años con años, personajes con personajes). En cada ronda salen 2 al azar, así que las opciones cambian.
-- En las **Encuestas Lobo** aparecen las respuestas del tablero mezcladas con 3 o 4 distractores; elegir uno falso cuenta como strike.
-- En el Tablero, la **Pista** elimina una opción incorrecta y la casilla vale la mitad.
 - Para los documentos que subas, los distractores se generan solos a partir de otras respuestas del mismo tipo, y las fechas y números se generan cercanos al correcto.
 
 ## Modos de juego
 
 | Modo | Qué hace |
 |---|---|
-| **Tablero Lobo** | Tableros de 5 casillas por categoría (cada casilla es una pregunta de la guía, de 100 a 20 pts) y **Encuestas Lobo** de respuesta múltiple (los puntos suman 100). Strikes, temporizador opcional (15/30/45 s), pista que cuesta la mitad de los puntos, aviso de «casi» sin strike. |
 | **Modo Concurso** | Ronda relámpago de 5 a 30 preguntas contra reloj (10/15/20 s). Puntos base + bono por velocidad, y la racha multiplica (×1.5 desde 3 aciertos, ×2 desde 5). Eliminación opcional con 3 strikes. Al final muestra los errores con la respuesta correcta. |
 | **Modo Estudio** | Práctica guiada con retroalimentación explícita (tu respuesta, la respuesta de la guía, sinónimos aceptados y notas), tarjetas que se voltean, repaso de errores y la guía completa con buscador. |
 
-Una pregunta queda **dominada** cuando la contestas bien dos veces seguidas. La pantalla de inicio muestra el porcentaje dominado por categoría y te sugiere la más débil. En los tableros y la práctica salen primero las preguntas nuevas o falladas.
+Una pregunta queda **dominada** cuando la contestas bien dos veces seguidas. La pantalla de inicio muestra el porcentaje dominado por categoría y te sugiere la más débil. En el concurso y la práctica salen primero las preguntas nuevas o falladas.
 
 Si el calificador rechaza un sinónimo válido, el botón **«Mi respuesta era correcta»** corrige el resultado. La comparación ignora acentos, mayúsculas y artículos, acepta errores de dedo pequeños y convierte números escritos («cinco» → 5).
 
@@ -39,7 +38,7 @@ P: ¿Pregunta?  R: Respuesta   ← formato alterno
 Fotosíntesis: proceso por…    ← definición; se convierte en pregunta
 ```
 
-También asigna puntos, extrae un índice de conceptos y genera una encuesta por cada categoría que tenga 4 preguntas o más. Antes de agregar el documento puedes revisar la vista previa y quitar preguntas. Si subes el PDF original de la guía, salen sus 7 categorías y 70 preguntas.
+También asigna puntos y extrae un índice de conceptos. Antes de agregar el documento puedes revisar la vista previa y quitar preguntas. Si subes el PDF original de la guía, salen sus 7 categorías y 70 preguntas.
 
 El progreso, los documentos subidos y los récords se guardan en el `localStorage` de cada navegador.
 
@@ -59,20 +58,14 @@ El banco base está dentro de `index.html` (`<script type="application/json" id=
       "respuesta": "1810",            // respuesta oficial de la guía
       "alias": ["mil ochocientos diez"], // otras formas aceptadas al escribir
       "distractores": ["1821", "1910", "1800"], // opciones incorrectas A·B·C
-      "puntos": 100,                   // relevancia 20–100: orden en el tablero
+      "puntos": 100,                   // relevancia 20–100: puntos base en el concurso
       "nota": "..."                    // opcional: aclaración que se muestra al revisar
     }]
-  }],
-  "encuestas": [{
-    "id": "enc-01", "categoria": "historia",
-    "pregunta": "Menciona un personaje de la Historia de México que aparezca en la guía",
-    "distractores": ["José María Morelos", "Porfirio Díaz"],
-    "respuestas": [{ "texto": "Miguel Hidalgo", "alias": ["Hidalgo"], "puntos": 34, "ref": "his-02" }]
   }]
 }
 ```
 
-Contenido: 7 categorías × 10 preguntas = 70 preguntas, y 10 encuestas armadas con las respuestas de la guía.
+Contenido: 7 categorías × 10 preguntas = 70 preguntas, cada una con 3 opciones incorrectas escritas a mano.
 
 Algunas preguntas tienen una **nota**. La respuesta oficial de la guía se respeta, pero en los datos discutibles se agrega contexto (por ejemplo, La Paz frente a Sucre, o el Bravo frente al Lerma-Santiago) para que no te tomen por sorpresa.
 

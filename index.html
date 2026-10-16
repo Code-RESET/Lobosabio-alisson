@@ -5,19 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Loboitos Trivia</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Trivia gamificada de encuestas para dominar la guía LoboSabio. Creada por el Ing. Luis Angel Díaz Bernal.">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Trivia de opción múltiple para dominar la guía LoboSabio. Creada por el Ing. Luis Angel Díaz Bernal.">
 <meta name="author" content="Ing. Luis Angel Díaz Bernal">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script>
   if (window.tailwind) tailwind.config = {
     theme: {
       extend: {
         fontFamily: {
-          display: ['"Saira Condensed"', '"Arial Narrow"', 'Arial', 'sans-serif'],
-          sans: ['"Atkinson Hyperlegible"', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif']
+          display: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', 'system-ui', '"Segoe UI"', 'Roboto', 'sans-serif'],
+          sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', 'system-ui', '"Segoe UI"', 'Roboto', 'sans-serif']
         },
         colors: {
           papel: 'var(--papel)', superficie: 'var(--superficie)', hundido: 'var(--hundido)',
@@ -29,165 +30,177 @@
   };
 </script>
 <style>
-  /* Layout: encabezado fijo con la marca + navegación por modos; cada modo es una vista a una columna
-     que se abre en dos columnas (contenido + panel lateral) en pantallas anchas. El "tablero" de juego
-     es un set de televisión: siempre oscuro, guinda profundo con marco dorado, en ambos temas. */
+  /* Layout: app al estilo iOS. Encabezado translúcido con la marca; en pantallas anchas la navegación es un
+     control segmentado en el encabezado y en el celular una barra de pestañas fija abajo. El contenido son
+     tarjetas y listas agrupadas sobre fondo gris agrupado (claro) o negro (oscuro). */
   :root {
-    --papel: #FAF6F5;        /* fondo general, blanco con sesgo rosado */
+    --papel: #F2F2F7;        /* fondo agrupado */
     --superficie: #FFFFFF;
-    --hundido: #F3ECEC;
-    --tinta: #1E1417;
-    --tenue: #6D5A60;
-    --linea: #E7DADC;
-    --guinda: #7A1C33;       /* guinda */
-    --guinda-hondo: #4C0F20;
-    --oro: #A9802A;          /* dorado legible sobre claro */
-    --oro-vivo: #D9B45E;     /* dorado sobre oscuro */
-    --exito: #1E7A50;
-    --error: #B42335;
+    --hundido: #E5E5EA;
+    --relleno: rgba(118, 118, 128, .12);
+    --seg-activo: #FFFFFF;
+    --tinta: #1C1C1E;
+    --tenue: #6C6C70;
+    --linea: #C7C7CC;
+    --separador: rgba(60, 60, 67, .2);
+    --guinda: #9B1C3C;       /* color de acento */
+    --guinda-suave: #F7E7EB;
+    --oro: #A2741A;
+    --exito: #248A3D;  --exito-fondo: #E4F5E8;
+    --error: #D70015;  --error-fondo: #FDE7E9;
+    --oro-fondo: #FBF0DA;
     --sobre-guinda: #FFFFFF;
-    --tablero: #24080F;
-    --tablero-celda: #3A0E1B;
-    --tablero-texto: #FFF6EC;
-    --tablero-tenue: #CDB3B9;
-    --sombra: 0 1px 2px rgba(60, 15, 28, .06), 0 8px 24px -12px rgba(60, 15, 28, .18);
-    --f-display: "Saira Condensed", "Arial Narrow", Arial, sans-serif;
-    --f-texto: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --material: rgba(249, 249, 251, .8);
+    --sombra: 0 1px 2px rgba(0, 0, 0, .04), 0 4px 16px -8px rgba(0, 0, 0, .12);
+    --f-texto: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --papel: #140C0F; --superficie: #1D1317; --hundido: #261A1F; --tinta: #F4EBED; --tenue: #B9A5AB;
-      --linea: #3A2930; --guinda: #C04563; --guinda-hondo: #7A1C33; --oro: #D9B45E; --oro-vivo: #E6C878;
-      --exito: #4CC08A; --error: #F0697A; --sobre-guinda: #FFFFFF;
-      --sombra: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+      --papel: #000000; --superficie: #1C1C1E; --hundido: #2C2C2E; --relleno: rgba(118, 118, 128, .24); --seg-activo: #636366;
+      --tinta: #FFFFFF; --tenue: #98989F; --linea: #48484A; --separador: rgba(84, 84, 88, .65);
+      --guinda: #F0577C; --guinda-suave: #3A1620; --oro: #E5B24E;
+      --exito: #30D158; --exito-fondo: #10301A; --error: #FF453A; --error-fondo: #3B1513; --oro-fondo: #362A10;
+      --material: rgba(22, 22, 24, .78); --sombra: none;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --papel: #140C0F; --superficie: #1D1317; --hundido: #261A1F; --tinta: #F4EBED; --tenue: #B9A5AB;
-    --linea: #3A2930; --guinda: #C04563; --guinda-hondo: #7A1C33; --oro: #D9B45E; --oro-vivo: #E6C878;
-    --exito: #4CC08A; --error: #F0697A; --sobre-guinda: #FFFFFF;
-    --sombra: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+    --papel: #000000; --superficie: #1C1C1E; --hundido: #2C2C2E; --relleno: rgba(118, 118, 128, .24); --seg-activo: #636366;
+    --tinta: #FFFFFF; --tenue: #98989F; --linea: #48484A; --separador: rgba(84, 84, 88, .65);
+    --guinda: #F0577C; --guinda-suave: #3A1620; --oro: #E5B24E;
+    --exito: #30D158; --exito-fondo: #10301A; --error: #FF453A; --error-fondo: #3B1513; --oro-fondo: #362A10;
+    --material: rgba(22, 22, 24, .78); --sombra: none;
     color-scheme: dark;
   }
 
   html, body { min-height: 100%; }
-  body { background: var(--papel); color: var(--tinta); font-family: var(--f-texto); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
-  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--superficie); }
+  body { background: var(--papel); color: var(--tinta); font-family: var(--f-texto); font-size: 17px; line-height: 1.4; letter-spacing: -.01em; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--material); }
   .gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-  h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: .01em; line-height: 1.05; }
-  .num { font-family: var(--f-display); font-variant-numeric: tabular-nums; }
-  .eyebrow { font-family: var(--f-display); text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; font-weight: 700; color: var(--oro); }
+  body h1, body h2, body h3 { font-family: var(--f-display); font-weight: 700; letter-spacing: -.022em; line-height: 1.12; text-wrap: balance; }
+  .font-extrabold { font-weight: 700; }
+  .num { font-variant-numeric: tabular-nums; }
+  .eyebrow { font-size: .8125rem; font-weight: 500; text-transform: uppercase; letter-spacing: .02em; color: var(--tenue); }
   .tenue { color: var(--tenue); }
-  :focus-visible { outline: 3px solid var(--oro-vivo); outline-offset: 2px; border-radius: 6px; }
+  :focus-visible { outline: 3px solid var(--guinda); outline-offset: 2px; border-radius: 10px; }
+  .app { padding-bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }
+  @media (min-width: 768px) { .app { padding-bottom: 0; } }
 
-  /* Encabezado */
-  .encabezado { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--superficie); border-bottom: 1px solid var(--linea); }
-  .marca { white-space: nowrap; font-family: var(--f-display); font-weight: 800; font-size: clamp(1.2rem, 4.6vw, 1.45rem); line-height: 1; letter-spacing: .01em; }
-  .marca b { color: var(--guinda); font-weight: 800; }
-  .marca i { font-style: normal; color: var(--oro); }
+  /* Encabezado y navegación */
+  .encabezado { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--material); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: .5px solid var(--separador); }
+  .marca { white-space: nowrap; font-family: var(--f-display); font-weight: 700; font-size: 1.25rem; letter-spacing: -.02em; line-height: 1; }
+  .marca b { color: var(--guinda); font-weight: 700; }
+  .nav-seg { display: inline-flex; padding: 2px; border-radius: 9px; background: var(--relleno); }
+  .nav-btn { font-size: .875rem; font-weight: 500; padding: .38rem 1rem; border-radius: 7px; color: var(--tinta); white-space: nowrap; transition: background .2s; }
+  .nav-btn[aria-current="page"] { background: var(--seg-activo); font-weight: 600; box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 0 0 .5px rgba(0, 0, 0, .04); }
+  .icono-btn { width: 36px; height: 36px; border-radius: 999px; display: grid; place-items: center; background: var(--relleno); color: var(--guinda); flex: none; }
+  .icono-btn svg { width: 20px; height: 20px; }
+  .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--material); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-top: .5px solid var(--separador); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); }
+  @media (min-width: 768px) { .tabbar { display: none; } }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 5px; font-size: 10px; font-weight: 500; letter-spacing: .01em; color: var(--tenue); }
+  .tab svg { width: 26px; height: 26px; }
+  .tab[aria-current="page"] { color: var(--guinda); }
   .nav-scroll { overflow-x: auto; scrollbar-width: none; }
   .nav-scroll::-webkit-scrollbar { display: none; }
-  .nav-btn { font-family: var(--f-display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .9rem; padding: .55rem .85rem; border-radius: 8px; color: var(--tenue); white-space: nowrap; transition: color .15s, background .15s; }
-  .nav-btn:hover { color: var(--tinta); background: var(--hundido); }
-  .nav-btn[aria-current="page"] { color: var(--sobre-guinda); background: var(--guinda); }
 
-  /* Superficies y controles */
-  .panel { background: var(--superficie); border: 1px solid var(--linea); border-radius: 14px; box-shadow: var(--sombra); }
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-family: var(--f-display); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: .95rem; padding: .7rem 1.1rem; border-radius: 10px; border: 1px solid transparent; transition: transform .08s, filter .15s, background .15s; cursor: pointer; line-height: 1; white-space: nowrap; }
-  .btn:active { transform: translateY(1px); }
-  .btn:disabled { opacity: .45; cursor: not-allowed; }
-  .btn-guinda { background: var(--guinda); color: var(--sobre-guinda); }
-  .btn-guinda:hover { filter: brightness(1.08); }
-  .btn-oro { background: linear-gradient(180deg, #E8C877, #C39A3F); color: #2A1A06; border-color: #A7822F; }
-  .btn-oro:hover { filter: brightness(1.05); }
-  .btn-linea { background: transparent; color: var(--tinta); border-color: var(--linea); }
-  .btn-linea:hover { background: var(--hundido); }
-  .btn-sm { padding: .5rem .75rem; font-size: .82rem; border-radius: 8px; }
-  .campo { width: 100%; background: var(--superficie); color: var(--tinta); border: 1.5px solid var(--linea); border-radius: 10px; padding: .75rem .9rem; font-size: 1.05rem; }
-  .campo:focus { outline: none; border-color: var(--guinda); box-shadow: 0 0 0 3px color-mix(in srgb, var(--guinda) 22%, transparent); }
-  select.campo { padding-right: 2rem; }
-  .chip { display: inline-flex; align-items: center; gap: .3rem; font-family: var(--f-display); font-weight: 700; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; padding: .2rem .5rem; border-radius: 6px; background: var(--hundido); color: var(--tenue); border: 1px solid var(--linea); }
-  .chip-cod { background: var(--guinda); color: var(--sobre-guinda); border-color: transparent; }
-  .chip-ok { color: var(--exito); border-color: color-mix(in srgb, var(--exito) 40%, transparent); background: color-mix(in srgb, var(--exito) 10%, transparent); }
-  .chip-mal { color: var(--error); border-color: color-mix(in srgb, var(--error) 40%, transparent); background: color-mix(in srgb, var(--error) 10%, transparent); }
-  .chip-oro { color: var(--oro); border-color: color-mix(in srgb, var(--oro) 45%, transparent); background: color-mix(in srgb, var(--oro) 10%, transparent); }
-  .barra { height: 8px; border-radius: 99px; background: var(--hundido); overflow: hidden; }
-  .barra > span { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--guinda), var(--oro)); transition: width .5s ease; }
-  .tarjeta-opcion { text-align: left; transition: border-color .15s, transform .12s; }
-  .tarjeta-opcion:hover { border-color: var(--guinda); transform: translateY(-1px); }
-  .aviso { border-radius: 10px; padding: .75rem 1rem; border: 1px solid var(--linea); background: var(--hundido); }
-  .aviso-ok { border-color: color-mix(in srgb, var(--exito) 45%, transparent); background: color-mix(in srgb, var(--exito) 10%, var(--superficie)); }
-  .aviso-mal { border-color: color-mix(in srgb, var(--error) 45%, transparent); background: color-mix(in srgb, var(--error) 9%, var(--superficie)); }
-  .aviso-casi { border-color: color-mix(in srgb, var(--oro) 50%, transparent); background: color-mix(in srgb, var(--oro) 12%, var(--superficie)); }
+  /* Superficies y listas agrupadas */
+  .panel { background: var(--superficie); border-radius: 14px; box-shadow: var(--sombra); }
+  .lista { background: var(--superficie); border-radius: 14px; box-shadow: var(--sombra); overflow: hidden; }
+  .fila { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 10px 16px; text-align: left; color: var(--tinta); }
+  .fila + .fila::before { content: ""; position: absolute; top: 0; right: 0; left: var(--sangria, 16px); border-top: .5px solid var(--separador); }
+  button.fila:active, a.fila:active { background: var(--hundido); }
+  .chevron { flex: none; margin-left: auto; color: var(--linea); }
+  .icono-cuadro { flex: none; width: 30px; height: 30px; border-radius: 7px; display: grid; place-items: center; color: #fff; }
+  .icono-cuadro svg { width: 18px; height: 18px; }
+  .campo-fila { margin-left: auto; max-width: 60%; background: transparent; border: 0; color: var(--tenue); font: inherit; text-align: right; text-align-last: right; padding: 4px 0; cursor: pointer; }
+  .interruptor { -webkit-appearance: none; appearance: none; flex: none; margin-left: auto; width: 51px; height: 31px; border-radius: 999px; background: var(--relleno); position: relative; cursor: pointer; transition: background .2s; }
+  .interruptor::before { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 999px; background: #fff; box-shadow: 0 3px 8px rgba(0, 0, 0, .15), 0 1px 1px rgba(0, 0, 0, .16); transition: transform .2s; }
+  .interruptor:checked { background: #34C759; }
+  .interruptor:checked::before { transform: translateX(20px); }
 
-  /* Tablero de TV */
-  .tablero { position: relative; background: radial-gradient(120% 90% at 50% 0%, #4A1222 0%, var(--tablero) 60%); border: 3px solid #B88F3A; border-radius: 18px; padding: clamp(12px, 3vw, 22px); color: var(--tablero-texto); box-shadow: inset 0 0 0 2px #5E1A2C, 0 18px 40px -20px rgba(36, 8, 15, .7); }
-  .tablero-pregunta { font-family: var(--f-display); font-weight: 700; font-size: clamp(1.25rem, 3.4vw, 1.9rem); line-height: 1.15; text-align: center; padding: .9rem 1rem; border-radius: 12px; background: #16050A; border: 1px solid #6B2236; text-wrap: balance; }
-  .celdas { display: grid; gap: 8px; }
-  @media (min-width: 640px) { .celdas { grid-template-columns: 1fr 1fr; grid-auto-flow: column; } }
-  .celda { perspective: 900px; min-height: 64px; }
-  .celda-int { position: relative; height: 100%; min-height: 64px; border-radius: 10px; display: flex; align-items: center; gap: .75rem; padding: .55rem .7rem; background: linear-gradient(180deg, #4A1424, var(--tablero-celda)); border: 1px solid #7A2A40; color: var(--tablero-texto); text-align: left; width: 100%; }
-  .celda-oculta .celda-int { justify-content: center; }
-  button.celda-int { cursor: pointer; }
-  button.celda-int:hover { border-color: var(--oro-vivo); }
-  .celda-activa .celda-int { border: 2px solid var(--oro-vivo); box-shadow: 0 0 0 3px rgba(217, 180, 94, .18), inset 0 0 18px rgba(217,180,94,.12); }
-  .celda-num { flex: none; width: 2.1rem; height: 2.1rem; border-radius: 99px; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 1.15rem; color: #2A1A06; background: linear-gradient(180deg, #F1D78A, #C39A3F); box-shadow: inset 0 -2px 0 rgba(0,0,0,.2); }
-  .celda-revelada .celda-int { background: linear-gradient(180deg, #FFF8EA, #F1E3C4); color: #2A0B15; border-color: #D9B45E; }
-  .celda-fallada .celda-int { background: linear-gradient(180deg, #2C0C15, #1E070D); color: var(--tablero-tenue); border-style: dashed; border-color: #8B3247; }
-  .celda-texto { flex: 1; min-width: 0; font-family: var(--f-display); font-weight: 700; font-size: 1.12rem; line-height: 1.1; text-transform: uppercase; letter-spacing: .02em; overflow-wrap: anywhere; }
-  .celda-sub { display: block; font-family: var(--f-texto); text-transform: none; letter-spacing: 0; font-weight: 400; font-size: .76rem; line-height: 1.25; opacity: .78; margin-top: .2rem; }
-  .celda-pts { flex: none; min-width: 3rem; text-align: center; font-family: var(--f-display); font-weight: 800; font-size: 1.4rem; padding: .15rem .4rem; border-radius: 6px; background: #2A0B15; color: var(--oro-vivo); font-variant-numeric: tabular-nums; }
-  .celda-fallada .celda-pts { background: transparent; color: #E58A98; font-size: 1.05rem; }
-  .voltear .celda-int { animation: voltear .55s cubic-bezier(.2,.7,.3,1.2); transform-origin: center; }
-  @keyframes voltear { 0% { transform: rotateX(90deg); } 100% { transform: rotateX(0); } }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 48px; padding: .75rem 1.25rem; border-radius: 12px; font-family: var(--f-texto); font-weight: 600; font-size: 1.0625rem; letter-spacing: -.01em; line-height: 1.1; white-space: nowrap; border: 0; cursor: pointer; transition: opacity .15s, transform .08s; }
+  .btn:active { opacity: .7; }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .btn-guinda, .btn-oro { background: var(--guinda); color: var(--sobre-guinda); }
+  .btn-linea { background: var(--relleno); color: var(--guinda); }
+  .btn-sm { min-height: 34px; padding: .4rem .9rem; font-size: .9375rem; border-radius: 999px; }
+  .campo { width: 100%; background: var(--relleno); color: var(--tinta); border: 0; border-radius: 10px; padding: .75rem .9rem; font-size: 1.0625rem; font-family: inherit; }
+  .campo::placeholder { color: var(--tenue); }
+  .campo:focus { outline: none; box-shadow: 0 0 0 3px var(--guinda-suave), inset 0 0 0 1px var(--guinda); }
+  .chip { display: inline-flex; align-items: center; gap: .3rem; font-size: .75rem; font-weight: 600; padding: .15rem .5rem; border-radius: 6px; background: var(--relleno); color: var(--tenue); }
+  .chip-cod { background: var(--guinda-suave); color: var(--guinda); }
+  .chip-ok { background: var(--exito-fondo); color: var(--exito); }
+  .chip-mal { background: var(--error-fondo); color: var(--error); }
+  .chip-oro { background: var(--oro-fondo); color: var(--oro); }
+  .barra { height: 6px; border-radius: 99px; background: var(--relleno); overflow: hidden; }
+  .barra > span { display: block; height: 100%; border-radius: 99px; background: var(--guinda); transition: width .5s ease; }
+  .tarjeta-opcion { text-align: left; transition: transform .12s; }
+  .tarjeta-opcion:active { transform: scale(.98); }
+  .aviso { border-radius: 12px; padding: .8rem 1rem; background: var(--relleno); }
+  .aviso-ok { background: var(--exito-fondo); }
+  .aviso-mal { background: var(--error-fondo); }
+  .aviso-casi { background: var(--oro-fondo); }
+
+  /* Escena de pregunta (Modo Concurso) */
+  .escena { position: relative; overflow: hidden; background: var(--superficie); border-radius: 20px; padding: clamp(16px, 3vw, 24px); box-shadow: var(--sombra); }
+  .escena-pregunta { font-family: var(--f-display); font-weight: 700; font-size: clamp(1.4rem, 3.8vw, 2rem); line-height: 1.2; letter-spacing: -.022em; text-wrap: balance; }
+  .reloj { height: 4px; border-radius: 99px; background: var(--relleno); overflow: hidden; }
+  .reloj > span { display: block; height: 100%; background: var(--guinda); transition: width .25s linear; }
+  .reloj.urgente > span { background: var(--error); }
+  .strike { width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center; font-size: .85rem; font-weight: 700; background: var(--relleno); color: var(--tenue); }
+  .strike-on { background: var(--error); color: #fff; }
+  .marcador { background: var(--superficie); border-radius: 14px; box-shadow: var(--sombra); padding: .35rem .9rem; text-align: center; min-width: 5.5rem; }
+  .marcador b { display: block; font-size: 1.6rem; font-weight: 700; line-height: 1.1; color: var(--guinda); font-variant-numeric: tabular-nums; }
+  .marcador small { font-size: .72rem; color: var(--tenue); }
   .x-capa { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; z-index: 5; }
-  .x-capa .x { font-family: var(--f-display); font-weight: 800; color: #FF3B4E; font-size: clamp(5rem, 22vw, 11rem); line-height: 1; text-shadow: 0 0 30px rgba(255, 59, 78, .7), 0 6px 0 #5C0A16; animation: xgolpe .9s ease forwards; letter-spacing: -.04em; }
-  @keyframes xgolpe { 0% { transform: scale(2.2); opacity: 0; } 18% { transform: scale(1); opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; transform: scale(.94); } }
-  .strike { width: 2.3rem; height: 2.3rem; border-radius: 8px; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 1.5rem; border: 2px solid var(--linea); color: var(--linea); background: var(--superficie); }
-  .strike-on { background: var(--error); border-color: var(--error); color: #fff; }
-  .marcador { background: var(--tablero); color: var(--oro-vivo); border: 2px solid #B88F3A; border-radius: 12px; padding: .35rem .9rem; text-align: center; min-width: 6.5rem; }
-  .marcador b { display: block; font-family: var(--f-display); font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; }
-  .marcador small { font-family: var(--f-display); text-transform: uppercase; letter-spacing: .14em; font-size: .68rem; color: var(--tablero-tenue); }
-  .reloj { height: 6px; border-radius: 99px; background: rgba(255,255,255,.1); overflow: hidden; }
-  .reloj > span { display: block; height: 100%; background: linear-gradient(90deg, #F1D78A, #C39A3F); transition: width .25s linear; }
-  .reloj.urgente > span { background: linear-gradient(90deg, #FF7A88, #FF3B4E); }
+  .x-capa .x { width: 92px; height: 92px; border-radius: 999px; display: grid; place-items: center; background: var(--error); color: #fff; font-size: 3rem; font-weight: 700; box-shadow: 0 10px 30px -8px rgba(215, 0, 21, .55); animation: xgolpe .9s ease forwards; }
+  @keyframes xgolpe { 0% { transform: scale(.4); opacity: 0; } 20% { transform: scale(1); opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; transform: scale(.94); } }
+
+  /* Barra de resultado fija: el resultado aparece abajo sin mover la pregunta ni las opciones */
+  .accion-fija { position: fixed; left: 0; right: 0; z-index: 45; bottom: calc(57px + env(safe-area-inset-bottom, 0px)); background: var(--material); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-top: .5px solid var(--separador); padding-top: 10px; padding-bottom: 10px; animation: subir .22s ease-out; }
+  @media (min-width: 768px) { .accion-fija { bottom: 0; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); } }
+  .accion-fija .aviso { max-height: 32vh; overflow-y: auto; padding: .6rem .85rem; font-size: .9375rem; }
+  .espacio-accion { height: 190px; }
+  @keyframes subir { from { transform: translateY(100%); } to { transform: none; } }
+  .pts-mini { font-size: 1.25rem; font-weight: 700; color: var(--guinda); font-variant-numeric: tabular-nums; line-height: 1; }
+  .strike-mini { width: 20px; height: 20px; font-size: .65rem; }
 
   /* Opciones A·B·C */
   .opciones { display: grid; gap: 10px; }
   @media (min-width: 640px) { .opciones { grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); } }
-  .opcion { display: flex; align-items: center; gap: .75rem; min-height: 60px; width: 100%; padding: .7rem .9rem; text-align: left; border-radius: 12px; background: var(--superficie); color: var(--tinta); border: 2px solid var(--linea); font-weight: 700; font-size: 1.05rem; line-height: 1.2; cursor: pointer; transition: border-color .12s, transform .08s, background .12s; overflow-wrap: anywhere; }
-  .opcion:hover:not(:disabled) { border-color: var(--guinda); }
-  .opcion:active:not(:disabled) { transform: translateY(1px); }
+  .opcion { display: flex; align-items: center; gap: .75rem; min-height: 58px; width: 100%; padding: .7rem .9rem; text-align: left; border-radius: 14px; background: var(--superficie); color: var(--tinta); box-shadow: var(--sombra); border: 0; font-weight: 500; font-size: 1.0625rem; line-height: 1.25; cursor: pointer; transition: background .15s, transform .08s; overflow-wrap: anywhere; }
+  .opcion:active:not(:disabled) { transform: scale(.98); background: var(--hundido); }
   .opcion:disabled { cursor: default; }
-  .opcion-letra { flex: none; width: 2rem; height: 2rem; border-radius: 8px; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 1.1rem; color: #2A1A06; background: linear-gradient(180deg, #F1D78A, #C39A3F); }
-  .opcion-ok { border-color: var(--exito); background: color-mix(in srgb, var(--exito) 14%, var(--superficie)); }
+  .opcion-letra { flex: none; width: 30px; height: 30px; border-radius: 999px; display: grid; place-items: center; font-weight: 600; font-size: .95rem; background: var(--relleno); color: var(--guinda); }
+  .opcion-ok { background: var(--exito-fondo); box-shadow: inset 0 0 0 2px var(--exito); }
   .opcion-ok .opcion-letra { background: var(--exito); color: #fff; }
-  .opcion-mal { border-color: var(--error); background: color-mix(in srgb, var(--error) 12%, var(--superficie)); text-decoration: line-through; }
+  .opcion-mal { background: var(--error-fondo); box-shadow: inset 0 0 0 2px var(--error); }
   .opcion-mal .opcion-letra { background: var(--error); color: #fff; }
   .opcion-fuera { opacity: .35; text-decoration: line-through; }
-  .opcion-tenue { opacity: .55; }
-  .segmento { display: inline-flex; padding: 3px; border-radius: 10px; background: var(--hundido); border: 1px solid var(--linea); }
-  .segmento button { font-family: var(--f-display); font-weight: 700; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; padding: .35rem .7rem; border-radius: 7px; color: var(--tenue); white-space: nowrap; }
-  .segmento button[aria-pressed="true"] { background: var(--superficie); color: var(--tinta); box-shadow: var(--sombra); }
+  .opcion-tenue { opacity: .5; }
+  .segmento { display: inline-flex; padding: 2px; border-radius: 9px; background: var(--relleno); max-width: 100%; }
+  .segmento button { font-size: .8125rem; font-weight: 500; padding: .32rem .8rem; border-radius: 7px; color: var(--tinta); white-space: nowrap; transition: background .2s; }
+  .segmento button[aria-pressed="true"], .segmento button[aria-selected="true"] { background: var(--seg-activo); font-weight: 600; box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 0 0 .5px rgba(0, 0, 0, .04); }
 
   /* Tarjetas de estudio */
   .flash { perspective: 1200px; }
   .flash-int { position: relative; min-height: 15rem; transition: transform .5s ease; transform-style: preserve-3d; }
   .flash.girada .flash-int { transform: rotateY(180deg); }
-  .flash-cara { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 1.5rem; border-radius: 14px; }
-  .flash-frente { background: var(--superficie); border: 1px solid var(--linea); }
-  .flash-reverso { transform: rotateY(180deg); background: var(--tablero); color: var(--tablero-texto); border: 2px solid #B88F3A; }
+  .flash-cara { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 1.5rem; border-radius: 20px; }
+  .flash-frente { background: var(--superficie); box-shadow: var(--sombra); }
+  .flash-reverso { transform: rotateY(180deg); background: var(--guinda); color: #fff; }
+  .flash-reverso .eyebrow { color: rgba(255, 255, 255, .75); }
 
   /* Zona de carga */
-  .soltar { border: 2px dashed var(--linea); border-radius: 14px; background: var(--hundido); transition: border-color .15s, background .15s; }
-  .soltar.encima { border-color: var(--guinda); background: color-mix(in srgb, var(--guinda) 8%, var(--superficie)); }
+  .soltar { border: 2px dashed var(--linea); border-radius: 14px; background: var(--superficie); transition: border-color .15s, background .15s; }
+  .soltar.encima { border-color: var(--guinda); background: var(--guinda-suave); }
 
   /* Anillo de dominio */
-  .anillo-fondo { stroke: var(--hundido); }
+  .anillo-fondo { stroke: var(--relleno); }
   .anillo-valor { stroke: var(--guinda); transition: stroke-dashoffset .8s ease; }
-  .anillo-texto { fill: var(--tinta); font-family: var(--f-display); font-weight: 800; }
-  .anillo-sub { fill: var(--tenue); font-family: var(--f-display); font-weight: 600; letter-spacing: .12em; }
+  .anillo-texto { fill: var(--tinta); font-family: var(--f-display); font-weight: 700; }
+  .anillo-sub { fill: var(--tenue); font-family: var(--f-texto); font-weight: 500; letter-spacing: .06em; }
 
   /* Logo interactivo */
   .logo { display: block; flex: none; overflow: visible; }
@@ -209,7 +222,7 @@
   @keyframes trazo { from { stroke-dashoffset: 40; } to { stroke-dashoffset: 0; } }
 
   @keyframes entrar { from { transform: translateY(6px); } to { transform: none; } }
-  .entrar { animation: entrar .35s ease both; }
+  [data-vista-sec].nueva > * { animation: entrar .3s ease both; }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   }
@@ -217,38 +230,35 @@
 </style>
 </head>
 <body>
-<div id="app" class="min-h-full flex flex-col">
+<div id="app" class="app min-h-full flex flex-col">
 
   <header class="encabezado">
-    <div class="gutter max-w-6xl mx-auto flex items-center gap-3 py-2.5">
-      <button type="button" class="flex items-center gap-2.5 min-w-0" data-accion="ir" data-vista="inicio" aria-label="Ir al inicio">
+    <div class="gutter max-w-6xl mx-auto flex items-center gap-3 py-2">
+      <button type="button" class="flex items-center gap-2 min-w-0" data-accion="ir" data-vista="inicio" aria-label="Ir al inicio">
         <span id="logo-mini"></span>
-        <span class="flex flex-col items-start min-w-0">
-          <span class="marca">Lobo<b>itos</b></span>
-          <span class="text-[.7rem] tenue font-display uppercase tracking-[.16em] whitespace-nowrap hidden sm:block">Trivia Master</span>
-        </span>
+        <span class="marca">Lobo<b>itos</b></span>
       </button>
-      <nav class="hidden md:flex items-center gap-1 ml-auto" aria-label="Modos" id="nav-escritorio"></nav>
-      <div class="flex items-center gap-1 ml-auto md:ml-2">
-        <button type="button" class="btn btn-linea btn-sm" data-accion="sonido" id="btn-sonido" aria-pressed="true" title="Sonido">Sonido</button>
-        <button type="button" class="btn btn-linea btn-sm" data-accion="tema" id="btn-tema" title="Cambiar tema">Tema</button>
+      <nav class="hidden md:inline-flex nav-seg mx-auto" aria-label="Secciones" id="nav-escritorio"></nav>
+      <div class="flex items-center gap-2 ml-auto md:ml-0">
+        <button type="button" class="icono-btn" data-accion="sonido" id="btn-sonido" aria-pressed="true"></button>
+        <button type="button" class="icono-btn" data-accion="tema" id="btn-tema"></button>
       </div>
     </div>
-    <nav class="md:hidden nav-scroll gutter flex gap-1 pb-2" aria-label="Modos" id="nav-movil"></nav>
   </header>
 
   <main class="gutter max-w-6xl mx-auto w-full flex-1 py-6 md:py-8">
     <section id="v-inicio" data-vista-sec="inicio"></section>
-    <section id="v-tablero" data-vista-sec="tablero" hidden></section>
     <section id="v-concurso" data-vista-sec="concurso" hidden></section>
     <section id="v-estudio" data-vista-sec="estudio" hidden></section>
     <section id="v-documentos" data-vista-sec="documentos" hidden></section>
   </main>
 
-  <footer class="gutter max-w-6xl mx-auto w-full py-6 text-sm tenue flex flex-wrap gap-x-4 gap-y-1 justify-between border-t border-linea">
-    <span>Loboitos · Creado por el <strong style="color:var(--tinta)">Ing. Luis Angel Díaz Bernal</strong> · © 2026</span>
-    <span id="pie-banco"></span>
+  <footer class="gutter w-full py-6 text-center text-sm tenue">
+    <p>Desarrollado por <strong style="color:var(--tinta)">Ing. Luis Angel Díaz Bernal</strong></p>
+    <p class="text-xs mt-1">Loboitos · © 2026</p>
   </footer>
+
+  <nav class="tabbar" aria-label="Secciones" id="nav-movil"></nav>
 </div>
 
 <!-- ============================================================
@@ -256,12 +266,11 @@
      Esquema:
      {
        version, fuente:{titulo, archivo, paginas},
-       categorias:[{ id, codigo, nombre, preguntas:[{ id, pregunta, respuesta, alias[], puntos, nota? }] }],
-       encuestas:[{ id, categoria, pregunta, respuestas:[{ texto, alias[], puntos, ref }] }]
+       categorias:[{ id, codigo, nombre, preguntas:[{ id, pregunta, respuesta, alias[], distractores[], puntos, nota? }] }]
      }
-     · puntos (preguntas): relevancia 20–100, ordena el tablero de mayor a menor, como en un concurso de encuestas.
-     · alias: otras formas aceptadas al calificar (la comparación ignora acentos, artículos y mayúsculas).
-     · encuestas: tableros de respuesta múltiple; puntos suman 100; ref = id de la pregunta de la guía.
+     · puntos: relevancia 20–100; es la base de puntos en el Modo Concurso.
+     · alias: otras formas aceptadas al escribir (la comparación ignora acentos, artículos y mayúsculas).
+     · distractores: opciones incorrectas para responder con A·B·C.
      ============================================================ -->
 <script type="application/json" id="banco-base">
 {
@@ -352,79 +361,6 @@
       { "id": "tec-09", "pregunta": "¿Qué plataforma en línea es más usada para videollamadas en educación y trabajo?", "respuesta": "Zoom", "alias": [], "distractores": ["Skype", "Discord", "Telegram"], "puntos": 80 },
       { "id": "tec-10", "pregunta": "¿Qué país lanzó el primer satélite artificial, el Sputnik 1?", "respuesta": "La Unión Soviética (URSS)", "alias": ["URSS", "Unión Soviética"], "distractores": ["Estados Unidos", "China", "Alemania"], "puntos": 80, "nota": "Fue en 1957. Hoy su sucesor es Rusia, pero la respuesta es la URSS." }
     ]}
-  ],
-  "encuestas": [
-    { "id": "enc-01", "categoria": "historia", "pregunta": "Menciona un personaje de la Historia de México que aparezca en la guía", "distractores": ["José María Morelos", "Porfirio Díaz", "Agustín de Iturbide", "Emiliano Zapata"], "respuestas": [
-      { "texto": "Miguel Hidalgo", "alias": ["Hidalgo", "Miguel Hidalgo y Costilla"], "puntos": 34, "ref": "his-02" },
-      { "texto": "Benito Juárez", "alias": ["Juárez"], "puntos": 28, "ref": "his-08" },
-      { "texto": "Guadalupe Victoria", "alias": [], "puntos": 22, "ref": "his-05" },
-      { "texto": "Maximiliano de Habsburgo", "alias": ["Maximiliano"], "puntos": 16, "ref": "his-07" }
-    ]},
-    { "id": "enc-02", "categoria": "historia", "pregunta": "Menciona un año clave de la Historia de México según la guía", "distractores": ["1821", "1836", "1867", "1968"], "respuestas": [
-      { "texto": "1810", "alias": [], "puntos": 30, "ref": "his-01" },
-      { "texto": "1910", "alias": [], "puntos": 25, "ref": "his-09" },
-      { "texto": "1917", "alias": [], "puntos": 20, "ref": "his-04" },
-      { "texto": "1521", "alias": [], "puntos": 15, "ref": "his-06" },
-      { "texto": "1848", "alias": [], "puntos": 10, "ref": "his-03" }
-    ]},
-    { "id": "enc-03", "categoria": "geografia", "pregunta": "Menciona un lugar de México que aparezca en la guía", "distractores": ["Chichén Itzá", "Monterrey", "Pico de Orizaba", "Lago de Chapala"], "respuestas": [
-      { "texto": "Tenochtitlán", "alias": ["México-Tenochtitlán"], "puntos": 26, "ref": "his-06" },
-      { "texto": "Teotihuacán", "alias": [], "puntos": 22, "ref": "his-10" },
-      { "texto": "Río Bravo", "alias": ["Bravo"], "puntos": 20, "ref": "geo-01" },
-      { "texto": "Popocatépetl", "alias": ["Popo"], "puntos": 18, "ref": "geo-02" },
-      { "texto": "Mérida", "alias": ["Yucatán"], "puntos": 14, "ref": "geo-06" }
-    ]},
-    { "id": "enc-04", "categoria": "geografia", "pregunta": "Menciona un país que sea respuesta en la guía", "distractores": ["Brasil", "Japón", "Canadá", "Egipto"], "respuestas": [
-      { "texto": "Rusia", "alias": [], "puntos": 24, "ref": "cul-05" },
-      { "texto": "Francia", "alias": [], "puntos": 20, "ref": "cul-07" },
-      { "texto": "Grecia", "alias": [], "puntos": 16, "ref": "cul-02" },
-      { "texto": "Chile", "alias": [], "puntos": 14, "ref": "geo-07" },
-      { "texto": "Catar", "alias": ["Qatar"], "puntos": 12, "ref": "tec-04" },
-      { "texto": "El Vaticano", "alias": ["Ciudad del Vaticano"], "puntos": 8, "ref": "geo-08" },
-      { "texto": "Bolivia", "alias": [], "puntos": 6, "ref": "geo-03" }
-    ]},
-    { "id": "enc-05", "categoria": "ciencias", "pregunta": "Menciona algo del cuerpo humano que se estudie en la guía", "distractores": ["El corazón", "El cerebro", "El hígado", "Los pulmones"], "respuestas": [
-      { "texto": "La piel", "alias": [], "puntos": 30, "ref": "cie-02" },
-      { "texto": "Los huesos", "alias": ["206 huesos", "Esqueleto"], "puntos": 25, "ref": "cie-04" },
-      { "texto": "La célula", "alias": [], "puntos": 20, "ref": "cie-08" },
-      { "texto": "La sangre", "alias": ["Tipo de sangre", "O negativo"], "puntos": 15, "ref": "cie-07" },
-      { "texto": "El oxígeno", "alias": ["Respiración"], "puntos": 10, "ref": "cie-06" }
-    ]},
-    { "id": "enc-06", "categoria": "ciencias", "pregunta": "Menciona un planeta que aparezca en la guía", "distractores": ["Saturno", "Venus", "Mercurio"], "respuestas": [
-      { "texto": "Marte", "alias": [], "puntos": 45, "ref": "cie-03" },
-      { "texto": "Júpiter", "alias": [], "puntos": 35, "ref": "cie-10" },
-      { "texto": "La Tierra", "alias": [], "puntos": 20, "ref": "cie-09" }
-    ]},
-    { "id": "enc-07", "categoria": "ciencias", "pregunta": "Menciona un elemento químico que aparezca en la guía", "distractores": ["Carbono", "Nitrógeno", "Plata"], "respuestas": [
-      { "texto": "Oxígeno", "alias": ["O2"], "puntos": 40, "ref": "cie-06" },
-      { "texto": "Hidrógeno", "alias": [], "puntos": 35, "ref": "cie-01" },
-      { "texto": "Oro", "alias": ["Au"], "puntos": 25, "ref": "cul-06" }
-    ]},
-    { "id": "enc-08", "categoria": "literatura", "pregunta": "Menciona un escritor o artista que aparezca en la guía", "distractores": ["Octavio Paz", "Frida Kahlo", "Pablo Picasso", "Jorge Luis Borges"], "respuestas": [
-      { "texto": "Miguel de Cervantes", "alias": ["Cervantes"], "puntos": 20, "ref": "lit-01" },
-      { "texto": "Gabriel García Márquez", "alias": ["García Márquez", "Gabo"], "puntos": 18, "ref": "lit-06" },
-      { "texto": "Vincent van Gogh", "alias": ["Van Gogh"], "puntos": 15, "ref": "lit-03" },
-      { "texto": "Diego Rivera", "alias": ["Rivera"], "puntos": 13, "ref": "lit-07" },
-      { "texto": "Pablo Neruda", "alias": ["Neruda"], "puntos": 11, "ref": "lit-05" },
-      { "texto": "William Shakespeare", "alias": ["Shakespeare"], "puntos": 9, "ref": "lit-08" },
-      { "texto": "José Gorostiza", "alias": ["Gorostiza"], "puntos": 8, "ref": "lit-02" },
-      { "texto": "Antoine de Saint-Exupéry", "alias": ["Saint-Exupéry", "Exupéry"], "puntos": 6, "ref": "lit-10" }
-    ]},
-    { "id": "enc-09", "categoria": "matematicas", "pregunta": "Menciona un concepto matemático que aparezca en la guía", "distractores": ["Logaritmo", "Propiedad asociativa", "Derivada", "Número par"], "respuestas": [
-      { "texto": "Número primo", "alias": ["Primo"], "puntos": 28, "ref": "mat-04" },
-      { "texto": "Geometría", "alias": [], "puntos": 24, "ref": "mat-05" },
-      { "texto": "Propiedad conmutativa", "alias": ["Conmutativa"], "puntos": 20, "ref": "mat-09" },
-      { "texto": "Valor absoluto", "alias": [], "puntos": 16, "ref": "mat-10" },
-      { "texto": "Pi", "alias": ["π", "Número pi"], "puntos": 12, "ref": "mat-03" }
-    ]},
-    { "id": "enc-10", "categoria": "tecnologia", "pregunta": "Menciona una empresa o marca de tecnología que aparezca en la guía", "distractores": ["Amazon", "Samsung", "Facebook", "Netflix"], "respuestas": [
-      { "texto": "Microsoft", "alias": [], "puntos": 26, "ref": "tec-02" },
-      { "texto": "Google", "alias": ["Android"], "puntos": 22, "ref": "tec-07" },
-      { "texto": "Apple", "alias": ["iPhone"], "puntos": 18, "ref": "tec-03" },
-      { "texto": "X", "alias": ["Twitter"], "puntos": 14, "ref": "tec-05" },
-      { "texto": "Zoom", "alias": [], "puntos": 12, "ref": "tec-09" },
-      { "texto": "NASA", "alias": [], "puntos": 8, "ref": "tec-08" }
-    ]}
   ]
 }
 </script>
@@ -455,9 +391,8 @@ const S = {
   stats: almacen.get('stats', {}),
   docs: almacen.get('docs', []),
   baseActiva: almacen.get('baseActiva', true),
-  record: almacen.get('record', { tablero: 0, concurso: 0 }),
-  cfg: { tiempoTablero: 0, cqNum: 10, cqTiempo: 15, cqCat: 'todas', cqElim: true, modoResp: 'opciones', ...almacen.get('cfg', {}) },
-  juego: null, totalSesion: 0, rondas: 0,
+  record: { concurso: 0, ...almacen.get('record', {}) },
+  cfg: { cqNum: 10, cqTiempo: 15, cqCat: 'todas', cqElim: true, modoResp: 'opciones', ...almacen.get('cfg', {}) },
   concurso: null,
   estudio: { tab: 'practica', cat: 'todas', cola: [], idx: 0, fase: 'pregunta', res: null, girada: false, busqueda: '', vuelta: false },
   docsUI: { preview: null, procesando: false, error: null, confirmar: null, verJson: false }
@@ -466,16 +401,10 @@ const guardarStats = () => almacen.set('stats', S.stats);
 
 /* ---------- banco activo ---------- */
 function banco() {
-  const cats = [], encs = [];
-  if (S.baseActiva) {
-    BASE.categorias.forEach(c => cats.push({ ...c, docId: 'base', docNombre: BASE.fuente.titulo }));
-    BASE.encuestas.forEach(e => encs.push({ ...e, docId: 'base' }));
-  }
-  S.docs.filter(d => d.activo).forEach(d => {
-    d.categorias.forEach(c => cats.push({ ...c, docId: d.id, docNombre: d.nombre }));
-    (d.encuestas || []).forEach(e => encs.push({ ...e, docId: d.id }));
-  });
-  return { cats, encs };
+  const cats = [];
+  if (S.baseActiva) BASE.categorias.forEach(c => cats.push({ ...c, docId: 'base', docNombre: BASE.fuente.titulo }));
+  S.docs.filter(d => d.activo).forEach(d => d.categorias.forEach(c => cats.push({ ...c, docId: d.id, docNombre: d.nombre })));
+  return { cats };
 }
 function todasPreguntas(catId) {
   return banco().cats.filter(c => !catId || catId === 'todas' || c.id === catId)
@@ -620,7 +549,7 @@ function opcionesPara(q, total = 3) {
   return barajar([{ texto: correcta, ok: true }, ...malas.map(t => ({ texto: t, ok: false }))]);
 }
 // ops: [{texto, ok, elegida, fuera, usada}] · revelar: muestra correctas/incorrectas tras responder
-function opcionesHTML(ops, accion, { revelar = false, cols = 3, tablero = false } = {}) {
+function opcionesHTML(ops, accion, { revelar = false, cols = 3 } = {}) {
   return `<div class="opciones" style="--cols:${cols}" role="group" aria-label="Opciones de respuesta">${ops.map((o, i) => {
     let cls = 'opcion';
     if (o.fuera) cls += ' opcion-fuera';
@@ -699,16 +628,26 @@ function logoSVG(size = 44, vivo = true) {
 }
 
 /* ---------- navegación ---------- */
-const VISTAS = [
-  ['inicio', 'Inicio'], ['tablero', 'Tablero Lobo'], ['concurso', 'Modo Concurso'], ['estudio', 'Estudio'], ['documentos', 'Documentos']
-];
+const ICONOS = {
+  inicio: '<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  concurso: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  estudio: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20"/>',
+  documentos: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
+  sonido: '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>',
+  silencio: '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/>',
+  luna: '<path d="M20.5 13.5A8.5 8.5 0 1 1 10.5 3.5a6.5 6.5 0 0 0 10 10z"/>',
+  sol: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  chevron: '<path d="m9 6 6 6-6 6"/>'
+};
+const icono = (n, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n]}</svg>`;
+const chevron = () => `<svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS.chevron}</svg>`;
+const VISTAS = [['inicio', 'Inicio'], ['concurso', 'Concurso'], ['estudio', 'Estudio'], ['documentos', 'Documentos']];
 function pintarNav() {
-  const html = VISTAS.map(([id, txt]) => `<button type="button" class="nav-btn" data-accion="ir" data-vista="${id}" ${S.vista === id ? 'aria-current="page"' : ''}>${txt}</button>`).join('');
-  $('#nav-escritorio').innerHTML = html; $('#nav-movil').innerHTML = html;
-  const b = $('#btn-sonido'); b.innerHTML = `<span aria-hidden="true">${S.sonido ? '♪' : '✕'}</span><span class="hidden sm:inline">${S.sonido ? 'Sonido' : 'Silencio'}</span>`; b.setAttribute('aria-label', S.sonido ? 'Silenciar' : 'Activar sonido'); b.setAttribute('aria-pressed', String(S.sonido));
-  const bt = $('#btn-tema'); bt.innerHTML = S.tema === 'dark' ? '<span aria-hidden="true">☀</span><span class="hidden sm:inline">Modo claro</span>' : '<span aria-hidden="true">☾</span><span class="hidden sm:inline">Modo oscuro</span>'; bt.setAttribute('aria-label', S.tema === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'); bt.setAttribute('aria-pressed', String(S.tema === 'dark'));
-  const n = todasPreguntas().length;
-  $('#pie-banco').textContent = `${n} preguntas activas · ${banco().cats.length} categorías · ${banco().encs.length} encuestas`;
+  const cur = id => S.vista === id ? 'aria-current="page"' : '';
+  $('#nav-escritorio').innerHTML = VISTAS.map(([id, txt]) => `<button type="button" class="nav-btn" data-accion="ir" data-vista="${id}" ${cur(id)}>${txt}</button>`).join('');
+  $('#nav-movil').innerHTML = VISTAS.map(([id, txt]) => `<button type="button" class="tab" data-accion="ir" data-vista="${id}" ${cur(id)}>${icono(id)}<span>${txt}</span></button>`).join('');
+  const b = $('#btn-sonido'); b.innerHTML = icono(S.sonido ? 'sonido' : 'silencio'); b.setAttribute('aria-label', S.sonido ? 'Silenciar' : 'Activar sonido'); b.setAttribute('aria-pressed', String(S.sonido));
+  const bt = $('#btn-tema'); bt.innerHTML = icono(S.tema === 'dark' ? 'sol' : 'luna'); bt.setAttribute('aria-label', S.tema === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
 }
 function aplicarTema() {
   if (S.tema === 'sistema') document.documentElement.removeAttribute('data-theme');
@@ -720,11 +659,24 @@ function ir(vista) {
   render();
   window.scrollTo({ top: 0 });
 }
+let vistaPintada = null;
 function render() {
+  const y = window.scrollY, misma = vistaPintada === S.vista;
   $$('[data-vista-sec]').forEach(s => { s.hidden = s.dataset.vistaSec !== S.vista; });
   pintarNav();
-  ({ inicio: renderInicio, tablero: renderTablero, concurso: renderConcurso, estudio: renderEstudio, documentos: renderDocumentos })[S.vista]();
+  ({ inicio: renderInicio, concurso: renderConcurso, estudio: renderEstudio, documentos: renderDocumentos })[S.vista]();
+  const sec = $('#v-' + S.vista);
+  if (misma) window.scrollTo(0, y);
+  else { sec.classList.add('nueva'); setTimeout(() => sec.classList.remove('nueva'), 400); }
+  vistaPintada = S.vista;
 }
+// Al pasar a otra pregunta, si el usuario bajó, vuelve a mostrar la pregunta completa.
+function mostrarPregunta(sel) {
+  const el = $(sel); if (!el) return;
+  const tope = el.getBoundingClientRect().top - 64;
+  if (tope < 0) window.scrollBy({ top: tope, behavior: 'smooth' });
+}
+const barraAccion = interior => `<div class="espacio-accion" aria-hidden="true"></div><div class="accion-fija gutter" aria-live="polite"><div class="max-w-3xl mx-auto flex flex-col gap-2">${interior}</div></div>`;
 
 /* ---------- relojes ---------- */
 let relojId = null;
@@ -760,377 +712,65 @@ function anillo(pct, size = 168) {
 function renderInicio() {
   const { cats } = banco();
   const g = dominio();
-  const filas = cats.map(c => { const d = dominio(c.id); return { c, d }; });
+  const filas = cats.map(c => ({ c, d: dominio(c.id) }));
   const debil = [...filas].sort((a, b) => a.d.pct - b.d.pct)[0];
   const totalVistas = Object.keys(S.stats).length;
+  const modo = (vista, color, ic, titulo, sub) => `<button type="button" class="fila" style="--sangria:58px" data-accion="ir" data-vista="${vista}">
+      <span class="icono-cuadro" style="background:${color}">${icono(ic)}</span>
+      <span class="min-w-0"><span class="block font-semibold">${titulo}</span><span class="block text-sm tenue">${sub}</span></span>${chevron()}</button>`;
   $('#v-inicio').innerHTML = `
-  <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-6 entrar">
-    <div class="panel p-6 md:p-8 flex flex-col gap-6 overflow-hidden relative">
-      <div class="flex flex-col sm:flex-row sm:items-center gap-5">
-        <div class="shrink-0">${logoSVG(132)}</div>
-        <div class="min-w-0">
-          <p class="eyebrow">Concurso universitario LoboSabio</p>
-          <h1 class="text-[2.6rem] md:text-[3.4rem] font-extrabold mt-1">Domina la guía <span style="color:var(--guinda)">al 100&nbsp;%</span></h1>
-          <p class="text-sm mt-1" style="color:var(--oro)">Creado por el Ing. Luis Angel Díaz Bernal</p>
-          <p class="tenue mt-2 max-w-[56ch]">Juega rondas de encuesta con respuestas ocultas en el tablero, simula el concurso con preguntas rápidas y repasa cada error con la respuesta oficial de la guía. Una pregunta cuenta como dominada cuando la contestas bien dos veces seguidas.</p>
-        </div>
-      </div>
-      <div class="grid sm:grid-cols-3 gap-3">
-        <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-1" data-accion="ir" data-vista="tablero">
-          <span class="chip chip-cod self-start">Encuesta</span>
-          <strong class="font-display text-xl uppercase tracking-wide">Tablero Lobo</strong>
-          <span class="text-sm tenue">Respuestas ocultas por puntos, tres strikes y fuera.</span>
-        </button>
-        <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-1" data-accion="ir" data-vista="concurso">
-          <span class="chip chip-oro self-start">Relámpago</span>
-          <strong class="font-display text-xl uppercase tracking-wide">Modo Concurso</strong>
-          <span class="text-sm tenue">Preguntas rápidas contra reloj, como el día del concurso.</span>
-        </button>
-        <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-1" data-accion="ir" data-vista="estudio">
-          <span class="chip self-start">Práctica</span>
-          <strong class="font-display text-xl uppercase tracking-wide">Modo Estudio</strong>
-          <span class="text-sm tenue">Tarjetas, práctica guiada y repaso de errores.</span>
-        </button>
+  <div class="flex flex-col gap-7">
+    <div class="flex items-center gap-4">
+      <div class="shrink-0">${logoSVG(76)}</div>
+      <div class="min-w-0">
+        <p class="eyebrow">Concurso LoboSabio</p>
+        <h1 class="text-[2.125rem] md:text-[2.6rem]">Domina la guía al 100&nbsp;%</h1>
       </div>
     </div>
 
-    <div class="panel p-6 flex flex-col gap-5">
-      <div class="flex items-center gap-5">
-        ${anillo(g.pct, 150)}
-        <div class="min-w-0">
-          <p class="eyebrow">Tu avance</p>
-          <p class="num text-4xl font-extrabold leading-none mt-1">${g.dom}<span class="tenue text-2xl">/${g.total}</span></p>
-          <p class="text-sm tenue">preguntas dominadas</p>
-          <p class="text-sm tenue mt-2">${totalVistas ? `${totalVistas} practicadas al menos una vez` : 'Aún no has practicado. Empieza por cualquier modo.'}</p>
+    <div class="grid lg:grid-cols-2 gap-7">
+      <section class="flex flex-col gap-2">
+        <h2 class="eyebrow px-4">Tu avance</h2>
+        <div class="panel p-5 flex items-center gap-5">
+          ${anillo(g.pct, 128)}
+          <div class="min-w-0 flex flex-col gap-1">
+            <p class="num text-[2rem] font-bold leading-none">${g.dom}<span class="tenue text-xl">/${g.total}</span></p>
+            <p class="tenue">preguntas dominadas</p>
+            <p class="text-sm tenue">${totalVistas ? `${totalVistas} practicadas · récord ${S.record.concurso} pts` : 'Aún no has practicado.'}</p>
+          </div>
         </div>
-      </div>
-      <div class="flex flex-col gap-3">
+        <p class="text-[.8125rem] tenue px-4">Una pregunta queda dominada al contestarla bien dos veces seguidas.</p>
+      </section>
+
+      <section class="flex flex-col gap-2">
+        <h2 class="eyebrow px-4">Modos</h2>
+        <div class="lista">
+          ${modo('concurso', '#FF9500', 'concurso', 'Modo Concurso', 'Preguntas rápidas contra reloj')}
+          ${modo('estudio', '#007AFF', 'estudio', 'Modo Estudio', 'Práctica, tarjetas y repaso de errores')}
+          ${modo('documentos', '#8E8E93', 'documentos', 'Documentos', 'Sube tu propia guía en PDF, DOCX o TXT')}
+        </div>
+        ${debil && debil.d.pct < 100 ? `<p class="text-[.8125rem] tenue px-4">Te conviene empezar por <button type="button" class="font-semibold" style="color:var(--guinda)" data-accion="estudiar-cat" data-cat="${esc(debil.c.id)}">${esc(debil.c.nombre)}</button> (${debil.d.pct}&nbsp;% dominado).</p>` : ''}
+      </section>
+    </div>
+
+    <section class="flex flex-col gap-2">
+      <h2 class="eyebrow px-4">Categorías</h2>
+      <div class="lista">
         ${filas.map(({ c, d }) => `
-          <button type="button" class="grid grid-cols-[3.2rem_1fr_auto] items-center gap-3 text-left group" data-accion="estudiar-cat" data-cat="${esc(c.id)}" title="Practicar ${esc(c.nombre)}">
-            <span class="chip chip-cod justify-center">${esc(c.codigo || '···')}</span>
-            <span class="min-w-0"><span class="block text-sm font-bold truncate group-hover:underline">${esc(c.nombre)}</span><span class="barra mt-1 block"><span style="width:${d.pct}%"></span></span></span>
-            <span class="num text-sm tenue w-12 text-right">${d.dom}/${d.total}</span>
-          </button>`).join('') || '<p class="tenue">No hay categorías activas. Activa la guía base o carga un documento.</p>'}
+          <button type="button" class="fila" style="--sangria:72px" data-accion="estudiar-cat" data-cat="${esc(c.id)}">
+            <span class="chip chip-cod w-11 justify-center">${esc(c.codigo || '···')}</span>
+            <span class="min-w-0 flex-1"><span class="block font-medium truncate">${esc(c.nombre)}</span><span class="barra mt-1.5 block"><span style="width:${d.pct}%"></span></span></span>
+            <span class="num text-[.9375rem] tenue w-12 text-right">${d.dom}/${d.total}</span>${chevron()}
+          </button>`).join('') || '<p class="fila tenue">No hay categorías activas. Activa la guía o carga un documento.</p>'}
       </div>
-      ${debil ? `<div class="aviso flex flex-wrap items-center justify-between gap-3">
-        <span class="text-sm"><strong>Siguiente paso:</strong> ${esc(debil.c.nombre)} es tu categoría con menos dominio (${debil.d.pct}&nbsp;%).</span>
-        <button type="button" class="btn btn-guinda btn-sm" data-accion="estudiar-cat" data-cat="${esc(debil.c.id)}">Practicar</button>
-      </div>` : ''}
-      <div class="grid grid-cols-2 gap-3 text-center">
-        <div class="aviso"><p class="eyebrow">Récord tablero</p><p class="num text-3xl font-extrabold">${S.record.tablero}</p></div>
-        <div class="aviso"><p class="eyebrow">Récord concurso</p><p class="num text-3xl font-extrabold">${S.record.concurso}</p></div>
-      </div>
-    </div>
+    </section>
   </div>`;
 }
 
-/* ============================================================
-   TABLERO LOBO (concurso de encuestas)
-   ============================================================ */
-function renderTablero() {
-  if (S.juego) return renderJuego();
-  const { cats, encs } = banco();
-  const t = S.cfg.tiempoTablero;
-  $('#v-tablero').innerHTML = `
-  <div class="grid lg:grid-cols-[1fr_300px] gap-6 entrar">
-    <div class="flex flex-col gap-6 min-w-0">
-      <div>
-        <p class="eyebrow">Tablero Lobo</p>
-        <h2 class="text-4xl font-extrabold">¡Los Loboitos dijeron!</h2>
-        <p class="tenue mt-1 max-w-[62ch]">Elige un tablero. En los de categoría, cada casilla esconde la respuesta a una pregunta de la guía; en las encuestas, adivina todas las respuestas posibles a una sola pregunta.</p>
-      </div>
-      <div>
-        <h3 class="text-xl font-bold uppercase tracking-wide mb-3">Por categoría</h3>
-        <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-3">
-          ${cats.map(c => { const d = dominio(c.id); return `
-            <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-2" data-accion="jugar-cat" data-cat="${esc(c.id)}">
-              <span class="flex items-center justify-between gap-2"><span class="chip chip-cod">${esc(c.codigo || '···')}</span><span class="text-xs tenue">${c.preguntas.length} preguntas</span></span>
-              <strong class="font-display text-lg uppercase tracking-wide leading-tight">${esc(c.nombre)}</strong>
-              <span class="barra"><span style="width:${d.pct}%"></span></span>
-              <span class="text-xs tenue">${d.pct}&nbsp;% dominado${c.docId !== 'base' ? ' · ' + esc(c.docNombre) : ''}</span>
-            </button>`; }).join('') || '<p class="tenue">No hay categorías activas.</p>'}
-        </div>
-      </div>
-      <div>
-        <h3 class="text-xl font-bold uppercase tracking-wide mb-3">Encuestas Lobo</h3>
-        <div class="grid sm:grid-cols-2 gap-3">
-          ${encs.map(e => `
-            <button type="button" class="panel tarjeta-opcion p-4 flex items-start gap-3" data-accion="jugar-enc" data-enc="${esc(e.id)}">
-              <span class="celda-num" aria-hidden="true">${e.respuestas.length}</span>
-              <span class="min-w-0"><strong class="block leading-snug">${esc(e.pregunta)}</strong><span class="text-xs tenue">${e.respuestas.length} respuestas en el tablero${e.auto ? ' · generada del documento' : ''}</span></span>
-            </button>`).join('') || '<p class="tenue">No hay encuestas activas.</p>'}
-        </div>
-      </div>
-    </div>
-    <aside class="flex flex-col gap-4">
-      <div class="panel p-5 flex flex-col gap-4">
-        <button type="button" class="btn btn-oro w-full" data-accion="jugar-azar" ${cats.length ? '' : 'disabled'}>Tablero al azar</button>
-        <label class="flex flex-col gap-1 text-sm font-bold" for="cfg-tiempo-tablero">Tiempo por respuesta
-          <select id="cfg-tiempo-tablero" class="campo" data-cfg="tiempoTablero">
-            ${[[0, 'Sin tiempo'], [15, '15 segundos'], [30, '30 segundos'], [45, '45 segundos']].map(([v, l]) => `<option value="${v}" ${t === v ? 'selected' : ''}>${l}</option>`).join('')}
-          </select>
-        </label>
-      </div>
-      <div class="panel p-5 text-sm flex flex-col gap-2">
-        <p class="eyebrow">Reglas</p>
-        <ul class="flex flex-col gap-2 list-disc pl-4">
-          <li>Las casillas van de mayor a menor puntaje, como en el programa.</li>
-          <li>Cada error o tiempo agotado es un <strong>strike</strong>. Con tres strikes termina la ronda.</li>
-          <li>Si te acercas, verás un aviso de <strong>«casi»</strong> sin strike, una vez por casilla.</li>
-          <li>La pista muestra la primera letra y cuesta la mitad de los puntos.</li>
-          <li>¿Te calificó mal un sinónimo? Usa <strong>«Mi respuesta era correcta»</strong>.</li>
-        </ul>
-      </div>
-    </aside>
-  </div>`;
-}
-
-function iniciarJuegoCategoria(catId) {
-  const cat = banco().cats.find(c => c.id === catId);
-  if (!cat || !cat.preguntas.length) return;
-  const elegidas = priorizar(cat.preguntas).slice(0, 5).sort((a, b) => b.puntos - a.puntos);
-  S.juego = {
-    tipo: 'categoria', origen: catId, titulo: cat.nombre, codigo: cat.codigo,
-    slots: elegidas.map(p => ({ texto: sinParentesis(p.respuesta), variantes: variantesDe(p), puntos: p.puntos, pregunta: p.pregunta, ref: p.id, nota: p.nota, estado: 'oculto', q: { ...p, catId: cat.id } })),
-    activo: 0, strikes: 0, puntos: 0, terminado: false, msg: null, casi: {}, ultimo: null, x: false, revel: -1
-  };
-  S.rondas++; arrancarJuego();
-}
-function iniciarJuegoEncuesta(encId) {
-  const enc = banco().encs.find(e => e.id === encId);
-  if (!enc) return;
-  const cat = banco().cats.find(c => c.id === enc.categoria);
-  S.juego = {
-    tipo: 'encuesta', origen: encId, titulo: 'Encuesta Lobo', codigo: cat?.codigo || 'ENC', prompt: enc.pregunta,
-    slots: [...enc.respuestas].sort((a, b) => b.puntos - a.puntos).map(r => {
-      const p = r.ref ? preguntaPorId(r.ref) : null;
-      return { texto: r.texto, variantes: variantesDe(r), puntos: r.puntos, pregunta: p ? p.pregunta : '', ref: r.ref, estado: 'oculto' };
-    }),
-    activo: -1, strikes: 0, puntos: 0, terminado: false, msg: null, casi: {}, ultimo: null, x: false, revel: -1
-  };
-  const otrasResp = barajar(todasPreguntas().filter(p => p.catId !== enc.categoria).map(p => sinParentesis(p.respuesta)).filter(t => !esNumero(t)));
-  const distractores = (enc.distractores && enc.distractores.length ? enc.distractores : otrasResp.slice(0, 3))
-    .filter(t => !S.juego.slots.some(sl => evaluar(t, sl.variantes).ok)).slice(0, 4);
-  S.juego.ops = barajar([...S.juego.slots.map((sl, i) => ({ texto: sl.texto, ok: true, slot: i })), ...distractores.map(t => ({ texto: t, ok: false, slot: -1 }))]);
-  S.rondas++; arrancarJuego();
-}
-function arrancarJuego() { render(); reiniciarRelojJuego(); enfocar('#resp-juego'); }
-function reiniciarRelojJuego() {
-  const J = S.juego;
-  if (!J || J.terminado || !S.cfg.tiempoTablero) { detenerRelojes(); return; }
-  iniciarReloj(S.cfg.tiempoTablero, () => {
-    if (!S.juego || S.juego.terminado) return;
-    if (J.tipo === 'categoria') fallarCasilla(J.activo, '', 'Se acabó el tiempo.');
-    else strikeEncuesta('', 'Se acabó el tiempo.');
-  }, 'reloj-juego', 'reloj-juego-num');
-}
-const ocultos = J => J.slots.map((s, i) => s.estado === 'oculto' ? i : -1).filter(i => i >= 0);
-function siguienteActivo(J) { const o = ocultos(J); const sig = o.find(i => i > J.activo); J.activo = sig ?? o[0] ?? -1; }
-
-function acertarCasilla(i, texto) {
-  const J = S.juego, s = J.slots[i];
-  s.estado = 'acertado';
-  s.ganados = s.pista ? Math.round(s.puntos / 2) : s.puntos;
-  J.puntos += s.ganados; J.revel = i; J.x = false; J.ultimo = null;
-  if (J.tipo === 'categoria' && s.ref) registrar(s.ref, true);
-  J.msg = { tipo: 'ok', html: `<strong>¡Está en el tablero!</strong> «${esc(s.texto)}» vale ${s.ganados} puntos.${s.nota ? ` <span class="tenue">${esc(s.nota)}</span>` : ''}` };
-  sonar('ok');
-  if (J.tipo === 'categoria') siguienteActivo(J);
-  if (!ocultos(J).length) return terminarRonda(true);
-  render(); reiniciarRelojJuego(); enfocar('#resp-juego');
-}
-function fallarCasilla(i, texto, motivo, corregible = true) {
-  const J = S.juego, s = J.slots[i];
-  if (!s) return;
-  s.estado = 'fallado'; J.strikes++; J.revel = i; J.x = true;
-  const prev = s.ref ? registrar(s.ref, false) : null;
-  J.ultimo = texto && corregible ? { i, texto, prev } : null;
-  J.msg = { tipo: 'mal', html: `<strong>${esc(motivo || 'Incorrecta.')}</strong> La respuesta de la guía es «${esc(s.texto)}».${texto ? ` Tú escribiste «${esc(texto)}».` : ''}${s.nota ? ` <span class="tenue">${esc(s.nota)}</span>` : ''}` };
-  sonar('mal');
-  siguienteActivo(J);
-  if (J.strikes >= 3 || !ocultos(J).length) return terminarRonda(false);
-  render(); reiniciarRelojJuego(); enfocar('#resp-juego');
-}
-function strikeEncuesta(texto, motivo) {
-  const J = S.juego;
-  J.strikes++; J.x = true; J.revel = -1; J.ultimo = null;
-  J.msg = { tipo: 'mal', html: `<strong>${esc(motivo || '¡No está en el tablero!')}</strong>${texto ? ` «${esc(texto)}» no es una de las respuestas.` : ''} Te quedan ${Math.max(0, 3 - J.strikes)} oportunidades.` };
-  sonar('mal');
-  if (J.strikes >= 3) return terminarRonda(false);
-  render(); reiniciarRelojJuego(); enfocar('#resp-juego');
-}
-function terminarRonda(completo) {
-  const J = S.juego;
-  J.terminado = true; J.completo = completo; detenerRelojes();
-  J.slots.forEach(s => { if (s.estado === 'oculto') { s.estado = 'fallado'; s.alFinal = true; } });
-  S.totalSesion += J.puntos;
-  if (J.puntos > S.record.tablero) { S.record.tablero = J.puntos; J.nuevoRecord = true; almacen.set('record', S.record); }
-  if (completo) sonar('fin');
-  render();
-}
-function responderJuego(texto) {
-  const J = S.juego;
-  if (!J || J.terminado) return;
-  const t = texto.trim();
-  if (!t) return;
-  if (J.tipo === 'categoria') {
-    const i = J.activo, r = evaluar(t, J.slots[i].variantes);
-    if (r.ok) return acertarCasilla(i, t);
-    if (r.casi && !J.casi[i]) {
-      J.casi[i] = true; J.x = false; J.revel = -1;
-      J.msg = { tipo: 'casi', html: `<strong>¡Casi!</strong> «${esc(t)}» va por buen camino. Completa o sé más específico.` };
-      sonar('casi'); render(); enfocar('#resp-juego', true); return;
-    }
-    return fallarCasilla(i, t, r.casi ? 'Respuesta incompleta.' : 'Incorrecta.');
-  }
-  let mejor = -1, sc = 0, casi = -1;
-  J.slots.forEach((s, i) => {
-    if (s.estado !== 'oculto') return;
-    const r = evaluar(t, s.variantes);
-    if (r.ok && r.score > sc) { mejor = i; sc = r.score; } else if (r.casi && casi < 0) casi = i;
-  });
-  if (mejor >= 0) return acertarCasilla(mejor, t);
-  if (J.slots.some(s => s.estado !== 'oculto' && evaluar(t, s.variantes).ok)) {
-    J.x = false; J.revel = -1; J.msg = { tipo: 'info', html: 'Esa respuesta ya está descubierta. Prueba con otra.' };
-    render(); enfocar('#resp-juego', true); return;
-  }
-  if (casi >= 0 && !J.casi[casi]) {
-    J.casi[casi] = true; J.x = false; J.revel = -1;
-    J.msg = { tipo: 'casi', html: `<strong>¡Casi!</strong> Hay una respuesta parecida a «${esc(t)}». Sé más específico.` };
-    sonar('casi'); render(); enfocar('#resp-juego', true); return;
-  }
-  strikeEncuesta(t);
-}
-function corregirJuego() {
-  const J = S.juego;
-  if (!J || !J.ultimo) return;
-  const { i, prev } = J.ultimo, s = J.slots[i];
-  if (J.terminado) {
-    J.slots.forEach(x => { if (x.alFinal) { x.estado = 'oculto'; delete x.alFinal; } });
-    S.totalSesion -= J.puntos; J.terminado = false; J.nuevoRecord = false;
-  }
-  if (s.ref) corregirARegistroCorrecto(s.ref, prev);
-  s.estado = 'acertado'; s.ganados = s.pista ? Math.round(s.puntos / 2) : s.puntos;
-  J.puntos += s.ganados; J.strikes = Math.max(0, J.strikes - 1); J.ultimo = null; J.x = false; J.revel = i;
-  J.msg = { tipo: 'ok', html: `Corregido: se contó como acierto y se quitó el strike. Agrega ese sinónimo a tus notas.` };
-  if (J.activo < 0 || J.slots[J.activo].estado !== 'oculto') siguienteActivo(J);
-  if (!ocultos(J).length) return terminarRonda(true);
-  render(); reiniciarRelojJuego(); enfocar('#resp-juego');
-}
-function opsCasilla(J) { const s = J.slots[J.activo]; if (s && !s.ops) s.ops = opcionesPara(s.q); return s ? s.ops : []; }
-function elegirOpcionJuego(o) {
-  const J = S.juego;
-  if (!J || J.terminado) return;
-  if (J.tipo === 'categoria') {
-    const op = opsCasilla(J)[o];
-    if (!op || op.fuera) return;
-    if (op.ok) acertarCasilla(J.activo, op.texto); else fallarCasilla(J.activo, op.texto, 'Incorrecta.', false);
-    return;
-  }
-  const op = J.ops[o];
-  if (!op || op.usada) return;
-  op.usada = true;
-  if (op.ok && J.slots[op.slot].estado === 'oculto') acertarCasilla(op.slot, op.texto); else strikeEncuesta(op.texto);
-}
-function pistaJuego() {
-  const J = S.juego;
-  if (!J || J.terminado) return;
-  const i = J.tipo === 'categoria' ? J.activo : ocultos(J)[0];
-  const s = J.slots[i];
-  if (!s || s.pista) return;
-  s.pista = true; J.x = false; J.revel = -1;
-  if (usaOpciones() && J.tipo === 'categoria') {
-    const malas = opsCasilla(J).filter(x => !x.ok && !x.fuera);
-    if (malas.length) malas[Math.floor(Math.random() * malas.length)].fuera = true;
-    J.msg = { tipo: 'info', html: `Pista: se eliminó una opción incorrecta. La casilla ${i + 1} ahora vale la mitad.` };
-    render(); return;
-  }
-  J.msg = J.tipo === 'categoria'
-    ? { tipo: 'info', html: `Pista para la casilla ${i + 1}: <span class="num text-lg tracking-wider">${esc(mascara(s.texto))}</span>` }
-    : { tipo: 'info', html: `Pista para la casilla ${i + 1} (${esc(mascara(s.texto))}): ${s.pregunta ? `es la respuesta a «${esc(s.pregunta)}»` : 'revisa la guía.'}` };
-  render(); enfocar('#resp-juego', true);
-}
-function celdaHTML(s, i, J) {
-  const activa = J.tipo === 'categoria' && !J.terminado && i === J.activo;
-  const cls = ['celda', s.estado === 'oculto' ? 'celda-oculta' : s.estado === 'acertado' ? 'celda-revelada' : 'celda-fallada', activa ? 'celda-activa' : '', i === J.revel ? 'voltear' : ''].join(' ');
-  if (s.estado === 'oculto') {
-    const puedeElegir = J.tipo === 'categoria' && !J.terminado;
-    const tag = puedeElegir ? 'button type="button" data-accion="elegir-casilla" data-i="' + i + '"' : 'div';
-    return `<div class="${cls}"><${tag} class="celda-int" aria-label="Casilla ${i + 1}${activa ? ', activa' : ''}"><span class="celda-num">${i + 1}</span>${puedeElegir && !activa ? '<span class="sr-only">Elegir</span>' : ''}</${puedeElegir ? 'button' : 'div'}></div>`;
-  }
-  const sub = s.pregunta ? `<span class="celda-sub">${esc(s.pregunta)}</span>` : '';
-  const pts = s.estado === 'acertado' ? s.ganados : (s.alFinal ? '—' : '✕');
-  return `<div class="${cls}"><div class="celda-int"><span class="celda-num">${i + 1}</span><span class="celda-texto">${esc(s.texto)}${sub}</span><span class="celda-pts">${pts}</span></div></div>`;
-}
 function avisoHTML(m) {
   if (!m) return '';
   const cls = { ok: 'aviso-ok', mal: 'aviso-mal', casi: 'aviso-casi', info: '' }[m.tipo] || '';
   return `<div class="aviso ${cls}">${m.html}</div>`;
-}
-function renderJuego() {
-  const J = S.juego;
-  const n = J.slots.length, filas = Math.ceil(n / 2);
-  const prompt = J.tipo === 'categoria' ? (J.terminado ? `${J.titulo}: ronda terminada` : J.slots[J.activo]?.pregunta) : J.prompt;
-  const aciertos = J.slots.filter(s => s.estado === 'acertado').length;
-  const total = J.slots.reduce((a, s) => a + s.puntos, 0);
-  $('#v-tablero').innerHTML = `
-  <div class="flex flex-col gap-4 entrar">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div class="min-w-0">
-        <button type="button" class="text-sm tenue hover:underline" data-accion="salir-juego">← Elegir otro tablero</button>
-        <div class="flex items-center gap-2 mt-1"><span class="chip chip-cod">${esc(J.codigo)}</span><span class="eyebrow">Ronda ${S.rondas}${J.tipo === 'categoria' ? ' · Categoría' : ' · Encuesta'}</span></div>
-        <h2 class="text-3xl md:text-4xl font-extrabold mt-1">${esc(J.titulo)}</h2>
-      </div>
-      <div class="flex items-center gap-4">
-        <div class="flex gap-1.5" role="img" aria-label="${J.strikes} de 3 strikes">${[0, 1, 2].map(k => `<span class="strike ${k < J.strikes ? 'strike-on' : ''}">✕</span>`).join('')}</div>
-        <div class="marcador"><b class="num">${J.puntos}</b><small>Puntos</small></div>
-      </div>
-    </div>
-
-    <div class="tablero flex flex-col gap-3">
-      <div class="tablero-pregunta" aria-live="polite">${esc(prompt || '')}</div>
-      <div class="celdas" style="grid-template-rows: repeat(${filas}, minmax(64px, auto));">${J.slots.map((s, i) => celdaHTML(s, i, J)).join('')}</div>
-      ${S.cfg.tiempoTablero && !J.terminado ? `<div class="flex items-center gap-3"><div class="reloj flex-1" id="reloj-juego"><span style="width:100%"></span></div><span class="num text-sm" id="reloj-juego-num" style="color:var(--tablero-tenue)">${S.cfg.tiempoTablero} s</span></div>` : ''}
-      ${J.x ? '<div class="x-capa" aria-hidden="true"><span class="x">✕</span></div>' : ''}
-    </div>
-
-    ${J.terminado ? `
-      <div class="panel p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-5">
-        <div class="flex-1 min-w-0">
-          <p class="eyebrow">${J.completo ? '¡Tablero completo!' : 'Tres strikes'}</p>
-          <h3 class="text-3xl font-extrabold">${J.puntos} de ${total} puntos</h3>
-          <p class="tenue">${aciertos} de ${n} respuestas descubiertas · Total de la sesión: <span class="num">${S.totalSesion}</span>${J.nuevoRecord ? ' · <strong style="color:var(--oro)">¡Nuevo récord!</strong>' : ''}</p>
-          ${J.ultimo ? '<button type="button" class="btn btn-linea btn-sm mt-3" data-accion="corregir-juego">Mi última respuesta era correcta</button>' : ''}
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <button type="button" class="btn btn-oro" data-accion="otra-ronda">Siguiente ronda</button>
-          <button type="button" class="btn btn-linea" data-accion="salir-juego">Otro tablero</button>
-          ${J.tipo === 'categoria' && aciertos < n ? `<button type="button" class="btn btn-linea" data-accion="estudiar-cat" data-cat="${esc(J.origen)}">Repasar esta categoría</button>` : ''}
-        </div>
-      </div>` : `
-      <div class="flex flex-wrap items-center justify-between gap-2">${segmentoResp()}${usaOpciones() ? '<span class="text-xs tenue hidden sm:inline">Atajos: teclas A, B, C…</span>' : ''}</div>
-      ${usaOpciones() ? `
-      ${J.tipo === 'categoria' ? opcionesHTML(opsCasilla(J), 'opcion-juego') : opcionesHTML(J.ops, 'opcion-juego', { cols: 3 })}
-      <div class="flex flex-wrap gap-2">
-        <button class="btn btn-linea flex-1 sm:flex-none" type="button" data-accion="pista-juego" title="${J.tipo === 'categoria' ? 'Elimina una opción incorrecta; la casilla vale la mitad' : 'Muestra de qué pregunta sale una respuesta'}">Pista</button>
-        <button class="btn btn-linea flex-1 sm:flex-none" type="button" data-accion="pasar-juego">${J.tipo === 'categoria' ? 'Pasar' : 'Rendirse'}</button>
-      </div>` : `
-      <form class="flex flex-col sm:flex-row gap-2" data-form="juego" autocomplete="off">
-        <label for="resp-juego" class="sr-only">Tu respuesta</label>
-        <input id="resp-juego" class="campo flex-1" placeholder="${J.tipo === 'categoria' ? `Respuesta para la casilla ${J.activo + 1}…` : 'Escribe una respuesta…'}" maxlength="120" enterkeyhint="send">
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-guinda flex-1 basis-full sm:basis-auto sm:flex-none" type="submit">Responder</button>
-          <button class="btn btn-linea flex-1 sm:flex-none" type="button" data-accion="pista-juego" title="Muestra la primera letra; la casilla vale la mitad">Pista</button>
-          <button class="btn btn-linea flex-1 sm:flex-none" type="button" data-accion="pasar-juego" title="${J.tipo === 'categoria' ? 'Revela la respuesta y cuenta como strike' : 'Termina la ronda y revela el tablero'}">${J.tipo === 'categoria' ? 'Pasar' : 'Rendirse'}</button>
-        </div>
-      </form>`}`}
-    <div aria-live="polite" class="flex flex-col gap-2">
-      ${avisoHTML(J.msg)}
-      ${!J.terminado && J.ultimo ? '<div><button type="button" class="btn btn-linea btn-sm" data-accion="corregir-juego">Mi respuesta era correcta</button></div>' : ''}
-    </div>
-  </div>`;
-  if (J.x) setTimeout(() => { if (S.juego === J) { J.x = false; const c = $('.x-capa'); if (c) c.remove(); } }, 950);
-  J.revel = -1;
 }
 
 /* ============================================================
@@ -1142,70 +782,65 @@ function renderConcurso() {
   if (C.fase === 'fin') return renderResultadosConcurso();
   const q = C.lista[C.i];
   const mult = C.racha >= 5 ? 2 : C.racha >= 3 ? 1.5 : 1;
+  const n = C.lista.length;
   $('#v-concurso').innerHTML = `
-  <div class="max-w-3xl mx-auto flex flex-col gap-4 entrar">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <button type="button" class="text-sm tenue hover:underline" data-accion="abandonar-concurso">← Abandonar</button>
-        <p class="eyebrow mt-1">Modo Concurso · Pregunta ${C.i + 1} de ${C.lista.length}</p>
-        <div class="flex gap-1 mt-2" aria-hidden="true">${C.lista.map((_, k) => `<span style="width:${Math.max(6, 280 / C.lista.length)}px;height:6px;border-radius:9px;background:${k < C.i ? (C.res[k] ? 'var(--exito)' : 'var(--error)') : k === C.i ? 'var(--oro)' : 'var(--linea)'}"></span>`).join('')}</div>
+  <div class="max-w-3xl mx-auto flex flex-col gap-3" id="quiz-cq">
+    <div class="flex items-center gap-3">
+      <button type="button" class="text-[1.0625rem] shrink-0" style="color:var(--guinda)" data-accion="abandonar-concurso">‹ Salir</button>
+      <div class="flex-1 min-w-0 flex flex-col gap-1">
+        <span class="text-xs tenue text-center num">Pregunta ${C.i + 1} de ${n}</span>
+        <div class="flex gap-[3px]" aria-hidden="true">${C.lista.map((_, k) => `<span style="flex:1;height:4px;border-radius:9px;background:${k < C.i ? (C.res[k] ? 'var(--exito)' : 'var(--error)') : k === C.i ? 'var(--guinda)' : 'var(--relleno)'}"></span>`).join('')}</div>
       </div>
-      <div class="flex items-center gap-4">
-        ${S.cfg.cqElim ? `<div class="flex gap-1.5" role="img" aria-label="${C.strikes} de 3 strikes">${[0, 1, 2].map(k => `<span class="strike ${k < C.strikes ? 'strike-on' : ''}">✕</span>`).join('')}</div>` : ''}
-        <div class="marcador"><b class="num">${C.puntos}</b><small>Racha ×${mult}</small></div>
-      </div>
+      ${S.cfg.cqElim ? `<div class="flex gap-1 shrink-0" role="img" aria-label="${C.strikes} de 3 strikes">${[0, 1, 2].map(k => `<span class="strike strike-mini ${k < C.strikes ? 'strike-on' : ''}">✕</span>`).join('')}</div>` : ''}
+      <div class="text-right shrink-0"><div class="pts-mini">${C.puntos}</div><div class="text-[.7rem] tenue">pts${mult > 1 ? ` · ×${mult}` : ''}</div></div>
     </div>
-    <div class="tablero flex flex-col gap-4">
-      <div class="flex items-center justify-between gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="text-sm" style="color:var(--tablero-tenue)">${esc(q.catNombre)} · ${q.puntos} pts</span></div>
-      <div class="tablero-pregunta" style="font-size:clamp(1.35rem,3.8vw,2.1rem)">${esc(q.pregunta)}</div>
-      ${S.cfg.cqTiempo && C.fase === 'pregunta' ? `<div class="flex items-center gap-3"><div class="reloj flex-1" id="reloj-cq"><span style="width:100%"></span></div><span class="num text-sm" id="reloj-cq-num" style="color:var(--tablero-tenue)">${S.cfg.cqTiempo} s</span></div>` : ''}
+    <div class="escena flex flex-col gap-3">
+      <div class="flex items-center justify-between gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="text-sm tenue truncate">${esc(q.catNombre)} · ${q.puntos} pts</span></div>
+      <div class="escena-pregunta">${esc(q.pregunta)}</div>
+      ${S.cfg.cqTiempo ? `<div class="flex items-center gap-3" style="${C.fase === 'pregunta' ? '' : 'visibility:hidden'}"><div class="reloj flex-1" id="reloj-cq"><span style="width:100%"></span></div><span class="num text-sm tenue w-9 text-right" id="reloj-cq-num">${S.cfg.cqTiempo} s</span></div>` : ''}
       ${C.fase === 'feedback' && !C.ultimoOk ? '<div class="x-capa" aria-hidden="true"><span class="x">✕</span></div>' : ''}
     </div>
-    <div class="flex flex-wrap items-center justify-between gap-2">${segmentoResp()}${usaOpciones() ? '<span class="text-xs tenue hidden sm:inline">Atajos: teclas A, B, C</span>' : ''}</div>
     ${usaOpciones() && C.ops ? opcionesHTML(C.ops, 'opcion-cq', { revelar: C.fase !== 'pregunta' }) : ''}
-    ${C.fase === 'pregunta' ? (usaOpciones() ? '<div><button class="btn btn-linea" type="button" data-accion="saltar-cq">Saltar</button></div>' : `
+    ${!usaOpciones() && C.fase === 'pregunta' ? `
     <form class="flex flex-col sm:flex-row gap-2" data-form="concurso" autocomplete="off">
       <label for="resp-cq" class="sr-only">Tu respuesta</label>
       <input id="resp-cq" class="campo flex-1" placeholder="Escribe tu respuesta y presiona Enter" maxlength="120" enterkeyhint="send">
-      <div class="flex gap-2"><button class="btn btn-guinda flex-1 sm:flex-none" type="submit">Responder</button><button class="btn btn-linea" type="button" data-accion="saltar-cq">Saltar</button></div>
-    </form>`) : `
-    <div class="flex flex-col gap-3" aria-live="polite">
+      <button class="btn btn-guinda" type="submit">Responder</button>
+    </form>` : ''}
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      ${segmentoResp()}
+      <button class="btn btn-linea btn-sm" type="button" data-accion="saltar-cq" style="${C.fase === 'pregunta' ? '' : 'visibility:hidden'}">Saltar</button>
+    </div>
+    ${C.fase === 'feedback' ? barraAccion(`
       ${avisoHTML(C.msg)}
-      <div class="flex flex-wrap gap-2">
-        <button type="button" class="btn btn-oro" data-accion="siguiente-cq" id="btn-sig-cq">${C.i + 1 >= C.lista.length || C.terminarYa ? 'Ver resultados' : 'Siguiente pregunta'}</button>
-        ${!C.ultimoOk && C.ultimoTexto && !C.porOpcion ? '<button type="button" class="btn btn-linea" data-accion="corregir-cq">Mi respuesta era correcta</button>' : ''}
-      </div>
-    </div>`}
+      <div class="flex gap-2">
+        <button type="button" class="btn btn-guinda flex-1" data-accion="siguiente-cq" id="btn-sig-cq">${C.i + 1 >= n || C.terminarYa ? 'Ver resultados' : 'Siguiente'}</button>
+        ${!C.ultimoOk && C.ultimoTexto && !C.porOpcion ? '<button type="button" class="btn btn-linea" data-accion="corregir-cq">Era correcta</button>' : ''}
+      </div>`) : ''}
   </div>`;
 }
 function renderConfigConcurso() {
   const cats = banco().cats, c = S.cfg;
   const disp = todasPreguntas(c.cqCat).length;
+  const sel = (id, k, ops) => `<select id="${id}" class="campo-fila" data-cfg="${k}">${ops.map(([v, l]) => `<option value="${esc(v)}" ${c[k] === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>`;
   $('#v-concurso').innerHTML = `
-  <div class="grid lg:grid-cols-[1fr_320px] gap-6 entrar">
-    <div class="tablero flex flex-col gap-5 justify-center min-h-[18rem]">
-      <p class="eyebrow" style="color:var(--oro-vivo)">Simulador del concurso</p>
-      <h2 class="text-4xl md:text-5xl font-extrabold">Modo Concurso</h2>
-      <p class="max-w-[58ch]" style="color:var(--tablero-tenue)">Preguntas rápidas de todas las categorías, una tras otra. Ganas los puntos de la pregunta más un bono por velocidad, y tu racha multiplica: ×1.5 desde 3 aciertos seguidos y ×2 desde 5.</p>
-      <div class="flex flex-wrap gap-2"><button type="button" class="btn btn-oro" data-accion="iniciar-concurso" ${disp ? '' : 'disabled'}>Empezar ronda</button></div>
+  <div class="max-w-2xl mx-auto flex flex-col gap-7">
+    <div>
+      <p class="eyebrow">Simulador</p>
+      <h2 class="text-[2.125rem]">Modo Concurso</h2>
+      <p class="tenue mt-1">Preguntas rápidas, una tras otra. Ganas los puntos de la pregunta más un bono por velocidad, y tu racha multiplica: ×1.5 desde 3 aciertos seguidos y ×2 desde 5.</p>
     </div>
-    <div class="panel p-5 flex flex-col gap-4">
-      <p class="eyebrow">Configuración</p>
-      <label class="flex flex-col gap-1 text-sm font-bold" for="cfg-cq-cat">Categoría
-        <select id="cfg-cq-cat" class="campo" data-cfg="cqCat">
-          <option value="todas">Todas las categorías</option>
-          ${cats.map(k => `<option value="${esc(k.id)}" ${c.cqCat === k.id ? 'selected' : ''}>${esc(k.nombre)}</option>`).join('')}
-        </select>
-      </label>
-      <label class="flex flex-col gap-1 text-sm font-bold" for="cfg-cq-num">Preguntas
-        <select id="cfg-cq-num" class="campo" data-cfg="cqNum">${[5, 10, 15, 20, 30].map(v => `<option value="${v}" ${c.cqNum === v ? 'selected' : ''}>${v} preguntas</option>`).join('')}</select>
-      </label>
-      <label class="flex flex-col gap-1 text-sm font-bold" for="cfg-cq-tiempo">Tiempo por pregunta
-        <select id="cfg-cq-tiempo" class="campo" data-cfg="cqTiempo">${[[10, '10 segundos'], [15, '15 segundos'], [20, '20 segundos'], [0, 'Sin tiempo']].map(([v, l]) => `<option value="${v}" ${c.cqTiempo === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
-      </label>
-      <label class="flex items-center gap-2 text-sm" for="cfg-cq-elim"><input id="cfg-cq-elim" type="checkbox" data-cfg="cqElim" ${c.cqElim ? 'checked' : ''} class="w-4 h-4"> Eliminación con tres strikes</label>
-      <p class="text-xs tenue">${disp} preguntas disponibles con esta selección.</p>
-    </div>
+    <section class="flex flex-col gap-2">
+      <h3 class="eyebrow px-4">Configuración</h3>
+      <div class="lista">
+        <label class="fila" for="cfg-cq-cat"><span>Categoría</span>${sel('cfg-cq-cat', 'cqCat', [['todas', 'Todas'], ...cats.map(k => [k.id, k.nombre])])}</label>
+        <label class="fila" for="cfg-cq-num"><span>Preguntas</span>${sel('cfg-cq-num', 'cqNum', [5, 10, 15, 20, 30].map(v => [v, String(v)]))}</label>
+        <label class="fila" for="cfg-cq-tiempo"><span>Tiempo por pregunta</span>${sel('cfg-cq-tiempo', 'cqTiempo', [[10, '10 s'], [15, '15 s'], [20, '20 s'], [0, 'Sin tiempo']])}</label>
+        <label class="fila" for="cfg-cq-elim"><span>Eliminación con 3 strikes</span><input id="cfg-cq-elim" type="checkbox" class="interruptor" data-cfg="cqElim" ${c.cqElim ? 'checked' : ''}></label>
+      </div>
+      <p class="text-[.8125rem] tenue px-4">${disp} preguntas disponibles con esta selección.</p>
+    </section>
+    <button type="button" class="btn btn-guinda w-full" data-accion="iniciar-concurso" ${disp ? '' : 'disabled'}>Empezar ronda</button>
   </div>`;
 }
 function iniciarConcurso() {
@@ -1248,7 +883,7 @@ function responderConcurso(texto, agotado = false, okForzado) {
   C.terminarYa = S.cfg.cqElim && C.strikes >= 3;
   C.fase = 'feedback';
   render();
-  const b = $('#btn-sig-cq'); if (b) b.focus();
+  const b = $('#btn-sig-cq'); if (b) b.focus({ preventScroll: true });
   if (r.ok && !C.terminarYa) { const ref = C.i; C.auto = setTimeout(() => { if (S.concurso === C && C.i === ref && C.fase === 'feedback' && S.vista === 'concurso') siguienteConcurso(); }, 1600); }
 }
 function siguienteConcurso() {
@@ -1260,7 +895,7 @@ function siguienteConcurso() {
     if (C.puntos > S.record.concurso) { S.record.concurso = C.puntos; C.nuevoRecord = true; almacen.set('record', S.record); }
     sonar('fin'); render(); return;
   }
-  C.i++; preguntaConcurso();
+  C.i++; preguntaConcurso(); mostrarPregunta('#quiz-cq');
 }
 function corregirConcurso() {
   const C = S.concurso;
@@ -1278,11 +913,11 @@ function renderResultadosConcurso() {
   const C = S.concurso, n = C.res.length, ok = C.res.filter(Boolean).length;
   const prom = C.tiempos.length ? (C.tiempos.reduce((a, b) => a + b, 0) / C.tiempos.length).toFixed(1) : '0';
   $('#v-concurso').innerHTML = `
-  <div class="max-w-4xl mx-auto flex flex-col gap-5 entrar">
-    <div class="tablero text-center flex flex-col items-center gap-2 py-8">
-      <p class="eyebrow" style="color:var(--oro-vivo)">${C.terminarYa ? 'Eliminado con tres strikes' : 'Ronda terminada'}</p>
-      <p class="num font-extrabold leading-none" style="font-size:clamp(3.5rem,12vw,6rem);color:var(--oro-vivo)">${C.puntos}</p>
-      <p style="color:var(--tablero-tenue)">puntos${C.nuevoRecord ? ' · ¡Nuevo récord!' : ` · Récord: ${S.record.concurso}`}</p>
+  <div class="max-w-4xl mx-auto flex flex-col gap-5">
+    <div class="escena text-center flex flex-col items-center gap-2 py-8">
+      <p class="eyebrow">${C.terminarYa ? 'Eliminado con tres strikes' : 'Ronda terminada'}</p>
+      <p class="num font-bold leading-none" style="font-size:clamp(3.5rem,12vw,5.5rem);color:var(--guinda)">${C.puntos}</p>
+      <p class="tenue">puntos${C.nuevoRecord ? ' · ¡Nuevo récord!' : ` · Récord: ${S.record.concurso}`}</p>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
       ${[['Aciertos', `${ok}/${n}`], ['Precisión', `${n ? Math.round(ok / n * 100) : 0}%`], ['Mejor racha', C.mejorRacha], ['Tiempo medio', `${prom} s`]].map(([l, v]) => `<div class="panel p-4 text-center"><p class="eyebrow">${l}</p><p class="num text-3xl font-extrabold">${v}</p></div>`).join('')}
@@ -1328,7 +963,7 @@ function renderEstudio() {
   const E = S.estudio, cats = banco().cats;
   const d = dominio(E.cat);
   const nErr = todasPreguntas(E.cat).filter(q => (S.stats[q.id]?.f || 0) > 0 && !dominada(q.id)).length;
-  const tabs = [['practica', 'Práctica guiada'], ['tarjetas', 'Tarjetas'], ['errores', `Repaso de errores (${nErr})`], ['guia', 'Guía completa']];
+  const tabs = [['practica', 'Práctica'], ['tarjetas', 'Tarjetas'], ['errores', `Errores (${nErr})`], ['guia', 'Guía']];
   let cuerpo = '';
   if (E.tab === 'guia') cuerpo = guiaHTML();
   else {
@@ -1342,22 +977,20 @@ function renderEstudio() {
     else cuerpo = E.tab === 'tarjetas' ? tarjetaHTML(q) : practicaHTML(q);
   }
   $('#v-estudio').innerHTML = `
-  <div class="flex flex-col gap-5 entrar">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div><p class="eyebrow">Modo Estudio</p><h2 class="text-4xl font-extrabold">Repasa hasta dominarla</h2></div>
-      <div class="flex items-center gap-3 w-full sm:w-auto">
-        <label for="est-cat" class="sr-only">Categoría</label>
-        <select id="est-cat" class="campo sm:w-64" data-accion-cambio="cat-estudio">
-          <option value="todas">Todas las categorías</option>
-          ${cats.map(c => `<option value="${esc(c.id)}" ${E.cat === c.id ? 'selected' : ''}>${esc(c.nombre)}</option>`).join('')}
-        </select>
-      </div>
+  <div class="flex flex-col gap-3">
+    <div class="flex items-center justify-between gap-3">
+      <h2 class="text-[1.75rem] md:text-[2.125rem]">Estudio</h2>
+      <label for="est-cat" class="sr-only">Categoría</label>
+      <select id="est-cat" class="campo w-auto max-w-[55%] py-2 text-[.9375rem]" data-accion-cambio="cat-estudio">
+        <option value="todas">Todas las categorías</option>
+        ${cats.map(c => `<option value="${esc(c.id)}" ${E.cat === c.id ? 'selected' : ''}>${esc(c.nombre)}</option>`).join('')}
+      </select>
     </div>
-    <div class="panel p-4 flex flex-wrap items-center gap-4">
-      <div class="flex-1 min-w-[12rem]"><div class="flex justify-between text-sm mb-1"><strong>Dominio${E.cat !== 'todas' ? ' de la categoría' : ' total'}</strong><span class="num">${d.dom}/${d.total} · ${d.pct}%</span></div><div class="barra"><span style="width:${d.pct}%"></span></div></div>
-      <div class="flex gap-1 nav-scroll max-w-full" role="tablist">${tabs.map(([id, l]) => `<button type="button" role="tab" aria-selected="${E.tab === id}" class="nav-btn" ${E.tab === id ? 'aria-current="page"' : ''} data-accion="tab-estudio" data-tab="${id}">${l}</button>`).join('')}</div>
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+      <div class="segmento nav-scroll" role="tablist">${tabs.map(([id, l]) => `<button type="button" role="tab" aria-selected="${E.tab === id}" data-accion="tab-estudio" data-tab="${id}">${l}</button>`).join('')}</div>
+      <div class="flex-1 min-w-[10rem] flex items-center gap-2"><div class="barra flex-1"><span style="width:${d.pct}%"></span></div><span class="num text-xs tenue">${d.dom}/${d.total} dominadas</span></div>
     </div>
-    ${E.vuelta && E.tab !== 'guia' ? '<div class="aviso aviso-casi text-sm">Completaste una vuelta. La nueva vuelta empieza por las preguntas que aún no dominas.</div>' : ''}
+    ${E.vuelta && E.tab !== 'guia' ? '<div class="aviso aviso-casi text-sm">Completaste una vuelta. La nueva empieza por las preguntas que aún no dominas.</div>' : ''}
     ${cuerpo}
   </div>`;
 }
@@ -1368,34 +1001,38 @@ function opsEstudio(q) {
 }
 function practicaHTML(q) {
   const E = S.estudio, st = estadoPregunta(q.id), r = E.res;
-  const pos = `${E.idx + 1} de ${E.cola.length}`;
+  const fb = E.fase !== 'pregunta';
   return `
-  <div class="grid lg:grid-cols-[1fr_300px] gap-5">
-    <div class="panel p-5 md:p-7 flex flex-col gap-5 min-w-0">
-      <div class="flex flex-wrap items-center gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="chip ${st.cls}">${st.txt}</span><span class="text-sm tenue ml-auto">${pos}</span></div>
-      <h3 class="text-2xl md:text-3xl font-bold leading-tight">${esc(q.pregunta)}</h3>
-      <div class="flex flex-wrap items-center justify-between gap-2">${segmentoResp()}${usaOpciones() ? '<span class="text-xs tenue hidden sm:inline">Atajos: teclas A, B, C</span>' : ''}</div>
-      ${usaOpciones() ? opcionesHTML(opsEstudio(q), 'opcion-est', { revelar: E.fase !== 'pregunta' }) : ''}
-      ${E.fase === 'pregunta' ? usaOpciones() ? '<div><button class="btn btn-linea" type="button" data-accion="nolase-est">No la sé</button></div>' : `
+  <div class="grid lg:grid-cols-[1fr_300px] gap-4" id="quiz-est">
+    <div class="flex flex-col gap-3 min-w-0">
+      <div class="escena flex flex-col gap-3">
+        <div class="flex flex-wrap items-center gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="chip ${st.cls}">${st.txt}</span><span class="text-sm tenue ml-auto num">${E.idx + 1} de ${E.cola.length}</span></div>
+        <h3 class="escena-pregunta">${esc(q.pregunta)}</h3>
+      </div>
+      ${usaOpciones() ? opcionesHTML(opsEstudio(q), 'opcion-est', { revelar: fb }) : !fb ? `
       <form class="flex flex-col sm:flex-row gap-2" data-form="estudio" autocomplete="off">
         <label for="resp-est" class="sr-only">Tu respuesta</label>
         <input id="resp-est" class="campo flex-1" placeholder="Escribe tu respuesta" maxlength="160" enterkeyhint="send">
-        <div class="flex gap-2"><button class="btn btn-guinda flex-1 sm:flex-none" type="submit">Comprobar</button><button class="btn btn-linea" type="button" data-accion="nolase-est">No la sé</button></div>
+        <button class="btn btn-guinda" type="submit">Comprobar</button>
       </form>
-      ${r && r.casi ? `<div class="aviso aviso-casi"><strong>¡Casi!</strong> «${esc(r.texto)}» va bien, pero le falta precisión. Inténtalo otra vez.</div>` : ''}` : `
-      <div class="aviso ${r.ok ? 'aviso-ok' : 'aviso-mal'} flex flex-col gap-2" aria-live="polite">
-        <p class="font-display text-xl font-bold uppercase tracking-wide" style="color:${r.ok ? 'var(--exito)' : 'var(--error)'}">${r.ok ? (r.corregida ? 'Marcada como correcta' : 'Correcto') : r.texto ? 'Incorrecto' : 'Respuesta revelada'}</p>
-        ${r.texto ? `<p><span class="tenue">Tu respuesta:</span> ${esc(r.texto)}</p>` : ''}
-        <p><span class="tenue">Respuesta de la guía:</span> <strong>${esc(q.respuesta)}</strong></p>
-        ${q.alias && q.alias.length ? `<p class="text-sm"><span class="tenue">También se acepta:</span> ${q.alias.map(esc).join(' · ')}</p>` : ''}
-        ${q.nota ? `<p class="text-sm"><span class="tenue">Para recordar:</span> ${esc(q.nota)}</p>` : ''}
+      ${r && r.casi ? `<div class="aviso aviso-casi"><strong>¡Casi!</strong> «${esc(r.texto)}» va bien, pero le falta precisión. Inténtalo otra vez.</div>` : ''}` : ''}
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        ${segmentoResp()}
+        <button class="btn btn-linea btn-sm" type="button" data-accion="nolase-est" style="${fb ? 'visibility:hidden' : ''}">No la sé</button>
       </div>
-      <div class="flex flex-wrap gap-2">
-        <button type="button" class="btn btn-oro" data-accion="sig-est" id="btn-sig-est">Siguiente</button>
-        ${!r.ok && r.texto && !r.porOpcion ? '<button type="button" class="btn btn-linea" data-accion="corregir-est">Mi respuesta era correcta</button>' : ''}
-      </div>`}
     </div>
     ${historialHTML(q)}
+    ${fb ? barraAccion(`
+      <div class="aviso ${r.ok ? 'aviso-ok' : 'aviso-mal'} flex flex-col gap-1">
+        <p class="font-bold" style="color:${r.ok ? 'var(--exito)' : 'var(--error)'}">${r.ok ? (r.corregida ? 'Marcada como correcta' : '¡Correcto!') : r.texto ? 'Incorrecto' : 'Respuesta revelada'}</p>
+        <p><span class="tenue">Respuesta de la guía:</span> <strong>${esc(q.respuesta)}</strong>${r.texto && !r.ok ? ` <span class="tenue">· tú: ${esc(r.texto)}</span>` : ''}</p>
+        ${q.nota ? `<p class="text-sm"><span class="tenue">Para recordar:</span> ${esc(q.nota)}</p>` : ''}
+        ${!usaOpciones() && q.alias && q.alias.length ? `<p class="text-sm"><span class="tenue">También se acepta:</span> ${q.alias.map(esc).join(' · ')}</p>` : ''}
+      </div>
+      <div class="flex gap-2">
+        <button type="button" class="btn btn-guinda flex-1" data-accion="sig-est" id="btn-sig-est">Siguiente</button>
+        ${!r.ok && r.texto && !r.porOpcion ? '<button type="button" class="btn btn-linea" data-accion="corregir-est">Era correcta</button>' : ''}
+      </div>`) : ''}
   </div>`;
 }
 function historialHTML(q) {
@@ -1406,7 +1043,7 @@ function historialHTML(q) {
       ${[['Intentos', s?.v || 0], ['Aciertos', s?.a || 0], ['Errores', s?.f || 0]].map(([l, v]) => `<div class="aviso px-2 py-2"><p class="num text-2xl font-extrabold">${v}</p><p class="text-xs tenue">${l}</p></div>`).join('')}
     </div>
     <p class="tenue">${dominada(q.id) ? 'Ya la dominas. Seguirá apareciendo de vez en cuando para que no se olvide.' : `Te faltan ${2 - Math.min(2, s?.r || 0)} aciertos seguidos para dominarla.`}</p>
-    <p class="tenue">Vale <strong class="num">${q.puntos}</strong> puntos en los tableros.</p>
+    <p class="tenue">Vale <strong class="num">${q.puntos}</strong> puntos base en el Modo Concurso.</p>
   </aside>`;
 }
 function tarjetaHTML(q) {
@@ -1416,8 +1053,8 @@ function tarjetaHTML(q) {
     <div class="flex items-center justify-between text-sm tenue"><span><span class="chip chip-cod mr-2">${esc(q.codigo || '···')}</span>${esc(q.catNombre)}</span><span>${E.idx + 1} de ${E.cola.length}</span></div>
     <button type="button" class="flash ${E.girada ? 'girada' : ''} text-left w-full" data-accion="girar" aria-label="${E.girada ? 'Ver pregunta' : 'Ver respuesta'}">
       <div class="flash-int">
-        <div class="flash-cara flash-frente gap-3"><p class="eyebrow">Pregunta</p><p class="font-display font-bold text-2xl md:text-3xl leading-tight">${esc(q.pregunta)}</p><p class="text-sm tenue">Toca la tarjeta o presiona espacio para voltear</p></div>
-        <div class="flash-cara flash-reverso gap-3"><p class="eyebrow" style="color:var(--oro-vivo)">Respuesta</p><p class="font-display font-extrabold text-3xl md:text-4xl uppercase">${esc(q.respuesta)}</p>${q.nota ? `<p class="text-sm" style="color:var(--tablero-tenue)">${esc(q.nota)}</p>` : ''}</div>
+        <div class="flash-cara flash-frente gap-3"><p class="eyebrow">Pregunta</p><p class="font-bold text-2xl md:text-3xl leading-tight">${esc(q.pregunta)}</p><p class="text-sm tenue">Toca la tarjeta o presiona espacio para voltear</p></div>
+        <div class="flash-cara flash-reverso gap-3"><p class="eyebrow">Respuesta</p><p class="font-bold text-3xl md:text-4xl">${esc(q.respuesta)}</p>${q.nota ? `<p class="text-sm" style="opacity:.8">${esc(q.nota)}</p>` : ''}</div>
       </div>
     </button>
     <div class="grid grid-cols-2 gap-2">
@@ -1461,7 +1098,7 @@ function siguienteEstudio() {
   const E = S.estudio;
   E.idx++; E.fase = 'pregunta'; E.res = null; E.girada = false; E.vuelta = false;
   if (E.tab === 'errores') { const id = E.cola[E.idx]; if (!id || dominada(id)) { const pend = E.cola.slice(E.idx).filter(x => !dominada(x)); E.cola = pend.length ? pend : priorizar(poolEstudio()).map(q => q.id); E.idx = 0; } }
-  render(); enfocar(E.tab === 'tarjetas' ? '.flash' : '#resp-est');
+  render(); mostrarPregunta('#quiz-est, .flash'); enfocar(E.tab === 'tarjetas' ? '.flash' : '#resp-est');
 }
 
 /* ============================================================
@@ -1576,14 +1213,9 @@ function parsearTexto(texto, nombreDoc) {
       return { id: `${docId}-c${ci + 1}-q${pi + 1}`, pregunta: p.pregunta.trim(), respuesta: p.respuesta, alias, puntos: PUNTOS[pi % 5] };
     })
   }));
-  const encuestas = categorias.filter(c => c.preguntas.length >= 4).map((c, i) => {
-    const elegidas = [...c.preguntas].sort((a, b) => b.puntos - a.puntos).slice(0, 6);
-    const pesos = elegidas.map((_, k) => elegidas.length - k), suma = pesos.reduce((a, b) => a + b, 0);
-    return { id: `${docId}-e${i + 1}`, categoria: c.id, auto: true, pregunta: `Menciona una respuesta clave de «${c.nombre}»`, respuestas: elegidas.map((p, k) => ({ texto: sinParentesis(p.respuesta), alias: p.alias, puntos: Math.round(pesos[k] / suma * 100), ref: p.id })) };
-  });
   return {
     id: docId, nombre: nombreDoc, titulo, modo, fecha: new Date().toISOString(), activo: true,
-    categorias, encuestas, palabras: palabrasClave(texto), caracteres: texto.length
+    categorias, palabras: palabrasClave(texto), caracteres: texto.length
   };
 }
 async function procesarArchivo(file) {
@@ -1598,9 +1230,8 @@ async function procesarArchivo(file) {
       if (!Array.isArray(data.categorias)) throw new Error('El JSON no tiene la lista "categorias". Usa la estructura que aparece abajo.');
       const docId = 'd' + uid();
       const doc = { id: docId, nombre: file.name, modo: 'json', fecha: new Date().toISOString(), activo: true,
-        categorias: data.categorias.map((c, ci) => ({ id: `${docId}-${c.id || 'c' + ci}`, codigo: c.codigo || 'JSN', nombre: c.nombre || 'Categoría', preguntas: (c.preguntas || []).filter(p => p.pregunta && p.respuesta).map((p, pi) => ({ id: `${docId}-${p.id || 'q' + ci + '-' + pi}`, pregunta: p.pregunta, respuesta: p.respuesta, alias: p.alias || [], puntos: p.puntos || 60, nota: p.nota })) })),
-        encuestas: [], palabras: [] };
-      doc.encuestas = (data.encuestas || []).map((e, i) => ({ ...e, id: `${docId}-${e.id || 'e' + i}`, categoria: `${docId}-${e.categoria}`, respuestas: (e.respuestas || []).map(r => ({ ...r, ref: r.ref ? `${docId}-${r.ref}` : undefined })) }));
+        categorias: data.categorias.map((c, ci) => ({ id: `${docId}-${c.id || 'c' + ci}`, codigo: c.codigo || 'JSN', nombre: c.nombre || 'Categoría', preguntas: (c.preguntas || []).filter(p => p.pregunta && p.respuesta).map((p, pi) => ({ id: `${docId}-${p.id || 'q' + ci + '-' + pi}`, pregunta: p.pregunta, respuesta: p.respuesta, alias: p.alias || [], distractores: p.distractores, puntos: p.puntos || 60, nota: p.nota })) })),
+        palabras: [] };
       U.preview = doc;
     } else {
       if (ext === 'pdf') texto = await textoDePDF(await file.arrayBuffer());
@@ -1631,15 +1262,15 @@ function renderDocumentos() {
     </li>`;
   };
   $('#v-documentos').innerHTML = `
-  <div class="flex flex-col gap-6 entrar">
-    <div><p class="eyebrow">Gestor de documentos</p><h2 class="text-4xl font-extrabold">Convierte tus apuntes en tableros</h2>
-      <p class="tenue mt-1 max-w-[66ch]">Sube una guía en PDF, DOCX o TXT. La app detecta las categorías, las preguntas que empiezan con «¿» y sus respuestas, asigna puntos y crea encuestas para el tablero. Todo se procesa en tu navegador; nada se envía a internet.</p></div>
+  <div class="flex flex-col gap-6">
+    <div><p class="eyebrow">Gestor de documentos</p><h2 class="text-4xl font-extrabold">Convierte tus apuntes en preguntas</h2>
+      <p class="tenue mt-1 max-w-[66ch]">Sube una guía en PDF, DOCX o TXT. La app detecta las categorías, las preguntas que empiezan con «¿» y sus respuestas, asigna puntos y prepara opciones A·B·C. Todo se procesa en tu navegador; nada se envía a internet.</p></div>
 
     <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-6">
       <div class="flex flex-col gap-4 min-w-0">
         <label for="archivo" class="soltar p-8 flex flex-col items-center justify-center text-center gap-2 cursor-pointer" id="zona-soltar">
           <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--guinda)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 17v-6"/><path d="M9.5 13.5 12 11l2.5 2.5"/></svg>
-          <strong class="font-display text-xl uppercase tracking-wide">${U.procesando ? 'Procesando documento…' : 'Arrastra tu archivo aquí'}</strong>
+          <strong class="text-xl">${U.procesando ? 'Procesando documento…' : 'Arrastra tu archivo aquí'}</strong>
           <span class="text-sm tenue">o haz clic para elegirlo · PDF, DOCX, TXT o JSON del banco</span>
           <input id="archivo" type="file" class="sr-only" accept=".pdf,.docx,.txt,.md,.json,application/pdf,text/plain,application/json,application/vnd.openxmlformats-officedocument.wordprocessingml.document" data-accion-cambio="archivo">
         </label>
@@ -1690,12 +1321,12 @@ function previewHTML(P) {
   return `<div class="panel overflow-hidden">
     <div class="p-5 flex flex-wrap items-center justify-between gap-3" style="background:var(--hundido);border-bottom:1px solid var(--linea)">
       <div class="min-w-0"><p class="eyebrow">Vista previa</p><h3 class="text-2xl font-bold truncate">${esc(P.titulo || P.nombre)}</h3>
-        <p class="text-sm tenue">${P.categorias.length} categorías · ${n} preguntas · ${P.encuestas.length} encuestas${P.modo === 'definiciones' ? ' · generadas a partir de definiciones' : ''}</p></div>
+        <p class="text-sm tenue">${P.categorias.length} categorías · ${n} preguntas${P.modo === 'definiciones' ? ' · generadas a partir de definiciones' : ''}</p></div>
       <div class="flex gap-2"><button type="button" class="btn btn-guinda" data-accion="guardar-doc" ${n ? '' : 'disabled'}>Agregar al banco</button><button type="button" class="btn btn-linea" data-accion="descartar-doc">Descartar</button></div>
     </div>
     ${P.palabras && P.palabras.length ? `<div class="px-5 pt-4"><p class="eyebrow mb-2">Índice de conceptos</p><div class="flex flex-wrap gap-1.5">${P.palabras.map(p => `<span class="chip">${esc(p.w)} <span class="num">${p.c}</span></span>`).join('')}</div></div>` : ''}
     <div class="p-5 flex flex-col gap-4 max-h-[32rem] overflow-y-auto">
-      ${P.categorias.map((c, ci) => `<div><h4 class="font-display text-lg font-bold uppercase tracking-wide mb-1"><span class="chip chip-cod mr-2">${esc(c.codigo)}</span>${esc(c.nombre)} <span class="tenue text-sm normal-case">(${c.preguntas.length})</span></h4>
+      ${P.categorias.map((c, ci) => `<div><h4 class="text-lg font-bold mb-1"><span class="chip chip-cod mr-2">${esc(c.codigo)}</span>${esc(c.nombre)} <span class="tenue text-sm normal-case">(${c.preguntas.length})</span></h4>
         <ul class="flex flex-col">${c.preguntas.map((p, pi) => `<li class="py-2 grid grid-cols-[1fr_auto] gap-3 items-start border-b" style="border-color:var(--linea)">
           <span class="min-w-0 text-sm">${esc(p.pregunta)}<strong class="block" style="color:var(--guinda)">${esc(p.respuesta)}</strong></span>
           <button type="button" class="btn btn-sm btn-linea" data-accion="quitar-preview" data-ci="${ci}" data-pi="${pi}" aria-label="Quitar pregunta">Quitar</button></li>`).join('')}</ul></div>`).join('')}
@@ -1703,8 +1334,8 @@ function previewHTML(P) {
   </div>`;
 }
 function bancoExportable() {
-  const { cats, encs } = banco();
-  return { version: 1, generado: new Date().toISOString(), categorias: cats.map(({ docId, docNombre, ...c }) => c), encuestas: encs.map(({ docId, ...e }) => e) };
+  const { cats } = banco();
+  return { version: 1, generado: new Date().toISOString(), categorias: cats.map(({ docId, docNombre, ...c }) => c) };
 }
 
 /* ---------- foco ---------- */
@@ -1727,18 +1358,7 @@ document.addEventListener('click', e => {
     'ir': () => ir(b.dataset.vista),
     'tema': () => { S.tema = S.tema === 'dark' ? 'light' : 'dark'; almacen.set('tema', S.tema); aplicarTema(); pintarNav(); },
     'sonido': () => { S.sonido = !S.sonido; almacen.set('sonido', S.sonido); pintarNav(); if (S.sonido) sonar('ok'); },
-    'estudiar-cat': () => { detenerRelojes(); S.juego = null; S.estudio.cat = b.dataset.cat; S.estudio.tab = 'practica'; armarCola(); ir('estudio'); },
-    'jugar-cat': () => iniciarJuegoCategoria(b.dataset.cat),
-    'jugar-enc': () => iniciarJuegoEncuesta(b.dataset.enc),
-    'jugar-azar': () => {
-      const { cats, encs } = banco();
-      const ops = [...cats.map(c => ['c', c.id]), ...encs.map(x => ['e', x.id])];
-      const [t, id] = ops[Math.floor(Math.random() * ops.length)];
-      t === 'c' ? iniciarJuegoCategoria(id) : iniciarJuegoEncuesta(id);
-    },
-    'elegir-casilla': () => { const J = S.juego; J.activo = +b.dataset.i; J.msg = null; J.x = false; render(); reiniciarRelojJuego(); enfocar('#resp-juego'); },
-    'pista-juego': pistaJuego,
-    'opcion-juego': () => elegirOpcionJuego(+b.dataset.o),
+    'estudiar-cat': () => { detenerRelojes(); S.estudio.cat = b.dataset.cat; S.estudio.tab = 'practica'; armarCola(); ir('estudio'); },
     'opcion-cq': () => { const C = S.concurso, op = C && C.ops[+b.dataset.o]; if (!op || C.fase !== 'pregunta') return; op.elegida = true; responderConcurso(op.texto, false, op.ok); },
     'opcion-est': () => {
       const E = S.estudio, id = E.cola[E.idx], op = E.ops && E.ops[+b.dataset.o];
@@ -1747,15 +1367,7 @@ document.addEventListener('click', e => {
       E.res = { ok: op.ok, texto: op.texto, prev: registrar(id, op.ok), porOpcion: true };
       E.fase = 'feedback'; sonar(op.ok ? 'ok' : 'mal'); render(); enfocar('#btn-sig-est');
     },
-    'modo-resp': () => { S.cfg.modoResp = b.dataset.v; almacen.set('cfg', S.cfg); render(); if (!usaOpciones()) enfocar(S.vista === 'tablero' ? '#resp-juego' : S.vista === 'concurso' ? '#resp-cq' : '#resp-est'); },
-    'pasar-juego': () => { const J = S.juego; if (J.tipo === 'categoria') fallarCasilla(J.activo, '', 'Pasaste.'); else terminarRonda(false); },
-    'corregir-juego': corregirJuego,
-    'otra-ronda': () => {
-      const J = S.juego, { cats, encs } = banco();
-      if (J.tipo === 'categoria') { const otras = cats.filter(c => c.id !== J.origen); iniciarJuegoCategoria((otras.length ? otras[Math.floor(Math.random() * otras.length)] : cats[0]).id); }
-      else { const otras = encs.filter(x => x.id !== J.origen); iniciarJuegoEncuesta((otras.length ? otras[Math.floor(Math.random() * otras.length)] : encs[0]).id); }
-    },
-    'salir-juego': () => { detenerRelojes(); S.juego = null; render(); },
+    'modo-resp': () => { S.cfg.modoResp = b.dataset.v; almacen.set('cfg', S.cfg); render(); if (!usaOpciones()) enfocar(S.vista === 'concurso' ? '#resp-cq' : '#resp-est'); },
     'iniciar-concurso': iniciarConcurso,
     'saltar-cq': () => responderConcurso(''),
     'siguiente-cq': siguienteConcurso,
@@ -1773,16 +1385,14 @@ document.addEventListener('click', e => {
     'guardar-doc': () => { const P = S.docsUI.preview; P.categorias = P.categorias.filter(c => c.preguntas.length); S.docs.push(P); almacen.set('docs', S.docs); S.docsUI.preview = null; S.docsUI.error = null; render(); },
     'descartar-doc': () => { S.docsUI.preview = null; S.docsUI.error = null; render(); },
     'quitar-preview': () => {
-      const P = S.docsUI.preview, c = P.categorias[+b.dataset.ci], id = c.preguntas[+b.dataset.pi].id;
+      const P = S.docsUI.preview, c = P.categorias[+b.dataset.ci];
       c.preguntas.splice(+b.dataset.pi, 1);
-      P.encuestas.forEach(x => { x.respuestas = x.respuestas.filter(r => r.ref !== id); });
-      P.encuestas = P.encuestas.filter(x => x.respuestas.length >= 3);
       render();
     },
     'confirmar-borrar': () => { S.docsUI.confirmar = b.dataset.doc; render(); },
     'cancelar-borrar': () => { S.docsUI.confirmar = null; render(); },
     'borrar-doc': () => { S.docs = S.docs.filter(d => d.id !== b.dataset.doc); almacen.set('docs', S.docs); S.docsUI.confirmar = null; render(); },
-    'borrar-progreso': () => { S.stats = {}; guardarStats(); S.record = { tablero: 0, concurso: 0 }; almacen.set('record', S.record); S.docsUI.confirmar = null; render(); },
+    'borrar-progreso': () => { S.stats = {}; guardarStats(); S.record = { concurso: 0 }; almacen.set('record', S.record); S.docsUI.confirmar = null; render(); },
     'ver-json': () => { S.docsUI.verJson = !S.docsUI.verJson; render(); },
     'copiar-json': () => {
       const txt = JSON.stringify(bancoExportable(), null, 2), msg = $('#msg-copia');
@@ -1803,8 +1413,7 @@ document.addEventListener('submit', e => {
   if (!f) return;
   e.preventDefault();
   const tipo = f.dataset.form;
-  if (tipo === 'juego') responderJuego($('#resp-juego').value);
-  else if (tipo === 'concurso') responderConcurso($('#resp-cq').value);
+  if (tipo === 'concurso') responderConcurso($('#resp-cq').value);
   else if (tipo === 'estudio') responderEstudio($('#resp-est').value);
   else if (tipo === 'pegar') {
     const t = $('#texto-pegado').value;
@@ -1829,7 +1438,7 @@ document.addEventListener('change', e => {
   else if (a === 'activar-doc') {
     if (t.dataset.doc === 'base') { S.baseActiva = t.checked; almacen.set('baseActiva', S.baseActiva); }
     else { const d = S.docs.find(x => x.id === t.dataset.doc); if (d) { d.activo = t.checked; almacen.set('docs', S.docs); } }
-    S.juego = null; S.concurso = null; armarCola(); render();
+    S.concurso = null; armarCola(); render();
   }
 });
 document.addEventListener('input', e => {

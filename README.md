@@ -6,6 +6,15 @@ Aplicación web de estudio gamificada para preparar el concurso **LoboSabio**. F
 
 Todo vive en un solo archivo: **`index.html`** (HTML5 + Tailwind CSS por CDN + JavaScript sin frameworks). Ábrelo en el navegador y ya funciona. Arranca en **modo oscuro**; el botón del encabezado cambia a modo claro y la elección se recuerda.
 
+## Forma de responder
+
+Por defecto se responde con **opciones A · B · C**: botones grandes que no abren el teclado del celular. En computadora también puedes usar las teclas **A/B/C** o **1/2/3**. En cada modo hay un selector **Opciones A·B·C / Escribir** por si prefieres teclear la respuesta; la app recuerda tu elección.
+
+- Cada pregunta de la guía trae 3 distractores escritos a mano (`distractores`), del mismo tipo que la respuesta (años con años, personajes con personajes). En cada ronda salen 2 al azar, así que las opciones cambian.
+- En las **Encuestas Lobo** aparecen las respuestas del tablero mezcladas con 3 o 4 distractores; elegir uno falso cuenta como strike.
+- En el Tablero, la **Pista** elimina una opción incorrecta y la casilla vale la mitad.
+- Para los documentos que subas, los distractores se generan solos a partir de otras respuestas del mismo tipo, y las fechas y números se generan cercanos al correcto.
+
 ## Modos de juego
 
 | Modo | Qué hace |
@@ -48,7 +57,8 @@ El banco base está dentro de `index.html` (`<script type="application/json" id=
       "id": "his-01",
       "pregunta": "¿En qué año inició la Independencia de México?",
       "respuesta": "1810",            // respuesta oficial de la guía
-      "alias": ["mil ochocientos diez"], // otras formas aceptadas
+      "alias": ["mil ochocientos diez"], // otras formas aceptadas al escribir
+      "distractores": ["1821", "1910", "1800"], // opciones incorrectas A·B·C
       "puntos": 100,                   // relevancia 20–100: orden en el tablero
       "nota": "..."                    // opcional: aclaración que se muestra al revisar
     }]
@@ -56,6 +66,7 @@ El banco base está dentro de `index.html` (`<script type="application/json" id=
   "encuestas": [{
     "id": "enc-01", "categoria": "historia",
     "pregunta": "Menciona un personaje de la Historia de México que aparezca en la guía",
+    "distractores": ["José María Morelos", "Porfirio Díaz"],
     "respuestas": [{ "texto": "Miguel Hidalgo", "alias": ["Hidalgo"], "puntos": 34, "ref": "his-02" }]
   }]
 }

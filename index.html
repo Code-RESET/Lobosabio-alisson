@@ -153,6 +153,24 @@
   .reloj > span { display: block; height: 100%; background: linear-gradient(90deg, #F1D78A, #C39A3F); transition: width .25s linear; }
   .reloj.urgente > span { background: linear-gradient(90deg, #FF7A88, #FF3B4E); }
 
+  /* Opciones A·B·C */
+  .opciones { display: grid; gap: 10px; }
+  @media (min-width: 640px) { .opciones { grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); } }
+  .opcion { display: flex; align-items: center; gap: .75rem; min-height: 60px; width: 100%; padding: .7rem .9rem; text-align: left; border-radius: 12px; background: var(--superficie); color: var(--tinta); border: 2px solid var(--linea); font-weight: 700; font-size: 1.05rem; line-height: 1.2; cursor: pointer; transition: border-color .12s, transform .08s, background .12s; overflow-wrap: anywhere; }
+  .opcion:hover:not(:disabled) { border-color: var(--guinda); }
+  .opcion:active:not(:disabled) { transform: translateY(1px); }
+  .opcion:disabled { cursor: default; }
+  .opcion-letra { flex: none; width: 2rem; height: 2rem; border-radius: 8px; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 1.1rem; color: #2A1A06; background: linear-gradient(180deg, #F1D78A, #C39A3F); }
+  .opcion-ok { border-color: var(--exito); background: color-mix(in srgb, var(--exito) 14%, var(--superficie)); }
+  .opcion-ok .opcion-letra { background: var(--exito); color: #fff; }
+  .opcion-mal { border-color: var(--error); background: color-mix(in srgb, var(--error) 12%, var(--superficie)); text-decoration: line-through; }
+  .opcion-mal .opcion-letra { background: var(--error); color: #fff; }
+  .opcion-fuera { opacity: .35; text-decoration: line-through; }
+  .opcion-tenue { opacity: .55; }
+  .segmento { display: inline-flex; padding: 3px; border-radius: 10px; background: var(--hundido); border: 1px solid var(--linea); }
+  .segmento button { font-family: var(--f-display); font-weight: 700; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; padding: .35rem .7rem; border-radius: 7px; color: var(--tenue); white-space: nowrap; }
+  .segmento button[aria-pressed="true"] { background: var(--superficie); color: var(--tinta); box-shadow: var(--sombra); }
+
   /* Tarjetas de estudio */
   .flash { perspective: 1200px; }
   .flash-int { position: relative; min-height: 15rem; transition: transform .5s ease; transform-style: preserve-3d; }
@@ -251,112 +269,112 @@
   "fuente": { "titulo": "Guía de estudio LoboSabio", "archivo": "LOBOSABIO_261015_185928.pdf", "paginas": 5 },
   "categorias": [
     { "id": "historia", "codigo": "HIS", "nombre": "Historia de México", "preguntas": [
-      { "id": "his-01", "pregunta": "¿En qué año inició la Independencia de México?", "respuesta": "1810", "alias": ["mil ochocientos diez"], "puntos": 100 },
-      { "id": "his-02", "pregunta": "¿Quién fue el líder del movimiento de Independencia?", "respuesta": "Miguel Hidalgo y Costilla", "alias": ["Miguel Hidalgo", "Hidalgo", "Cura Hidalgo"], "puntos": 100 },
-      { "id": "his-03", "pregunta": "¿Qué tratado puso fin a la guerra entre México y Estados Unidos en 1848?", "respuesta": "El Tratado de Guadalupe Hidalgo", "alias": ["Guadalupe Hidalgo"], "puntos": 60 },
-      { "id": "his-04", "pregunta": "¿En qué año se promulgó la Constitución que actualmente nos rige?", "respuesta": "1917", "alias": [], "puntos": 100 },
-      { "id": "his-05", "pregunta": "¿Quién fue el primer presidente de México?", "respuesta": "Guadalupe Victoria", "alias": [], "puntos": 80 },
-      { "id": "his-06", "pregunta": "¿En qué año cayó Tenochtitlán?", "respuesta": "1521", "alias": [], "puntos": 80 },
-      { "id": "his-07", "pregunta": "¿Quién fue el emperador durante el Segundo Imperio Mexicano?", "respuesta": "Maximiliano de Habsburgo", "alias": ["Maximiliano", "Maximiliano I"], "puntos": 60 },
-      { "id": "his-08", "pregunta": "¿Qué presidente impulsó las Leyes de Reforma?", "respuesta": "Benito Juárez", "alias": ["Juárez"], "puntos": 100 },
-      { "id": "his-09", "pregunta": "¿Qué conflicto armado inició en 1910?", "respuesta": "La Revolución Mexicana", "alias": ["Revolución"], "puntos": 100 },
-      { "id": "his-10", "pregunta": "¿Qué civilización construyó la ciudad de Teotihuacán?", "respuesta": "La civilización teotihuacana", "alias": ["teotihuacanos", "cultura teotihuacana"], "puntos": 40, "nota": "Fue anterior a los mexicas." }
+      { "id": "his-01", "pregunta": "¿En qué año inició la Independencia de México?", "respuesta": "1810", "alias": ["mil ochocientos diez"], "distractores": ["1821", "1910", "1800"], "puntos": 100 },
+      { "id": "his-02", "pregunta": "¿Quién fue el líder del movimiento de Independencia?", "respuesta": "Miguel Hidalgo y Costilla", "alias": ["Miguel Hidalgo", "Hidalgo", "Cura Hidalgo"], "distractores": ["José María Morelos", "Ignacio Allende", "Agustín de Iturbide"], "puntos": 100 },
+      { "id": "his-03", "pregunta": "¿Qué tratado puso fin a la guerra entre México y Estados Unidos en 1848?", "respuesta": "El Tratado de Guadalupe Hidalgo", "alias": ["Guadalupe Hidalgo"], "distractores": ["El Tratado de Córdoba", "El Tratado de Velasco", "El Tratado de La Mesilla"], "puntos": 60 },
+      { "id": "his-04", "pregunta": "¿En qué año se promulgó la Constitución que actualmente nos rige?", "respuesta": "1917", "alias": [], "distractores": ["1857", "1910", "1824"], "puntos": 100 },
+      { "id": "his-05", "pregunta": "¿Quién fue el primer presidente de México?", "respuesta": "Guadalupe Victoria", "alias": [], "distractores": ["Agustín de Iturbide", "Vicente Guerrero", "Benito Juárez"], "puntos": 80 },
+      { "id": "his-06", "pregunta": "¿En qué año cayó Tenochtitlán?", "respuesta": "1521", "alias": [], "distractores": ["1519", "1492", "1810"], "puntos": 80 },
+      { "id": "his-07", "pregunta": "¿Quién fue el emperador durante el Segundo Imperio Mexicano?", "respuesta": "Maximiliano de Habsburgo", "alias": ["Maximiliano", "Maximiliano I"], "distractores": ["Agustín de Iturbide", "Carlos V", "Napoleón III"], "puntos": 60 },
+      { "id": "his-08", "pregunta": "¿Qué presidente impulsó las Leyes de Reforma?", "respuesta": "Benito Juárez", "alias": ["Juárez"], "distractores": ["Porfirio Díaz", "Lázaro Cárdenas", "Antonio López de Santa Anna"], "puntos": 100 },
+      { "id": "his-09", "pregunta": "¿Qué conflicto armado inició en 1910?", "respuesta": "La Revolución Mexicana", "alias": ["Revolución"], "distractores": ["La Guerra de Reforma", "La Guerra Cristera", "La Guerra de Independencia"], "puntos": 100 },
+      { "id": "his-10", "pregunta": "¿Qué civilización construyó la ciudad de Teotihuacán?", "respuesta": "La civilización teotihuacana", "alias": ["teotihuacanos", "cultura teotihuacana"], "distractores": ["Los mexicas", "Los mayas", "Los olmecas"], "puntos": 40, "nota": "Fue anterior a los mexicas." }
     ]},
     { "id": "geografia", "codigo": "GEO", "nombre": "Geografía", "preguntas": [
-      { "id": "geo-01", "pregunta": "¿Cuál es el río más largo de México?", "respuesta": "El Río Bravo", "alias": ["Bravo", "Río Bravo del Norte"], "puntos": 100, "nota": "Es frontera con Estados Unidos, donde lo llaman Río Grande. Si te piden uno que corra solo por territorio mexicano, suele citarse el Lerma-Santiago." },
-      { "id": "geo-02", "pregunta": "¿En qué entidad se encuentra el volcán Popocatépetl?", "respuesta": "Entre Puebla, Morelos y el Estado de México", "alias": ["Puebla, Morelos y Edomex"], "puntos": 60, "nota": "Menciona las tres entidades: Puebla, Morelos y Estado de México." },
-      { "id": "geo-03", "pregunta": "¿Cuál es la capital más alta del mundo?", "respuesta": "La Paz, Bolivia", "alias": ["La Paz"], "puntos": 60, "nota": "La Paz es la sede de gobierno de Bolivia; la capital constitucional es Sucre." },
-      { "id": "geo-04", "pregunta": "¿Qué océanos bañan las costas mexicanas?", "respuesta": "Océano Pacífico y Océano Atlántico", "alias": ["Pacífico y Atlántico"], "puntos": 100, "nota": "Por el lado del Atlántico, a través del Golfo de México y el Mar Caribe." },
-      { "id": "geo-05", "pregunta": "¿Cuál es el continente más poblado del mundo?", "respuesta": "Asia", "alias": [], "puntos": 100 },
-      { "id": "geo-06", "pregunta": "¿Cuál es la capital del estado de Yucatán?", "respuesta": "Mérida", "alias": [], "puntos": 80 },
-      { "id": "geo-07", "pregunta": "¿Qué país tiene forma alargada y se ubica en Sudamérica?", "respuesta": "Chile", "alias": [], "puntos": 80 },
-      { "id": "geo-08", "pregunta": "¿Cuál es el país más pequeño del mundo?", "respuesta": "El Vaticano", "alias": ["Ciudad del Vaticano"], "puntos": 100 },
-      { "id": "geo-09", "pregunta": "¿Qué continente no tiene desiertos?", "respuesta": "Europa", "alias": [], "puntos": 40, "nota": "Es la respuesta clásica de trivia que marca la guía." },
-      { "id": "geo-10", "pregunta": "¿Cómo se llama la línea imaginaria que divide la Tierra en hemisferio norte y sur?", "respuesta": "Ecuador", "alias": ["Línea del Ecuador", "Línea ecuatorial"], "puntos": 100 }
+      { "id": "geo-01", "pregunta": "¿Cuál es el río más largo de México?", "respuesta": "El Río Bravo", "alias": ["Bravo", "Río Bravo del Norte"], "distractores": ["El Río Lerma", "El Río Usumacinta", "El Río Balsas"], "puntos": 100, "nota": "Es frontera con Estados Unidos, donde lo llaman Río Grande. Si te piden uno que corra solo por territorio mexicano, suele citarse el Lerma-Santiago." },
+      { "id": "geo-02", "pregunta": "¿En qué entidad se encuentra el volcán Popocatépetl?", "respuesta": "Entre Puebla, Morelos y el Estado de México", "alias": ["Puebla, Morelos y Edomex"], "distractores": ["Entre Veracruz y Puebla", "Entre Jalisco y Colima", "Entre Michoacán y Guerrero"], "puntos": 60, "nota": "Menciona las tres entidades: Puebla, Morelos y Estado de México." },
+      { "id": "geo-03", "pregunta": "¿Cuál es la capital más alta del mundo?", "respuesta": "La Paz, Bolivia", "alias": ["La Paz"], "distractores": ["Quito, Ecuador", "Bogotá, Colombia", "Ciudad de México"], "puntos": 60, "nota": "La Paz es la sede de gobierno de Bolivia; la capital constitucional es Sucre." },
+      { "id": "geo-04", "pregunta": "¿Qué océanos bañan las costas mexicanas?", "respuesta": "Océano Pacífico y Océano Atlántico", "alias": ["Pacífico y Atlántico"], "distractores": ["Océano Pacífico y Océano Índico", "Océano Atlántico y Océano Ártico", "Solo el Océano Pacífico"], "puntos": 100, "nota": "Por el lado del Atlántico, a través del Golfo de México y el Mar Caribe." },
+      { "id": "geo-05", "pregunta": "¿Cuál es el continente más poblado del mundo?", "respuesta": "Asia", "alias": [], "distractores": ["África", "Europa", "América"], "puntos": 100 },
+      { "id": "geo-06", "pregunta": "¿Cuál es la capital del estado de Yucatán?", "respuesta": "Mérida", "alias": [], "distractores": ["Campeche", "Cancún", "Chetumal"], "puntos": 80 },
+      { "id": "geo-07", "pregunta": "¿Qué país tiene forma alargada y se ubica en Sudamérica?", "respuesta": "Chile", "alias": [], "distractores": ["Argentina", "Perú", "Colombia"], "puntos": 80 },
+      { "id": "geo-08", "pregunta": "¿Cuál es el país más pequeño del mundo?", "respuesta": "El Vaticano", "alias": ["Ciudad del Vaticano"], "distractores": ["Mónaco", "San Marino", "Liechtenstein"], "puntos": 100 },
+      { "id": "geo-09", "pregunta": "¿Qué continente no tiene desiertos?", "respuesta": "Europa", "alias": [], "distractores": ["Asia", "Oceanía", "América"], "puntos": 40, "nota": "Es la respuesta clásica de trivia que marca la guía." },
+      { "id": "geo-10", "pregunta": "¿Cómo se llama la línea imaginaria que divide la Tierra en hemisferio norte y sur?", "respuesta": "Ecuador", "alias": ["Línea del Ecuador", "Línea ecuatorial"], "distractores": ["Meridiano de Greenwich", "Trópico de Cáncer", "Círculo Polar Ártico"], "puntos": 100 }
     ]},
     { "id": "ciencias", "codigo": "CIE", "nombre": "Ciencias Naturales", "preguntas": [
-      { "id": "cie-01", "pregunta": "¿Cuál es el elemento químico más abundante en el universo?", "respuesta": "El hidrógeno", "alias": ["H"], "puntos": 80 },
-      { "id": "cie-02", "pregunta": "¿Cuál es el órgano más grande del cuerpo humano?", "respuesta": "La piel", "alias": [], "puntos": 100 },
-      { "id": "cie-03", "pregunta": "¿Qué planeta es conocido como el “planeta rojo”?", "respuesta": "Marte", "alias": [], "puntos": 100 },
-      { "id": "cie-04", "pregunta": "¿Cuántos huesos tiene el cuerpo humano adulto?", "respuesta": "206", "alias": ["doscientos seis"], "puntos": 80 },
-      { "id": "cie-05", "pregunta": "¿Qué científico propuso la teoría de la relatividad?", "respuesta": "Albert Einstein", "alias": ["Einstein"], "puntos": 100 },
-      { "id": "cie-06", "pregunta": "¿Qué gas respiramos los seres humanos para vivir?", "respuesta": "Oxígeno", "alias": ["O2"], "puntos": 100 },
-      { "id": "cie-07", "pregunta": "¿Qué tipo de sangre es conocido como “donador universal”?", "respuesta": "O negativo (O−)", "alias": ["O-", "0 negativo", "O neg"], "puntos": 60 },
-      { "id": "cie-08", "pregunta": "¿Cuál es la unidad básica de la vida?", "respuesta": "La célula", "alias": [], "puntos": 100 },
-      { "id": "cie-09", "pregunta": "¿Qué fuerza nos mantiene pegados a la Tierra?", "respuesta": "La gravedad", "alias": ["Fuerza de gravedad", "Gravitación"], "puntos": 100 },
-      { "id": "cie-10", "pregunta": "¿Cuál es el planeta más grande del sistema solar?", "respuesta": "Júpiter", "alias": [], "puntos": 100 }
+      { "id": "cie-01", "pregunta": "¿Cuál es el elemento químico más abundante en el universo?", "respuesta": "El hidrógeno", "alias": ["H"], "distractores": ["El helio", "El oxígeno", "El carbono"], "puntos": 80 },
+      { "id": "cie-02", "pregunta": "¿Cuál es el órgano más grande del cuerpo humano?", "respuesta": "La piel", "alias": [], "distractores": ["El hígado", "El cerebro", "Los pulmones"], "puntos": 100 },
+      { "id": "cie-03", "pregunta": "¿Qué planeta es conocido como el “planeta rojo”?", "respuesta": "Marte", "alias": [], "distractores": ["Venus", "Júpiter", "Mercurio"], "puntos": 100 },
+      { "id": "cie-04", "pregunta": "¿Cuántos huesos tiene el cuerpo humano adulto?", "respuesta": "206", "alias": ["doscientos seis"], "distractores": ["208", "212", "196"], "puntos": 80 },
+      { "id": "cie-05", "pregunta": "¿Qué científico propuso la teoría de la relatividad?", "respuesta": "Albert Einstein", "alias": ["Einstein"], "distractores": ["Isaac Newton", "Galileo Galilei", "Stephen Hawking"], "puntos": 100 },
+      { "id": "cie-06", "pregunta": "¿Qué gas respiramos los seres humanos para vivir?", "respuesta": "Oxígeno", "alias": ["O2"], "distractores": ["Nitrógeno", "Dióxido de carbono", "Hidrógeno"], "puntos": 100 },
+      { "id": "cie-07", "pregunta": "¿Qué tipo de sangre es conocido como “donador universal”?", "respuesta": "O negativo (O−)", "alias": ["O-", "0 negativo", "O neg"], "distractores": ["AB positivo", "O positivo", "A negativo"], "puntos": 60 },
+      { "id": "cie-08", "pregunta": "¿Cuál es la unidad básica de la vida?", "respuesta": "La célula", "alias": [], "distractores": ["El átomo", "El tejido", "La molécula"], "puntos": 100 },
+      { "id": "cie-09", "pregunta": "¿Qué fuerza nos mantiene pegados a la Tierra?", "respuesta": "La gravedad", "alias": ["Fuerza de gravedad", "Gravitación"], "distractores": ["El magnetismo", "La fricción", "La fuerza centrífuga"], "puntos": 100 },
+      { "id": "cie-10", "pregunta": "¿Cuál es el planeta más grande del sistema solar?", "respuesta": "Júpiter", "alias": [], "distractores": ["Saturno", "Neptuno", "Urano"], "puntos": 100 }
     ]},
     { "id": "cultura", "codigo": "CUL", "nombre": "Cultura General", "preguntas": [
-      { "id": "cul-01", "pregunta": "¿Cuál es el idioma más hablado en el mundo?", "respuesta": "El inglés", "alias": [], "puntos": 60, "nota": "La guía lo da como idioma global, seguido del mandarín. Por hablantes nativos, el primero es el chino mandarín." },
-      { "id": "cul-02", "pregunta": "¿En qué país se originaron los Juegos Olímpicos?", "respuesta": "Grecia", "alias": ["Antigua Grecia"], "puntos": 100, "nota": "Se celebraban en Olimpia." },
-      { "id": "cul-03", "pregunta": "¿Qué día se celebra el Día Internacional de la Mujer?", "respuesta": "El 8 de marzo", "alias": ["ocho de marzo"], "puntos": 100 },
-      { "id": "cul-04", "pregunta": "¿Qué instrumento mide la temperatura?", "respuesta": "El termómetro", "alias": [], "puntos": 100 },
-      { "id": "cul-05", "pregunta": "¿Cuál es el país más grande del mundo?", "respuesta": "Rusia", "alias": [], "puntos": 100 },
-      { "id": "cul-06", "pregunta": "¿Qué símbolo químico representa al oro?", "respuesta": "Au", "alias": [], "puntos": 80, "nota": "Viene del latín aurum." },
-      { "id": "cul-07", "pregunta": "¿En qué país se encuentra la Torre Eiffel?", "respuesta": "Francia", "alias": [], "puntos": 100 },
-      { "id": "cul-08", "pregunta": "¿Cuál es el animal terrestre más grande del planeta?", "respuesta": "El elefante africano", "alias": [], "puntos": 60 },
-      { "id": "cul-09", "pregunta": "¿Qué día se celebra el Día de la Tierra?", "respuesta": "El 22 de abril", "alias": ["veintidós de abril"], "puntos": 60 },
-      { "id": "cul-10", "pregunta": "¿Qué colores tiene la bandera de Italia?", "respuesta": "Verde, blanco y rojo", "alias": [], "puntos": 80 }
+      { "id": "cul-01", "pregunta": "¿Cuál es el idioma más hablado en el mundo?", "respuesta": "El inglés", "alias": [], "distractores": ["El español", "El hindi", "El francés"], "puntos": 60, "nota": "La guía lo da como idioma global, seguido del mandarín. Por hablantes nativos, el primero es el chino mandarín." },
+      { "id": "cul-02", "pregunta": "¿En qué país se originaron los Juegos Olímpicos?", "respuesta": "Grecia", "alias": ["Antigua Grecia"], "distractores": ["Italia", "Egipto", "Francia"], "puntos": 100, "nota": "Se celebraban en Olimpia." },
+      { "id": "cul-03", "pregunta": "¿Qué día se celebra el Día Internacional de la Mujer?", "respuesta": "El 8 de marzo", "alias": ["ocho de marzo"], "distractores": ["El 14 de febrero", "El 10 de mayo", "El 8 de abril"], "puntos": 100 },
+      { "id": "cul-04", "pregunta": "¿Qué instrumento mide la temperatura?", "respuesta": "El termómetro", "alias": [], "distractores": ["El barómetro", "El higrómetro", "El anemómetro"], "puntos": 100 },
+      { "id": "cul-05", "pregunta": "¿Cuál es el país más grande del mundo?", "respuesta": "Rusia", "alias": [], "distractores": ["Canadá", "China", "Estados Unidos"], "puntos": 100 },
+      { "id": "cul-06", "pregunta": "¿Qué símbolo químico representa al oro?", "respuesta": "Au", "alias": [], "distractores": ["Ag", "Or", "Fe"], "puntos": 80, "nota": "Viene del latín aurum." },
+      { "id": "cul-07", "pregunta": "¿En qué país se encuentra la Torre Eiffel?", "respuesta": "Francia", "alias": [], "distractores": ["Italia", "Bélgica", "España"], "puntos": 100 },
+      { "id": "cul-08", "pregunta": "¿Cuál es el animal terrestre más grande del planeta?", "respuesta": "El elefante africano", "alias": [], "distractores": ["La jirafa", "El rinoceronte blanco", "El elefante asiático"], "puntos": 60 },
+      { "id": "cul-09", "pregunta": "¿Qué día se celebra el Día de la Tierra?", "respuesta": "El 22 de abril", "alias": ["veintidós de abril"], "distractores": ["El 5 de junio", "El 21 de marzo", "El 22 de mayo"], "puntos": 60 },
+      { "id": "cul-10", "pregunta": "¿Qué colores tiene la bandera de Italia?", "respuesta": "Verde, blanco y rojo", "alias": [], "distractores": ["Verde, blanco y naranja", "Rojo, blanco y azul", "Rojo y blanco"], "puntos": 80 }
     ]},
     { "id": "literatura", "codigo": "LIT", "nombre": "Literatura y Arte", "preguntas": [
-      { "id": "lit-01", "pregunta": "¿Quién escribió “Don Quijote de la Mancha”?", "respuesta": "Miguel de Cervantes Saavedra", "alias": ["Cervantes", "Miguel de Cervantes"], "puntos": 100 },
-      { "id": "lit-02", "pregunta": "¿Qué poeta mexicano escribió “Muerte sin fin”?", "respuesta": "José Gorostiza", "alias": ["Gorostiza"], "puntos": 40 },
-      { "id": "lit-03", "pregunta": "¿Quién pintó “La noche estrellada”?", "respuesta": "Vincent van Gogh", "alias": ["Van Gogh"], "puntos": 100 },
-      { "id": "lit-04", "pregunta": "¿Cuál es el género literario que narra hechos imaginarios o reales en prosa?", "respuesta": "La novela", "alias": [], "puntos": 60, "nota": "El cuento también es narrativa en prosa, pero la respuesta de la guía es la novela." },
-      { "id": "lit-05", "pregunta": "¿Qué escritor chileno ganó el Premio Nobel de Literatura en 1971?", "respuesta": "Pablo Neruda", "alias": ["Neruda"], "puntos": 60 },
-      { "id": "lit-06", "pregunta": "¿Quién escribió “Cien años de soledad”?", "respuesta": "Gabriel García Márquez", "alias": ["García Márquez", "Gabo"], "puntos": 100 },
-      { "id": "lit-07", "pregunta": "¿Qué famoso pintor mexicano fue esposo de Frida Kahlo?", "respuesta": "Diego Rivera", "alias": ["Rivera"], "puntos": 100 },
-      { "id": "lit-08", "pregunta": "¿Cuál es la obra más famosa de William Shakespeare?", "respuesta": "Romeo y Julieta", "alias": [], "puntos": 80, "nota": "Respuesta de la guía. Hamlet también suele considerarse su obra cumbre." },
-      { "id": "lit-09", "pregunta": "¿Qué técnica pictórica utiliza pigmentos diluidos en agua sobre yeso fresco?", "respuesta": "El fresco", "alias": ["Pintura al fresco"], "puntos": 40 },
-      { "id": "lit-10", "pregunta": "¿Qué autor escribió “El Principito”?", "respuesta": "Antoine de Saint-Exupéry", "alias": ["Saint-Exupéry", "Exupéry"], "puntos": 80 }
+      { "id": "lit-01", "pregunta": "¿Quién escribió “Don Quijote de la Mancha”?", "respuesta": "Miguel de Cervantes Saavedra", "alias": ["Cervantes", "Miguel de Cervantes"], "distractores": ["Lope de Vega", "Federico García Lorca", "Gabriel García Márquez"], "puntos": 100 },
+      { "id": "lit-02", "pregunta": "¿Qué poeta mexicano escribió “Muerte sin fin”?", "respuesta": "José Gorostiza", "alias": ["Gorostiza"], "distractores": ["Octavio Paz", "Xavier Villaurrutia", "Jaime Sabines"], "puntos": 40 },
+      { "id": "lit-03", "pregunta": "¿Quién pintó “La noche estrellada”?", "respuesta": "Vincent van Gogh", "alias": ["Van Gogh"], "distractores": ["Claude Monet", "Pablo Picasso", "Salvador Dalí"], "puntos": 100 },
+      { "id": "lit-04", "pregunta": "¿Cuál es el género literario que narra hechos imaginarios o reales en prosa?", "respuesta": "La novela", "alias": [], "distractores": ["El cuento", "La poesía", "El teatro"], "puntos": 60, "nota": "El cuento también es narrativa en prosa, pero la respuesta de la guía es la novela." },
+      { "id": "lit-05", "pregunta": "¿Qué escritor chileno ganó el Premio Nobel de Literatura en 1971?", "respuesta": "Pablo Neruda", "alias": ["Neruda"], "distractores": ["Gabriela Mistral", "Octavio Paz", "Isabel Allende"], "puntos": 60 },
+      { "id": "lit-06", "pregunta": "¿Quién escribió “Cien años de soledad”?", "respuesta": "Gabriel García Márquez", "alias": ["García Márquez", "Gabo"], "distractores": ["Mario Vargas Llosa", "Julio Cortázar", "Carlos Fuentes"], "puntos": 100 },
+      { "id": "lit-07", "pregunta": "¿Qué famoso pintor mexicano fue esposo de Frida Kahlo?", "respuesta": "Diego Rivera", "alias": ["Rivera"], "distractores": ["José Clemente Orozco", "David Alfaro Siqueiros", "Rufino Tamayo"], "puntos": 100 },
+      { "id": "lit-08", "pregunta": "¿Cuál es la obra más famosa de William Shakespeare?", "respuesta": "Romeo y Julieta", "alias": [], "distractores": ["Don Quijote de la Mancha", "La Divina Comedia", "Cien años de soledad"], "puntos": 80, "nota": "Respuesta de la guía. Hamlet también suele considerarse su obra cumbre." },
+      { "id": "lit-09", "pregunta": "¿Qué técnica pictórica utiliza pigmentos diluidos en agua sobre yeso fresco?", "respuesta": "El fresco", "alias": ["Pintura al fresco"], "distractores": ["La acuarela", "El óleo", "El temple"], "puntos": 40 },
+      { "id": "lit-10", "pregunta": "¿Qué autor escribió “El Principito”?", "respuesta": "Antoine de Saint-Exupéry", "alias": ["Saint-Exupéry", "Exupéry"], "distractores": ["Julio Verne", "Victor Hugo", "Albert Camus"], "puntos": 80 }
     ]},
     { "id": "matematicas", "codigo": "MAT", "nombre": "Matemáticas y Lógica", "preguntas": [
-      { "id": "mat-01", "pregunta": "¿Cuánto es ¾ + ¼?", "respuesta": "1", "alias": ["uno", "un entero"], "puntos": 100 },
-      { "id": "mat-02", "pregunta": "¿Cuál es el resultado de 9 × 8?", "respuesta": "72", "alias": ["setenta y dos"], "puntos": 100 },
-      { "id": "mat-03", "pregunta": "¿Cuál es el valor de π (pi) aproximado a dos decimales?", "respuesta": "3.14", "alias": [], "puntos": 100 },
-      { "id": "mat-04", "pregunta": "¿Cómo se llama un número que solo es divisible entre 1 y él mismo?", "respuesta": "Número primo", "alias": ["Primo"], "puntos": 100 },
-      { "id": "mat-05", "pregunta": "¿Qué rama de las matemáticas estudia las formas y figuras?", "respuesta": "La geometría", "alias": [], "puntos": 100 },
-      { "id": "mat-06", "pregunta": "¿Cuál es el cuadrado de 12?", "respuesta": "144", "alias": ["ciento cuarenta y cuatro"], "puntos": 80 },
-      { "id": "mat-07", "pregunta": "¿Qué resultado tiene 5³ (cinco al cubo)?", "respuesta": "125", "alias": ["ciento veinticinco"], "puntos": 80 },
-      { "id": "mat-08", "pregunta": "¿Cómo se llama el número que indica la cantidad de lados de un pentágono?", "respuesta": "Cinco", "alias": [], "puntos": 100 },
-      { "id": "mat-09", "pregunta": "¿Qué propiedad establece que el orden de los factores no altera el producto?", "respuesta": "Propiedad conmutativa", "alias": ["Conmutativa", "Ley conmutativa"], "puntos": 60 },
-      { "id": "mat-10", "pregunta": "¿Cuál es el valor absoluto de -8?", "respuesta": "8", "alias": [], "puntos": 80 }
+      { "id": "mat-01", "pregunta": "¿Cuánto es ¾ + ¼?", "respuesta": "1", "alias": ["uno", "un entero"], "distractores": ["1/2", "2", "3/4"], "puntos": 100 },
+      { "id": "mat-02", "pregunta": "¿Cuál es el resultado de 9 × 8?", "respuesta": "72", "alias": ["setenta y dos"], "distractores": ["63", "81", "64"], "puntos": 100 },
+      { "id": "mat-03", "pregunta": "¿Cuál es el valor de π (pi) aproximado a dos decimales?", "respuesta": "3.14", "alias": [], "distractores": ["3.41", "3.16", "3.12"], "puntos": 100 },
+      { "id": "mat-04", "pregunta": "¿Cómo se llama un número que solo es divisible entre 1 y él mismo?", "respuesta": "Número primo", "alias": ["Primo"], "distractores": ["Número par", "Número compuesto", "Número entero"], "puntos": 100 },
+      { "id": "mat-05", "pregunta": "¿Qué rama de las matemáticas estudia las formas y figuras?", "respuesta": "La geometría", "alias": [], "distractores": ["El álgebra", "La aritmética", "La trigonometría"], "puntos": 100 },
+      { "id": "mat-06", "pregunta": "¿Cuál es el cuadrado de 12?", "respuesta": "144", "alias": ["ciento cuarenta y cuatro"], "distractores": ["124", "122", "169"], "puntos": 80 },
+      { "id": "mat-07", "pregunta": "¿Qué resultado tiene 5³ (cinco al cubo)?", "respuesta": "125", "alias": ["ciento veinticinco"], "distractores": ["15", "25", "625"], "puntos": 80 },
+      { "id": "mat-08", "pregunta": "¿Cómo se llama el número que indica la cantidad de lados de un pentágono?", "respuesta": "Cinco", "alias": [], "distractores": ["Seis", "Cuatro", "Ocho"], "puntos": 100 },
+      { "id": "mat-09", "pregunta": "¿Qué propiedad establece que el orden de los factores no altera el producto?", "respuesta": "Propiedad conmutativa", "alias": ["Conmutativa", "Ley conmutativa"], "distractores": ["Propiedad asociativa", "Propiedad distributiva", "Elemento neutro"], "puntos": 60 },
+      { "id": "mat-10", "pregunta": "¿Cuál es el valor absoluto de -8?", "respuesta": "8", "alias": [], "distractores": ["0", "16", "1/8"], "puntos": 80 }
     ]},
     { "id": "tecnologia", "codigo": "TEC", "nombre": "Actualidad y Tecnología", "preguntas": [
-      { "id": "tec-01", "pregunta": "¿Qué significa “IA”?", "respuesta": "Inteligencia Artificial", "alias": [], "puntos": 100 },
-      { "id": "tec-02", "pregunta": "¿Cuál es el nombre del fundador de Microsoft?", "respuesta": "Bill Gates", "alias": ["Gates", "William Gates"], "puntos": 100, "nota": "Lo cofundó en 1975 junto con Paul Allen." },
-      { "id": "tec-03", "pregunta": "¿En qué año se lanzó el primer iPhone?", "respuesta": "2007", "alias": [], "puntos": 80 },
-      { "id": "tec-04", "pregunta": "¿Qué país fue sede del Mundial de Fútbol 2022?", "respuesta": "Catar (Qatar)", "alias": ["Qatar"], "puntos": 100 },
-      { "id": "tec-05", "pregunta": "¿Qué red social es propiedad de Elon Musk desde 2022?", "respuesta": "X", "alias": ["Twitter"], "puntos": 100, "nota": "Antes se llamaba Twitter." },
-      { "id": "tec-06", "pregunta": "¿Qué significa “USB”?", "respuesta": "Universal Serial Bus", "alias": [], "puntos": 60 },
-      { "id": "tec-07", "pregunta": "¿Qué empresa creó el sistema operativo Android?", "respuesta": "Google", "alias": [], "puntos": 80, "nota": "Google compró Android Inc. en 2005 y lanzó el sistema en 2008." },
-      { "id": "tec-08", "pregunta": "¿Cuál es el nombre del vehículo de exploración enviado por la NASA a Marte en 2021?", "respuesta": "Perseverance", "alias": ["Perseverancia"], "puntos": 60 },
-      { "id": "tec-09", "pregunta": "¿Qué plataforma en línea es más usada para videollamadas en educación y trabajo?", "respuesta": "Zoom", "alias": [], "puntos": 80 },
-      { "id": "tec-10", "pregunta": "¿Qué país lanzó el primer satélite artificial, el Sputnik 1?", "respuesta": "La Unión Soviética (URSS)", "alias": ["URSS", "Unión Soviética"], "puntos": 80, "nota": "Fue en 1957. Hoy su sucesor es Rusia, pero la respuesta es la URSS." }
+      { "id": "tec-01", "pregunta": "¿Qué significa “IA”?", "respuesta": "Inteligencia Artificial", "alias": [], "distractores": ["Interfaz Avanzada", "Información Automática", "Internet Abierto"], "puntos": 100 },
+      { "id": "tec-02", "pregunta": "¿Cuál es el nombre del fundador de Microsoft?", "respuesta": "Bill Gates", "alias": ["Gates", "William Gates"], "distractores": ["Steve Jobs", "Mark Zuckerberg", "Elon Musk"], "puntos": 100, "nota": "Lo cofundó en 1975 junto con Paul Allen." },
+      { "id": "tec-03", "pregunta": "¿En qué año se lanzó el primer iPhone?", "respuesta": "2007", "alias": [], "distractores": ["2005", "2010", "2001"], "puntos": 80 },
+      { "id": "tec-04", "pregunta": "¿Qué país fue sede del Mundial de Fútbol 2022?", "respuesta": "Catar (Qatar)", "alias": ["Qatar"], "distractores": ["Rusia", "Brasil", "Emiratos Árabes Unidos"], "puntos": 100 },
+      { "id": "tec-05", "pregunta": "¿Qué red social es propiedad de Elon Musk desde 2022?", "respuesta": "X", "alias": ["Twitter"], "distractores": ["Instagram", "Threads", "Facebook"], "puntos": 100, "nota": "Antes se llamaba Twitter." },
+      { "id": "tec-06", "pregunta": "¿Qué significa “USB”?", "respuesta": "Universal Serial Bus", "alias": [], "distractores": ["Universal System Bridge", "Unified Serial Board", "Universal Service Bus"], "puntos": 60 },
+      { "id": "tec-07", "pregunta": "¿Qué empresa creó el sistema operativo Android?", "respuesta": "Google", "alias": [], "distractores": ["Apple", "Microsoft", "Samsung"], "puntos": 80, "nota": "Google compró Android Inc. en 2005 y lanzó el sistema en 2008." },
+      { "id": "tec-08", "pregunta": "¿Cuál es el nombre del vehículo de exploración enviado por la NASA a Marte en 2021?", "respuesta": "Perseverance", "alias": ["Perseverancia"], "distractores": ["Curiosity", "Opportunity", "Spirit"], "puntos": 60 },
+      { "id": "tec-09", "pregunta": "¿Qué plataforma en línea es más usada para videollamadas en educación y trabajo?", "respuesta": "Zoom", "alias": [], "distractores": ["Skype", "Discord", "Telegram"], "puntos": 80 },
+      { "id": "tec-10", "pregunta": "¿Qué país lanzó el primer satélite artificial, el Sputnik 1?", "respuesta": "La Unión Soviética (URSS)", "alias": ["URSS", "Unión Soviética"], "distractores": ["Estados Unidos", "China", "Alemania"], "puntos": 80, "nota": "Fue en 1957. Hoy su sucesor es Rusia, pero la respuesta es la URSS." }
     ]}
   ],
   "encuestas": [
-    { "id": "enc-01", "categoria": "historia", "pregunta": "Menciona un personaje de la Historia de México que aparezca en la guía", "respuestas": [
+    { "id": "enc-01", "categoria": "historia", "pregunta": "Menciona un personaje de la Historia de México que aparezca en la guía", "distractores": ["José María Morelos", "Porfirio Díaz", "Agustín de Iturbide", "Emiliano Zapata"], "respuestas": [
       { "texto": "Miguel Hidalgo", "alias": ["Hidalgo", "Miguel Hidalgo y Costilla"], "puntos": 34, "ref": "his-02" },
       { "texto": "Benito Juárez", "alias": ["Juárez"], "puntos": 28, "ref": "his-08" },
       { "texto": "Guadalupe Victoria", "alias": [], "puntos": 22, "ref": "his-05" },
       { "texto": "Maximiliano de Habsburgo", "alias": ["Maximiliano"], "puntos": 16, "ref": "his-07" }
     ]},
-    { "id": "enc-02", "categoria": "historia", "pregunta": "Menciona un año clave de la Historia de México según la guía", "respuestas": [
+    { "id": "enc-02", "categoria": "historia", "pregunta": "Menciona un año clave de la Historia de México según la guía", "distractores": ["1821", "1836", "1867", "1968"], "respuestas": [
       { "texto": "1810", "alias": [], "puntos": 30, "ref": "his-01" },
       { "texto": "1910", "alias": [], "puntos": 25, "ref": "his-09" },
       { "texto": "1917", "alias": [], "puntos": 20, "ref": "his-04" },
       { "texto": "1521", "alias": [], "puntos": 15, "ref": "his-06" },
       { "texto": "1848", "alias": [], "puntos": 10, "ref": "his-03" }
     ]},
-    { "id": "enc-03", "categoria": "geografia", "pregunta": "Menciona un lugar de México que aparezca en la guía", "respuestas": [
+    { "id": "enc-03", "categoria": "geografia", "pregunta": "Menciona un lugar de México que aparezca en la guía", "distractores": ["Chichén Itzá", "Monterrey", "Pico de Orizaba", "Lago de Chapala"], "respuestas": [
       { "texto": "Tenochtitlán", "alias": ["México-Tenochtitlán"], "puntos": 26, "ref": "his-06" },
       { "texto": "Teotihuacán", "alias": [], "puntos": 22, "ref": "his-10" },
       { "texto": "Río Bravo", "alias": ["Bravo"], "puntos": 20, "ref": "geo-01" },
       { "texto": "Popocatépetl", "alias": ["Popo"], "puntos": 18, "ref": "geo-02" },
       { "texto": "Mérida", "alias": ["Yucatán"], "puntos": 14, "ref": "geo-06" }
     ]},
-    { "id": "enc-04", "categoria": "geografia", "pregunta": "Menciona un país que sea respuesta en la guía", "respuestas": [
+    { "id": "enc-04", "categoria": "geografia", "pregunta": "Menciona un país que sea respuesta en la guía", "distractores": ["Brasil", "Japón", "Canadá", "Egipto"], "respuestas": [
       { "texto": "Rusia", "alias": [], "puntos": 24, "ref": "cul-05" },
       { "texto": "Francia", "alias": [], "puntos": 20, "ref": "cul-07" },
       { "texto": "Grecia", "alias": [], "puntos": 16, "ref": "cul-02" },
@@ -365,24 +383,24 @@
       { "texto": "El Vaticano", "alias": ["Ciudad del Vaticano"], "puntos": 8, "ref": "geo-08" },
       { "texto": "Bolivia", "alias": [], "puntos": 6, "ref": "geo-03" }
     ]},
-    { "id": "enc-05", "categoria": "ciencias", "pregunta": "Menciona algo del cuerpo humano que se estudie en la guía", "respuestas": [
+    { "id": "enc-05", "categoria": "ciencias", "pregunta": "Menciona algo del cuerpo humano que se estudie en la guía", "distractores": ["El corazón", "El cerebro", "El hígado", "Los pulmones"], "respuestas": [
       { "texto": "La piel", "alias": [], "puntos": 30, "ref": "cie-02" },
       { "texto": "Los huesos", "alias": ["206 huesos", "Esqueleto"], "puntos": 25, "ref": "cie-04" },
       { "texto": "La célula", "alias": [], "puntos": 20, "ref": "cie-08" },
       { "texto": "La sangre", "alias": ["Tipo de sangre", "O negativo"], "puntos": 15, "ref": "cie-07" },
       { "texto": "El oxígeno", "alias": ["Respiración"], "puntos": 10, "ref": "cie-06" }
     ]},
-    { "id": "enc-06", "categoria": "ciencias", "pregunta": "Menciona un planeta que aparezca en la guía", "respuestas": [
+    { "id": "enc-06", "categoria": "ciencias", "pregunta": "Menciona un planeta que aparezca en la guía", "distractores": ["Saturno", "Venus", "Mercurio"], "respuestas": [
       { "texto": "Marte", "alias": [], "puntos": 45, "ref": "cie-03" },
       { "texto": "Júpiter", "alias": [], "puntos": 35, "ref": "cie-10" },
       { "texto": "La Tierra", "alias": [], "puntos": 20, "ref": "cie-09" }
     ]},
-    { "id": "enc-07", "categoria": "ciencias", "pregunta": "Menciona un elemento químico que aparezca en la guía", "respuestas": [
+    { "id": "enc-07", "categoria": "ciencias", "pregunta": "Menciona un elemento químico que aparezca en la guía", "distractores": ["Carbono", "Nitrógeno", "Plata"], "respuestas": [
       { "texto": "Oxígeno", "alias": ["O2"], "puntos": 40, "ref": "cie-06" },
       { "texto": "Hidrógeno", "alias": [], "puntos": 35, "ref": "cie-01" },
       { "texto": "Oro", "alias": ["Au"], "puntos": 25, "ref": "cul-06" }
     ]},
-    { "id": "enc-08", "categoria": "literatura", "pregunta": "Menciona un escritor o artista que aparezca en la guía", "respuestas": [
+    { "id": "enc-08", "categoria": "literatura", "pregunta": "Menciona un escritor o artista que aparezca en la guía", "distractores": ["Octavio Paz", "Frida Kahlo", "Pablo Picasso", "Jorge Luis Borges"], "respuestas": [
       { "texto": "Miguel de Cervantes", "alias": ["Cervantes"], "puntos": 20, "ref": "lit-01" },
       { "texto": "Gabriel García Márquez", "alias": ["García Márquez", "Gabo"], "puntos": 18, "ref": "lit-06" },
       { "texto": "Vincent van Gogh", "alias": ["Van Gogh"], "puntos": 15, "ref": "lit-03" },
@@ -392,14 +410,14 @@
       { "texto": "José Gorostiza", "alias": ["Gorostiza"], "puntos": 8, "ref": "lit-02" },
       { "texto": "Antoine de Saint-Exupéry", "alias": ["Saint-Exupéry", "Exupéry"], "puntos": 6, "ref": "lit-10" }
     ]},
-    { "id": "enc-09", "categoria": "matematicas", "pregunta": "Menciona un concepto matemático que aparezca en la guía", "respuestas": [
+    { "id": "enc-09", "categoria": "matematicas", "pregunta": "Menciona un concepto matemático que aparezca en la guía", "distractores": ["Logaritmo", "Propiedad asociativa", "Derivada", "Número par"], "respuestas": [
       { "texto": "Número primo", "alias": ["Primo"], "puntos": 28, "ref": "mat-04" },
       { "texto": "Geometría", "alias": [], "puntos": 24, "ref": "mat-05" },
       { "texto": "Propiedad conmutativa", "alias": ["Conmutativa"], "puntos": 20, "ref": "mat-09" },
       { "texto": "Valor absoluto", "alias": [], "puntos": 16, "ref": "mat-10" },
       { "texto": "Pi", "alias": ["π", "Número pi"], "puntos": 12, "ref": "mat-03" }
     ]},
-    { "id": "enc-10", "categoria": "tecnologia", "pregunta": "Menciona una empresa o marca de tecnología que aparezca en la guía", "respuestas": [
+    { "id": "enc-10", "categoria": "tecnologia", "pregunta": "Menciona una empresa o marca de tecnología que aparezca en la guía", "distractores": ["Amazon", "Samsung", "Facebook", "Netflix"], "respuestas": [
       { "texto": "Microsoft", "alias": [], "puntos": 26, "ref": "tec-02" },
       { "texto": "Google", "alias": ["Android"], "puntos": 22, "ref": "tec-07" },
       { "texto": "Apple", "alias": ["iPhone"], "puntos": 18, "ref": "tec-03" },
@@ -438,7 +456,7 @@ const S = {
   docs: almacen.get('docs', []),
   baseActiva: almacen.get('baseActiva', true),
   record: almacen.get('record', { tablero: 0, concurso: 0 }),
-  cfg: almacen.get('cfg', { tiempoTablero: 0, cqNum: 10, cqTiempo: 15, cqCat: 'todas', cqElim: true }),
+  cfg: { tiempoTablero: 0, cqNum: 10, cqTiempo: 15, cqCat: 'todas', cqElim: true, modoResp: 'opciones', ...almacen.get('cfg', {}) },
   juego: null, totalSesion: 0, rondas: 0,
   concurso: null,
   estudio: { tab: 'practica', cat: 'todas', cola: [], idx: 0, fase: 'pregunta', res: null, girada: false, busqueda: '', vuelta: false },
@@ -546,6 +564,75 @@ const sinParentesis = s => String(s).replace(/\s*\([^)]*\)/g, '').trim();
 const variantesDe = p => [...new Set([p.respuesta ?? p.texto, sinParentesis(p.respuesta ?? p.texto), ...(p.alias || [])].filter(Boolean))];
 function mascara(texto) {
   return sinParentesis(texto).split(/\s+/).map(w => w.length <= 2 && !/\d/.test(w) ? w : w[0] + ' ' + '_ '.repeat(Math.max(0, w.length - 1)).trim()).join('   ');
+}
+
+/* ---------- opciones múltiples ---------- */
+const LETRAS = 'ABCDEFGHIJKL';
+const usaOpciones = () => S.cfg.modoResp !== 'escribir';
+const esNumero = t => /^-?\d+([.,]\d+)?$/.test(String(t).trim());
+const PALABRA_NUM = Object.fromEntries(Object.entries(NUMEROS).map(([w, n]) => [n, w]));
+const PALABRA_BONITA = { dieciseis: 'dieciséis', veintidos: 'veintidós', veintitres: 'veintitrés', veintiseis: 'veintiséis' };
+function opcionesPara(q, total = 3) {
+  const correcta = sinParentesis(q.respuesta);
+  const vars = variantesDe(q);
+  const vistos = new Set([normalizar(correcta)]);
+  const malas = [];
+  const tomar = t => {
+    const k = normalizar(t);
+    if (!k || vistos.has(k) || evaluar(t, vars).ok) return;
+    vistos.add(k); malas.push(t);
+  };
+  if (q.distractores && q.distractores.length) {
+    barajar(q.distractores).forEach(t => { const k = normalizar(t); if (malas.length < total - 1 && k && !vistos.has(k)) { vistos.add(k); malas.push(t); } });
+  }
+  const otras = todasPreguntas().filter(p => p.id !== q.id).map(p => ({ t: sinParentesis(p.respuesta), cat: p.catId }));
+  const nk = normalizar(correcta);
+  const fecha = correcta.match(/^((?:el\s+)?)(\d{1,2})( de [a-záéíóú]+)$/i);
+  if (malas.length >= total - 1) { /* completo con los distractores de la guía */ }
+  else if (fecha) {
+    barajar([1, -1, 7, -7, 10, 2]).forEach(k => { const d = +fecha[2] + k; if (d >= 1 && d <= 31 && malas.length < total - 1) tomar(fecha[1] + d + fecha[3]); });
+  } else if (esNumero(correcta)) {
+    const v = parseFloat(correcta.replace(',', '.'));
+    const dec = (correcta.split(/[.,]/)[1] || '').length;
+    const anio = !dec && v >= 1400 && v <= 2100;
+    barajar(otras.filter(o => esNumero(o.t) && (anio ? (+o.t >= 1400 && +o.t <= 2100) : (+o.t > 0 && +o.t / Math.max(v, 1) <= 3 && Math.max(v, 1) / +o.t <= 3))))
+      .forEach(o => { if (malas.length < total - 1) tomar(o.t); });
+    const base = anio ? 10 : dec ? Math.pow(10, -dec) * 2 : Math.max(1, Math.round(Math.abs(v) * 0.1));
+    const saltos = barajar([1, -1, 2, -2, 3, -3]);
+    for (const k of saltos) { if (malas.length >= total - 1) break; const x = v + k * base; if (x >= 0) tomar(dec ? x.toFixed(dec) : String(x)); }
+  } else if (NUMEROS[nk] !== undefined) {
+    const n = NUMEROS[nk], mayus = correcta[0] === correcta[0].toUpperCase();
+    barajar([1, -1, 2, -2]).forEach(k => {
+      const w = PALABRA_NUM[n + k];
+      if (w && malas.length < total - 1) { const b = PALABRA_BONITA[w] || w; tomar(mayus ? b[0].toUpperCase() + b.slice(1) : b); }
+    });
+  }
+  if (malas.length < total - 1) {
+    const palabras = correcta.split(/\s+/).length;
+    const art = /^(el|la|los|las)\s/i.test(correcta);
+    const tipo = t => /^(el|la|los|las)\s/i.test(t) ? 'concepto' : /^(\p{Lu}[\p{L}'-]+)(\s+(de|del|y|van|von|la)?\s*\p{Lu}[\p{L}'-]+)+$/u.test(t) ? 'nombre' : t.split(/\s+/).length === 1 ? 'palabra' : 'frase';
+    const miTipo = tipo(correcta);
+    otras.filter(o => !esNumero(o.t))
+      .map(o => [(tipo(o.t) === miTipo ? 4 : 0) + (o.cat === q.catId ? 3 : 0) + (Math.abs(o.t.split(/\s+/).length - palabras) <= 1 ? 1 : 0) + (/^(el|la|los|las)\s/i.test(o.t) === art ? 1 : 0) + Math.random() * 1.5, o.t])
+      .sort((a, b) => b[0] - a[0])
+      .forEach(([, t]) => { if (malas.length < total - 1) tomar(t); });
+  }
+  return barajar([{ texto: correcta, ok: true }, ...malas.map(t => ({ texto: t, ok: false }))]);
+}
+// ops: [{texto, ok, elegida, fuera, usada}] · revelar: muestra correctas/incorrectas tras responder
+function opcionesHTML(ops, accion, { revelar = false, cols = 3, tablero = false } = {}) {
+  return `<div class="opciones" style="--cols:${cols}" role="group" aria-label="Opciones de respuesta">${ops.map((o, i) => {
+    let cls = 'opcion';
+    if (o.fuera) cls += ' opcion-fuera';
+    else if (revelar) cls += o.ok ? ' opcion-ok' : o.elegida ? ' opcion-mal' : ' opcion-tenue';
+    else if (o.usada) cls += o.ok ? ' opcion-ok' : ' opcion-mal';
+    const off = revelar || o.fuera || o.usada;
+    return `<button type="button" class="${cls}" data-accion="${accion}" data-o="${i}" ${off ? 'disabled' : `data-tecla="${LETRAS[i]}"`}><span class="opcion-letra">${LETRAS[i]}</span><span class="min-w-0">${esc(o.texto)}</span></button>`;
+  }).join('')}</div>`;
+}
+function segmentoResp() {
+  const o = usaOpciones();
+  return `<div class="segmento" role="group" aria-label="Forma de responder"><button type="button" data-accion="modo-resp" data-v="opciones" aria-pressed="${o}">Opciones A·B·C</button><button type="button" data-accion="modo-resp" data-v="escribir" aria-pressed="${!o}">Escribir</button></div>`;
 }
 
 /* ---------- sonido ---------- */
@@ -804,7 +891,7 @@ function iniciarJuegoCategoria(catId) {
   const elegidas = priorizar(cat.preguntas).slice(0, 5).sort((a, b) => b.puntos - a.puntos);
   S.juego = {
     tipo: 'categoria', origen: catId, titulo: cat.nombre, codigo: cat.codigo,
-    slots: elegidas.map(p => ({ texto: sinParentesis(p.respuesta), variantes: variantesDe(p), puntos: p.puntos, pregunta: p.pregunta, ref: p.id, nota: p.nota, estado: 'oculto' })),
+    slots: elegidas.map(p => ({ texto: sinParentesis(p.respuesta), variantes: variantesDe(p), puntos: p.puntos, pregunta: p.pregunta, ref: p.id, nota: p.nota, estado: 'oculto', q: { ...p, catId: cat.id } })),
     activo: 0, strikes: 0, puntos: 0, terminado: false, msg: null, casi: {}, ultimo: null, x: false, revel: -1
   };
   S.rondas++; arrancarJuego();
@@ -821,6 +908,10 @@ function iniciarJuegoEncuesta(encId) {
     }),
     activo: -1, strikes: 0, puntos: 0, terminado: false, msg: null, casi: {}, ultimo: null, x: false, revel: -1
   };
+  const otrasResp = barajar(todasPreguntas().filter(p => p.catId !== enc.categoria).map(p => sinParentesis(p.respuesta)).filter(t => !esNumero(t)));
+  const distractores = (enc.distractores && enc.distractores.length ? enc.distractores : otrasResp.slice(0, 3))
+    .filter(t => !S.juego.slots.some(sl => evaluar(t, sl.variantes).ok)).slice(0, 4);
+  S.juego.ops = barajar([...S.juego.slots.map((sl, i) => ({ texto: sl.texto, ok: true, slot: i })), ...distractores.map(t => ({ texto: t, ok: false, slot: -1 }))]);
   S.rondas++; arrancarJuego();
 }
 function arrancarJuego() { render(); reiniciarRelojJuego(); enfocar('#resp-juego'); }
@@ -848,12 +939,12 @@ function acertarCasilla(i, texto) {
   if (!ocultos(J).length) return terminarRonda(true);
   render(); reiniciarRelojJuego(); enfocar('#resp-juego');
 }
-function fallarCasilla(i, texto, motivo) {
+function fallarCasilla(i, texto, motivo, corregible = true) {
   const J = S.juego, s = J.slots[i];
   if (!s) return;
   s.estado = 'fallado'; J.strikes++; J.revel = i; J.x = true;
   const prev = s.ref ? registrar(s.ref, false) : null;
-  J.ultimo = texto ? { i, texto, prev } : null;
+  J.ultimo = texto && corregible ? { i, texto, prev } : null;
   J.msg = { tipo: 'mal', html: `<strong>${esc(motivo || 'Incorrecta.')}</strong> La respuesta de la guía es «${esc(s.texto)}».${texto ? ` Tú escribiste «${esc(texto)}».` : ''}${s.nota ? ` <span class="tenue">${esc(s.nota)}</span>` : ''}` };
   sonar('mal');
   siguienteActivo(J);
@@ -926,6 +1017,21 @@ function corregirJuego() {
   if (!ocultos(J).length) return terminarRonda(true);
   render(); reiniciarRelojJuego(); enfocar('#resp-juego');
 }
+function opsCasilla(J) { const s = J.slots[J.activo]; if (s && !s.ops) s.ops = opcionesPara(s.q); return s ? s.ops : []; }
+function elegirOpcionJuego(o) {
+  const J = S.juego;
+  if (!J || J.terminado) return;
+  if (J.tipo === 'categoria') {
+    const op = opsCasilla(J)[o];
+    if (!op || op.fuera) return;
+    if (op.ok) acertarCasilla(J.activo, op.texto); else fallarCasilla(J.activo, op.texto, 'Incorrecta.', false);
+    return;
+  }
+  const op = J.ops[o];
+  if (!op || op.usada) return;
+  op.usada = true;
+  if (op.ok && J.slots[op.slot].estado === 'oculto') acertarCasilla(op.slot, op.texto); else strikeEncuesta(op.texto);
+}
 function pistaJuego() {
   const J = S.juego;
   if (!J || J.terminado) return;
@@ -933,6 +1039,12 @@ function pistaJuego() {
   const s = J.slots[i];
   if (!s || s.pista) return;
   s.pista = true; J.x = false; J.revel = -1;
+  if (usaOpciones() && J.tipo === 'categoria') {
+    const malas = opsCasilla(J).filter(x => !x.ok && !x.fuera);
+    if (malas.length) malas[Math.floor(Math.random() * malas.length)].fuera = true;
+    J.msg = { tipo: 'info', html: `Pista: se eliminó una opción incorrecta. La casilla ${i + 1} ahora vale la mitad.` };
+    render(); return;
+  }
   J.msg = J.tipo === 'categoria'
     ? { tipo: 'info', html: `Pista para la casilla ${i + 1}: <span class="num text-lg tracking-wider">${esc(mascara(s.texto))}</span>` }
     : { tipo: 'info', html: `Pista para la casilla ${i + 1} (${esc(mascara(s.texto))}): ${s.pregunta ? `es la respuesta a «${esc(s.pregunta)}»` : 'revisa la guía.'}` };
@@ -996,6 +1108,13 @@ function renderJuego() {
           ${J.tipo === 'categoria' && aciertos < n ? `<button type="button" class="btn btn-linea" data-accion="estudiar-cat" data-cat="${esc(J.origen)}">Repasar esta categoría</button>` : ''}
         </div>
       </div>` : `
+      <div class="flex flex-wrap items-center justify-between gap-2">${segmentoResp()}${usaOpciones() ? '<span class="text-xs tenue hidden sm:inline">Atajos: teclas A, B, C…</span>' : ''}</div>
+      ${usaOpciones() ? `
+      ${J.tipo === 'categoria' ? opcionesHTML(opsCasilla(J), 'opcion-juego') : opcionesHTML(J.ops, 'opcion-juego', { cols: 3 })}
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-linea flex-1 sm:flex-none" type="button" data-accion="pista-juego" title="${J.tipo === 'categoria' ? 'Elimina una opción incorrecta; la casilla vale la mitad' : 'Muestra de qué pregunta sale una respuesta'}">Pista</button>
+        <button class="btn btn-linea flex-1 sm:flex-none" type="button" data-accion="pasar-juego">${J.tipo === 'categoria' ? 'Pasar' : 'Rendirse'}</button>
+      </div>` : `
       <form class="flex flex-col sm:flex-row gap-2" data-form="juego" autocomplete="off">
         <label for="resp-juego" class="sr-only">Tu respuesta</label>
         <input id="resp-juego" class="campo flex-1" placeholder="${J.tipo === 'categoria' ? `Respuesta para la casilla ${J.activo + 1}…` : 'Escribe una respuesta…'}" maxlength="120" enterkeyhint="send">
@@ -1004,7 +1123,7 @@ function renderJuego() {
           <button class="btn btn-linea flex-1 sm:flex-none" type="button" data-accion="pista-juego" title="Muestra la primera letra; la casilla vale la mitad">Pista</button>
           <button class="btn btn-linea flex-1 sm:flex-none" type="button" data-accion="pasar-juego" title="${J.tipo === 'categoria' ? 'Revela la respuesta y cuenta como strike' : 'Termina la ronda y revela el tablero'}">${J.tipo === 'categoria' ? 'Pasar' : 'Rendirse'}</button>
         </div>
-      </form>`}
+      </form>`}`}
     <div aria-live="polite" class="flex flex-col gap-2">
       ${avisoHTML(J.msg)}
       ${!J.terminado && J.ultimo ? '<div><button type="button" class="btn btn-linea btn-sm" data-accion="corregir-juego">Mi respuesta era correcta</button></div>' : ''}
@@ -1042,17 +1161,19 @@ function renderConcurso() {
       ${S.cfg.cqTiempo && C.fase === 'pregunta' ? `<div class="flex items-center gap-3"><div class="reloj flex-1" id="reloj-cq"><span style="width:100%"></span></div><span class="num text-sm" id="reloj-cq-num" style="color:var(--tablero-tenue)">${S.cfg.cqTiempo} s</span></div>` : ''}
       ${C.fase === 'feedback' && !C.ultimoOk ? '<div class="x-capa" aria-hidden="true"><span class="x">✕</span></div>' : ''}
     </div>
-    ${C.fase === 'pregunta' ? `
+    <div class="flex flex-wrap items-center justify-between gap-2">${segmentoResp()}${usaOpciones() ? '<span class="text-xs tenue hidden sm:inline">Atajos: teclas A, B, C</span>' : ''}</div>
+    ${usaOpciones() && C.ops ? opcionesHTML(C.ops, 'opcion-cq', { revelar: C.fase !== 'pregunta' }) : ''}
+    ${C.fase === 'pregunta' ? (usaOpciones() ? '<div><button class="btn btn-linea" type="button" data-accion="saltar-cq">Saltar</button></div>' : `
     <form class="flex flex-col sm:flex-row gap-2" data-form="concurso" autocomplete="off">
       <label for="resp-cq" class="sr-only">Tu respuesta</label>
       <input id="resp-cq" class="campo flex-1" placeholder="Escribe tu respuesta y presiona Enter" maxlength="120" enterkeyhint="send">
       <div class="flex gap-2"><button class="btn btn-guinda flex-1 sm:flex-none" type="submit">Responder</button><button class="btn btn-linea" type="button" data-accion="saltar-cq">Saltar</button></div>
-    </form>` : `
+    </form>`) : `
     <div class="flex flex-col gap-3" aria-live="polite">
       ${avisoHTML(C.msg)}
       <div class="flex flex-wrap gap-2">
         <button type="button" class="btn btn-oro" data-accion="siguiente-cq" id="btn-sig-cq">${C.i + 1 >= C.lista.length || C.terminarYa ? 'Ver resultados' : 'Siguiente pregunta'}</button>
-        ${!C.ultimoOk && C.ultimoTexto ? '<button type="button" class="btn btn-linea" data-accion="corregir-cq">Mi respuesta era correcta</button>' : ''}
+        ${!C.ultimoOk && C.ultimoTexto && !C.porOpcion ? '<button type="button" class="btn btn-linea" data-accion="corregir-cq">Mi respuesta era correcta</button>' : ''}
       </div>
     </div>`}
   </div>`;
@@ -1096,17 +1217,18 @@ function iniciarConcurso() {
 }
 function preguntaConcurso() {
   const C = S.concurso;
-  C.fase = 'pregunta'; C.msg = null; C.inicio = Date.now();
+  C.fase = 'pregunta'; C.msg = null; C.inicio = Date.now(); C.ops = opcionesPara(C.lista[C.i]); C.porOpcion = false;
   render(); enfocar('#resp-cq');
   iniciarReloj(S.cfg.cqTiempo, () => { if (S.concurso === C && C.fase === 'pregunta') responderConcurso('', true); }, 'reloj-cq', 'reloj-cq-num');
 }
-function responderConcurso(texto, agotado = false) {
+function responderConcurso(texto, agotado = false, okForzado) {
   const C = S.concurso;
   if (!C || C.fase !== 'pregunta') return;
   detenerRelojes();
   const q = C.lista[C.i], t = texto.trim();
   const seg = (Date.now() - C.inicio) / 1000;
-  const r = t ? evaluar(t, variantesDe(q)) : { ok: false };
+  const r = okForzado !== undefined ? { ok: okForzado } : t ? evaluar(t, variantesDe(q)) : { ok: false };
+  C.porOpcion = okForzado !== undefined;
   C.tiempos.push(seg); C.ultimoTexto = t; C.ultimoOk = r.ok;
   C.prev = registrar(q.id, r.ok);
   if (r.ok) {
@@ -1120,7 +1242,7 @@ function responderConcurso(texto, agotado = false) {
   } else {
     C.racha = 0; C.res.push(false); C.fallos.push({ id: q.id, texto: t });
     if (S.cfg.cqElim) C.strikes++;
-    C.msg = { tipo: 'mal', html: `<strong>${agotado ? 'Se acabó el tiempo.' : t ? 'Incorrecta.' : 'Pregunta saltada.'}</strong> La respuesta es «${esc(q.respuesta)}».${t ? ` Escribiste «${esc(t)}».` : ''}${q.nota ? ` <span class="tenue">${esc(q.nota)}</span>` : ''}` };
+    C.msg = { tipo: 'mal', html: `<strong>${agotado ? 'Se acabó el tiempo.' : t ? 'Incorrecta.' : 'Pregunta saltada.'}</strong> La respuesta es «${esc(q.respuesta)}».${t ? ` ${C.porOpcion ? 'Elegiste' : 'Escribiste'} «${esc(t)}».` : ''}${q.nota ? ` <span class="tenue">${esc(q.nota)}</span>` : ''}` };
     sonar('mal');
   }
   C.terminarYa = S.cfg.cqElim && C.strikes >= 3;
@@ -1239,6 +1361,11 @@ function renderEstudio() {
     ${cuerpo}
   </div>`;
 }
+function opsEstudio(q) {
+  const E = S.estudio;
+  if (E.opsId !== q.id) { E.ops = opcionesPara(q); E.opsId = q.id; }
+  return E.ops;
+}
 function practicaHTML(q) {
   const E = S.estudio, st = estadoPregunta(q.id), r = E.res;
   const pos = `${E.idx + 1} de ${E.cola.length}`;
@@ -1247,7 +1374,9 @@ function practicaHTML(q) {
     <div class="panel p-5 md:p-7 flex flex-col gap-5 min-w-0">
       <div class="flex flex-wrap items-center gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="chip ${st.cls}">${st.txt}</span><span class="text-sm tenue ml-auto">${pos}</span></div>
       <h3 class="text-2xl md:text-3xl font-bold leading-tight">${esc(q.pregunta)}</h3>
-      ${E.fase === 'pregunta' ? `
+      <div class="flex flex-wrap items-center justify-between gap-2">${segmentoResp()}${usaOpciones() ? '<span class="text-xs tenue hidden sm:inline">Atajos: teclas A, B, C</span>' : ''}</div>
+      ${usaOpciones() ? opcionesHTML(opsEstudio(q), 'opcion-est', { revelar: E.fase !== 'pregunta' }) : ''}
+      ${E.fase === 'pregunta' ? usaOpciones() ? '<div><button class="btn btn-linea" type="button" data-accion="nolase-est">No la sé</button></div>' : `
       <form class="flex flex-col sm:flex-row gap-2" data-form="estudio" autocomplete="off">
         <label for="resp-est" class="sr-only">Tu respuesta</label>
         <input id="resp-est" class="campo flex-1" placeholder="Escribe tu respuesta" maxlength="160" enterkeyhint="send">
@@ -1263,7 +1392,7 @@ function practicaHTML(q) {
       </div>
       <div class="flex flex-wrap gap-2">
         <button type="button" class="btn btn-oro" data-accion="sig-est" id="btn-sig-est">Siguiente</button>
-        ${!r.ok && r.texto ? '<button type="button" class="btn btn-linea" data-accion="corregir-est">Mi respuesta era correcta</button>' : ''}
+        ${!r.ok && r.texto && !r.porOpcion ? '<button type="button" class="btn btn-linea" data-accion="corregir-est">Mi respuesta era correcta</button>' : ''}
       </div>`}
     </div>
     ${historialHTML(q)}
@@ -1609,6 +1738,16 @@ document.addEventListener('click', e => {
     },
     'elegir-casilla': () => { const J = S.juego; J.activo = +b.dataset.i; J.msg = null; J.x = false; render(); reiniciarRelojJuego(); enfocar('#resp-juego'); },
     'pista-juego': pistaJuego,
+    'opcion-juego': () => elegirOpcionJuego(+b.dataset.o),
+    'opcion-cq': () => { const C = S.concurso, op = C && C.ops[+b.dataset.o]; if (!op || C.fase !== 'pregunta') return; op.elegida = true; responderConcurso(op.texto, false, op.ok); },
+    'opcion-est': () => {
+      const E = S.estudio, id = E.cola[E.idx], op = E.ops && E.ops[+b.dataset.o];
+      if (!op || E.fase !== 'pregunta' || E.opsId !== id) return;
+      op.elegida = true;
+      E.res = { ok: op.ok, texto: op.texto, prev: registrar(id, op.ok), porOpcion: true };
+      E.fase = 'feedback'; sonar(op.ok ? 'ok' : 'mal'); render(); enfocar('#btn-sig-est');
+    },
+    'modo-resp': () => { S.cfg.modoResp = b.dataset.v; almacen.set('cfg', S.cfg); render(); if (!usaOpciones()) enfocar(S.vista === 'tablero' ? '#resp-juego' : S.vista === 'concurso' ? '#resp-cq' : '#resp-est'); },
     'pasar-juego': () => { const J = S.juego; if (J.tipo === 'categoria') fallarCasilla(J.activo, '', 'Pasaste.'); else terminarRonda(false); },
     'corregir-juego': corregirJuego,
     'otra-ronda': () => {
@@ -1701,6 +1840,12 @@ document.addEventListener('input', e => {
   }
 });
 document.addEventListener('keydown', e => {
+  if (!e.ctrlKey && !e.metaKey && !e.altKey && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || '')) {
+    let k = e.key.length === 1 ? e.key.toUpperCase() : '';
+    if (/^[1-9]$/.test(k)) k = LETRAS[+k - 1];
+    const btn = k && $(`#v-${S.vista} [data-tecla="${k}"]`);
+    if (btn) { e.preventDefault(); btn.click(); return; }
+  }
   if (S.vista !== 'estudio' || S.estudio.tab !== 'tarjetas' || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
   if (e.code === 'Space' && document.activeElement?.dataset.accion !== 'girar') { e.preventDefault(); $('[data-accion="girar"]')?.click(); }
   else if (S.estudio.girada && (e.key === 'ArrowRight' || e.key === '1')) $('[data-accion="tarjeta-si"]')?.click();
@@ -1722,7 +1867,7 @@ if (VISTAS.some(([id]) => id === ancla)) S.vista = ancla;
 render();
 
 // Expuesto para pruebas y depuración desde la consola.
-window.Loboitos = { evaluar, parsearTexto, banco: () => bancoExportable(), BASE };
+window.Loboitos = { evaluar, opcionesPara, todasPreguntas, parsearTexto, banco: () => bancoExportable(), BASE };
 })();
 </script>
 </body>

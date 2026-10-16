@@ -18,6 +18,11 @@
           "alias": [
             "mil ochocientos diez"
           ],
+          "distractores": [
+            "1821",
+            "1910",
+            "1800"
+          ],
           "puntos": 100
         },
         {
@@ -29,6 +34,11 @@
             "Hidalgo",
             "Cura Hidalgo"
           ],
+          "distractores": [
+            "José María Morelos",
+            "Ignacio Allende",
+            "Agustín de Iturbide"
+          ],
           "puntos": 100
         },
         {
@@ -38,6 +48,11 @@
           "alias": [
             "Guadalupe Hidalgo"
           ],
+          "distractores": [
+            "El Tratado de Córdoba",
+            "El Tratado de Velasco",
+            "El Tratado de La Mesilla"
+          ],
           "puntos": 60
         },
         {
@@ -45,6 +60,11 @@
           "pregunta": "¿En qué año se promulgó la Constitución que actualmente nos rige?",
           "respuesta": "1917",
           "alias": [],
+          "distractores": [
+            "1857",
+            "1910",
+            "1824"
+          ],
           "puntos": 100
         },
         {
@@ -52,6 +72,11 @@
           "pregunta": "¿Quién fue el primer presidente de México?",
           "respuesta": "Guadalupe Victoria",
           "alias": [],
+          "distractores": [
+            "Agustín de Iturbide",
+            "Vicente Guerrero",
+            "Benito Juárez"
+          ],
           "puntos": 80
         },
         {
@@ -59,6 +84,11 @@
           "pregunta": "¿En qué año cayó Tenochtitlán?",
           "respuesta": "1521",
           "alias": [],
+          "distractores": [
+            "1519",
+            "1492",
+            "1810"
+          ],
           "puntos": 80
         },
         {
@@ -69,6 +99,11 @@
             "Maximiliano",
             "Maximiliano I"
           ],
+          "distractores": [
+            "Agustín de Iturbide",
+            "Carlos V",
+            "Napoleón III"
+          ],
           "puntos": 60
         },
         {
@@ -77,6 +112,11 @@
           "respuesta": "Benito Juárez",
           "alias": [
             "Juárez"
+          ],
+          "distractores": [
+            "Porfirio Díaz",
+            "Lázaro Cárdenas",
+            "Antonio López de Santa Anna"
           ],
           "puntos": 100
         },
@@ -87,6 +127,11 @@
           "alias": [
             "Revolución"
           ],
+          "distractores": [
+            "La Guerra de Reforma",
+            "La Guerra Cristera",
+            "La Guerra de Independencia"
+          ],
           "puntos": 100
         },
         {
@@ -96,6 +141,11 @@
           "alias": [
             "teotihuacanos",
             "cultura teotihuacana"
+          ],
+          "distractores": [
+            "Los mexicas",
+            "Los mayas",
+            "Los olmecas"
           ],
           "puntos": 40,
           "nota": "Fue anterior a los mexicas."
@@ -115,6 +165,11 @@
             "Bravo",
             "Río Bravo del Norte"
           ],
+          "distractores": [
+            "El Río Lerma",
+            "El Río Usumacinta",
+            "El Río Balsas"
+          ],
           "puntos": 100,
           "nota": "Es frontera con Estados Unidos, donde lo llaman Río Grande. Si te piden uno que corra solo por territorio mexicano, suele citarse el Lerma-Santiago."
         },
@@ -124,6 +179,11 @@
           "respuesta": "Entre Puebla, Morelos y el Estado de México",
           "alias": [
             "Puebla, Morelos y Edomex"
+          ],
+          "distractores": [
+            "Entre Veracruz y Puebla",
+            "Entre Jalisco y Colima",
+            "Entre Michoacán y Guerrero"
           ],
           "puntos": 60,
           "nota": "Menciona las tres entidades: Puebla, Morelos y Estado de México."
@@ -135,6 +195,11 @@
           "alias": [
             "La Paz"
           ],
+          "distractores": [
+            "Quito, Ecuador",
+            "Bogotá, Colombia",
+            "Ciudad de México"
+          ],
           "puntos": 60,
           "nota": "La Paz es la sede de gobierno de Bolivia; la capital constitucional es Sucre."
         },
@@ -145,6 +210,11 @@
           "alias": [
             "Pacífico y Atlántico"
           ],
+          "distractores": [
+            "Océano Pacífico y Océano Índico",
+            "Océano Atlántico y Océano Ártico",
+            "Solo el Océano Pacífico"
+          ],
           "puntos": 100,
           "nota": "Por el lado del Atlántico, a través del Golfo de México y el Mar Caribe."
         },
@@ -153,6 +223,11 @@
           "pregunta": "¿Cuál es el continente más poblado del mundo?",
           "respuesta": "Asia",
           "alias": [],
+          "distractores": [
+            "África",
+            "Europa",
+            "América"
+          ],
           "puntos": 100
         },
         {
@@ -160,6 +235,11 @@
           "pregunta": "¿Cuál es la capital del estado de Yucatán?",
           "respuesta": "Mérida",
           "alias": [],
+          "distractores": [
+            "Campeche",
+            "Cancún",
+            "Chetumal"
+          ],
           "puntos": 80
         },
         {
@@ -167,6 +247,11 @@
           "pregunta": "¿Qué país tiene forma alargada y se ubica en Sudamérica?",
           "respuesta": "Chile",
           "alias": [],
+          "distractores": [
+            "Argentina",
+            "Perú",
+            "Colombia"
+          ],
           "puntos": 80
         },
         {
@@ -176,6 +261,11 @@
           "alias": [
             "Ciudad del Vaticano"
           ],
+          "distractores": [
+            "Mónaco",
+            "San Marino",
+            "Liechtenstein"
+          ],
           "puntos": 100
         },
         {
@@ -183,6 +273,11 @@
           "pregunta": "¿Qué continente no tiene desiertos?",
           "respuesta": "Europa",
           "alias": [],
+          "distractores": [
+            "Asia",
+            "Oceanía",
+            "América"
+          ],
           "puntos": 40,
           "nota": "Es la respuesta clásica de trivia que marca la guía."
         },
@@ -193,6 +288,11 @@
           "alias": [
             "Línea del Ecuador",
             "Línea ecuatorial"
+          ],
+          "distractores": [
+            "Meridiano de Greenwich",
+            "Trópico de Cáncer",
+            "Círculo Polar Ártico"
           ],
           "puntos": 100
         }
@@ -210,6 +310,11 @@
           "alias": [
             "H"
           ],
+          "distractores": [
+            "El helio",
+            "El oxígeno",
+            "El carbono"
+          ],
           "puntos": 80
         },
         {
@@ -217,6 +322,11 @@
           "pregunta": "¿Cuál es el órgano más grande del cuerpo humano?",
           "respuesta": "La piel",
           "alias": [],
+          "distractores": [
+            "El hígado",
+            "El cerebro",
+            "Los pulmones"
+          ],
           "puntos": 100
         },
         {
@@ -224,6 +334,11 @@
           "pregunta": "¿Qué planeta es conocido como el “planeta rojo”?",
           "respuesta": "Marte",
           "alias": [],
+          "distractores": [
+            "Venus",
+            "Júpiter",
+            "Mercurio"
+          ],
           "puntos": 100
         },
         {
@@ -232,6 +347,11 @@
           "respuesta": "206",
           "alias": [
             "doscientos seis"
+          ],
+          "distractores": [
+            "208",
+            "212",
+            "196"
           ],
           "puntos": 80
         },
@@ -242,6 +362,11 @@
           "alias": [
             "Einstein"
           ],
+          "distractores": [
+            "Isaac Newton",
+            "Galileo Galilei",
+            "Stephen Hawking"
+          ],
           "puntos": 100
         },
         {
@@ -250,6 +375,11 @@
           "respuesta": "Oxígeno",
           "alias": [
             "O2"
+          ],
+          "distractores": [
+            "Nitrógeno",
+            "Dióxido de carbono",
+            "Hidrógeno"
           ],
           "puntos": 100
         },
@@ -262,6 +392,11 @@
             "0 negativo",
             "O neg"
           ],
+          "distractores": [
+            "AB positivo",
+            "O positivo",
+            "A negativo"
+          ],
           "puntos": 60
         },
         {
@@ -269,6 +404,11 @@
           "pregunta": "¿Cuál es la unidad básica de la vida?",
           "respuesta": "La célula",
           "alias": [],
+          "distractores": [
+            "El átomo",
+            "El tejido",
+            "La molécula"
+          ],
           "puntos": 100
         },
         {
@@ -279,6 +419,11 @@
             "Fuerza de gravedad",
             "Gravitación"
           ],
+          "distractores": [
+            "El magnetismo",
+            "La fricción",
+            "La fuerza centrífuga"
+          ],
           "puntos": 100
         },
         {
@@ -286,6 +431,11 @@
           "pregunta": "¿Cuál es el planeta más grande del sistema solar?",
           "respuesta": "Júpiter",
           "alias": [],
+          "distractores": [
+            "Saturno",
+            "Neptuno",
+            "Urano"
+          ],
           "puntos": 100
         }
       ]
@@ -300,6 +450,11 @@
           "pregunta": "¿Cuál es el idioma más hablado en el mundo?",
           "respuesta": "El inglés",
           "alias": [],
+          "distractores": [
+            "El español",
+            "El hindi",
+            "El francés"
+          ],
           "puntos": 60,
           "nota": "La guía lo da como idioma global, seguido del mandarín. Por hablantes nativos, el primero es el chino mandarín."
         },
@@ -309,6 +464,11 @@
           "respuesta": "Grecia",
           "alias": [
             "Antigua Grecia"
+          ],
+          "distractores": [
+            "Italia",
+            "Egipto",
+            "Francia"
           ],
           "puntos": 100,
           "nota": "Se celebraban en Olimpia."
@@ -320,6 +480,11 @@
           "alias": [
             "ocho de marzo"
           ],
+          "distractores": [
+            "El 14 de febrero",
+            "El 10 de mayo",
+            "El 8 de abril"
+          ],
           "puntos": 100
         },
         {
@@ -327,6 +492,11 @@
           "pregunta": "¿Qué instrumento mide la temperatura?",
           "respuesta": "El termómetro",
           "alias": [],
+          "distractores": [
+            "El barómetro",
+            "El higrómetro",
+            "El anemómetro"
+          ],
           "puntos": 100
         },
         {
@@ -334,6 +504,11 @@
           "pregunta": "¿Cuál es el país más grande del mundo?",
           "respuesta": "Rusia",
           "alias": [],
+          "distractores": [
+            "Canadá",
+            "China",
+            "Estados Unidos"
+          ],
           "puntos": 100
         },
         {
@@ -341,6 +516,11 @@
           "pregunta": "¿Qué símbolo químico representa al oro?",
           "respuesta": "Au",
           "alias": [],
+          "distractores": [
+            "Ag",
+            "Or",
+            "Fe"
+          ],
           "puntos": 80,
           "nota": "Viene del latín aurum."
         },
@@ -349,6 +529,11 @@
           "pregunta": "¿En qué país se encuentra la Torre Eiffel?",
           "respuesta": "Francia",
           "alias": [],
+          "distractores": [
+            "Italia",
+            "Bélgica",
+            "España"
+          ],
           "puntos": 100
         },
         {
@@ -356,6 +541,11 @@
           "pregunta": "¿Cuál es el animal terrestre más grande del planeta?",
           "respuesta": "El elefante africano",
           "alias": [],
+          "distractores": [
+            "La jirafa",
+            "El rinoceronte blanco",
+            "El elefante asiático"
+          ],
           "puntos": 60
         },
         {
@@ -365,6 +555,11 @@
           "alias": [
             "veintidós de abril"
           ],
+          "distractores": [
+            "El 5 de junio",
+            "El 21 de marzo",
+            "El 22 de mayo"
+          ],
           "puntos": 60
         },
         {
@@ -372,6 +567,11 @@
           "pregunta": "¿Qué colores tiene la bandera de Italia?",
           "respuesta": "Verde, blanco y rojo",
           "alias": [],
+          "distractores": [
+            "Verde, blanco y naranja",
+            "Rojo, blanco y azul",
+            "Rojo y blanco"
+          ],
           "puntos": 80
         }
       ]
@@ -389,6 +589,11 @@
             "Cervantes",
             "Miguel de Cervantes"
           ],
+          "distractores": [
+            "Lope de Vega",
+            "Federico García Lorca",
+            "Gabriel García Márquez"
+          ],
           "puntos": 100
         },
         {
@@ -397,6 +602,11 @@
           "respuesta": "José Gorostiza",
           "alias": [
             "Gorostiza"
+          ],
+          "distractores": [
+            "Octavio Paz",
+            "Xavier Villaurrutia",
+            "Jaime Sabines"
           ],
           "puntos": 40
         },
@@ -407,6 +617,11 @@
           "alias": [
             "Van Gogh"
           ],
+          "distractores": [
+            "Claude Monet",
+            "Pablo Picasso",
+            "Salvador Dalí"
+          ],
           "puntos": 100
         },
         {
@@ -414,6 +629,11 @@
           "pregunta": "¿Cuál es el género literario que narra hechos imaginarios o reales en prosa?",
           "respuesta": "La novela",
           "alias": [],
+          "distractores": [
+            "El cuento",
+            "La poesía",
+            "El teatro"
+          ],
           "puntos": 60,
           "nota": "El cuento también es narrativa en prosa, pero la respuesta de la guía es la novela."
         },
@@ -423,6 +643,11 @@
           "respuesta": "Pablo Neruda",
           "alias": [
             "Neruda"
+          ],
+          "distractores": [
+            "Gabriela Mistral",
+            "Octavio Paz",
+            "Isabel Allende"
           ],
           "puntos": 60
         },
@@ -434,6 +659,11 @@
             "García Márquez",
             "Gabo"
           ],
+          "distractores": [
+            "Mario Vargas Llosa",
+            "Julio Cortázar",
+            "Carlos Fuentes"
+          ],
           "puntos": 100
         },
         {
@@ -443,6 +673,11 @@
           "alias": [
             "Rivera"
           ],
+          "distractores": [
+            "José Clemente Orozco",
+            "David Alfaro Siqueiros",
+            "Rufino Tamayo"
+          ],
           "puntos": 100
         },
         {
@@ -450,6 +685,11 @@
           "pregunta": "¿Cuál es la obra más famosa de William Shakespeare?",
           "respuesta": "Romeo y Julieta",
           "alias": [],
+          "distractores": [
+            "Don Quijote de la Mancha",
+            "La Divina Comedia",
+            "Cien años de soledad"
+          ],
           "puntos": 80,
           "nota": "Respuesta de la guía. Hamlet también suele considerarse su obra cumbre."
         },
@@ -460,6 +700,11 @@
           "alias": [
             "Pintura al fresco"
           ],
+          "distractores": [
+            "La acuarela",
+            "El óleo",
+            "El temple"
+          ],
           "puntos": 40
         },
         {
@@ -469,6 +714,11 @@
           "alias": [
             "Saint-Exupéry",
             "Exupéry"
+          ],
+          "distractores": [
+            "Julio Verne",
+            "Victor Hugo",
+            "Albert Camus"
           ],
           "puntos": 80
         }
@@ -487,6 +737,11 @@
             "uno",
             "un entero"
           ],
+          "distractores": [
+            "1/2",
+            "2",
+            "3/4"
+          ],
           "puntos": 100
         },
         {
@@ -496,6 +751,11 @@
           "alias": [
             "setenta y dos"
           ],
+          "distractores": [
+            "63",
+            "81",
+            "64"
+          ],
           "puntos": 100
         },
         {
@@ -503,6 +763,11 @@
           "pregunta": "¿Cuál es el valor de π (pi) aproximado a dos decimales?",
           "respuesta": "3.14",
           "alias": [],
+          "distractores": [
+            "3.41",
+            "3.16",
+            "3.12"
+          ],
           "puntos": 100
         },
         {
@@ -512,6 +777,11 @@
           "alias": [
             "Primo"
           ],
+          "distractores": [
+            "Número par",
+            "Número compuesto",
+            "Número entero"
+          ],
           "puntos": 100
         },
         {
@@ -519,6 +789,11 @@
           "pregunta": "¿Qué rama de las matemáticas estudia las formas y figuras?",
           "respuesta": "La geometría",
           "alias": [],
+          "distractores": [
+            "El álgebra",
+            "La aritmética",
+            "La trigonometría"
+          ],
           "puntos": 100
         },
         {
@@ -527,6 +802,11 @@
           "respuesta": "144",
           "alias": [
             "ciento cuarenta y cuatro"
+          ],
+          "distractores": [
+            "124",
+            "122",
+            "169"
           ],
           "puntos": 80
         },
@@ -537,6 +817,11 @@
           "alias": [
             "ciento veinticinco"
           ],
+          "distractores": [
+            "15",
+            "25",
+            "625"
+          ],
           "puntos": 80
         },
         {
@@ -544,6 +829,11 @@
           "pregunta": "¿Cómo se llama el número que indica la cantidad de lados de un pentágono?",
           "respuesta": "Cinco",
           "alias": [],
+          "distractores": [
+            "Seis",
+            "Cuatro",
+            "Ocho"
+          ],
           "puntos": 100
         },
         {
@@ -554,6 +844,11 @@
             "Conmutativa",
             "Ley conmutativa"
           ],
+          "distractores": [
+            "Propiedad asociativa",
+            "Propiedad distributiva",
+            "Elemento neutro"
+          ],
           "puntos": 60
         },
         {
@@ -561,6 +856,11 @@
           "pregunta": "¿Cuál es el valor absoluto de -8?",
           "respuesta": "8",
           "alias": [],
+          "distractores": [
+            "0",
+            "16",
+            "1/8"
+          ],
           "puntos": 80
         }
       ]
@@ -575,6 +875,11 @@
           "pregunta": "¿Qué significa “IA”?",
           "respuesta": "Inteligencia Artificial",
           "alias": [],
+          "distractores": [
+            "Interfaz Avanzada",
+            "Información Automática",
+            "Internet Abierto"
+          ],
           "puntos": 100
         },
         {
@@ -585,6 +890,11 @@
             "Gates",
             "William Gates"
           ],
+          "distractores": [
+            "Steve Jobs",
+            "Mark Zuckerberg",
+            "Elon Musk"
+          ],
           "puntos": 100,
           "nota": "Lo cofundó en 1975 junto con Paul Allen."
         },
@@ -593,6 +903,11 @@
           "pregunta": "¿En qué año se lanzó el primer iPhone?",
           "respuesta": "2007",
           "alias": [],
+          "distractores": [
+            "2005",
+            "2010",
+            "2001"
+          ],
           "puntos": 80
         },
         {
@@ -601,6 +916,11 @@
           "respuesta": "Catar (Qatar)",
           "alias": [
             "Qatar"
+          ],
+          "distractores": [
+            "Rusia",
+            "Brasil",
+            "Emiratos Árabes Unidos"
           ],
           "puntos": 100
         },
@@ -611,6 +931,11 @@
           "alias": [
             "Twitter"
           ],
+          "distractores": [
+            "Instagram",
+            "Threads",
+            "Facebook"
+          ],
           "puntos": 100,
           "nota": "Antes se llamaba Twitter."
         },
@@ -619,6 +944,11 @@
           "pregunta": "¿Qué significa “USB”?",
           "respuesta": "Universal Serial Bus",
           "alias": [],
+          "distractores": [
+            "Universal System Bridge",
+            "Unified Serial Board",
+            "Universal Service Bus"
+          ],
           "puntos": 60
         },
         {
@@ -626,6 +956,11 @@
           "pregunta": "¿Qué empresa creó el sistema operativo Android?",
           "respuesta": "Google",
           "alias": [],
+          "distractores": [
+            "Apple",
+            "Microsoft",
+            "Samsung"
+          ],
           "puntos": 80,
           "nota": "Google compró Android Inc. en 2005 y lanzó el sistema en 2008."
         },
@@ -636,6 +971,11 @@
           "alias": [
             "Perseverancia"
           ],
+          "distractores": [
+            "Curiosity",
+            "Opportunity",
+            "Spirit"
+          ],
           "puntos": 60
         },
         {
@@ -643,6 +983,11 @@
           "pregunta": "¿Qué plataforma en línea es más usada para videollamadas en educación y trabajo?",
           "respuesta": "Zoom",
           "alias": [],
+          "distractores": [
+            "Skype",
+            "Discord",
+            "Telegram"
+          ],
           "puntos": 80
         },
         {
@@ -652,6 +997,11 @@
           "alias": [
             "URSS",
             "Unión Soviética"
+          ],
+          "distractores": [
+            "Estados Unidos",
+            "China",
+            "Alemania"
           ],
           "puntos": 80,
           "nota": "Fue en 1957. Hoy su sucesor es Rusia, pero la respuesta es la URSS."
@@ -664,6 +1014,12 @@
       "id": "enc-01",
       "categoria": "historia",
       "pregunta": "Menciona un personaje de la Historia de México que aparezca en la guía",
+      "distractores": [
+        "José María Morelos",
+        "Porfirio Díaz",
+        "Agustín de Iturbide",
+        "Emiliano Zapata"
+      ],
       "respuestas": [
         {
           "texto": "Miguel Hidalgo",
@@ -702,6 +1058,12 @@
       "id": "enc-02",
       "categoria": "historia",
       "pregunta": "Menciona un año clave de la Historia de México según la guía",
+      "distractores": [
+        "1821",
+        "1836",
+        "1867",
+        "1968"
+      ],
       "respuestas": [
         {
           "texto": "1810",
@@ -739,6 +1101,12 @@
       "id": "enc-03",
       "categoria": "geografia",
       "pregunta": "Menciona un lugar de México que aparezca en la guía",
+      "distractores": [
+        "Chichén Itzá",
+        "Monterrey",
+        "Pico de Orizaba",
+        "Lago de Chapala"
+      ],
       "respuestas": [
         {
           "texto": "Tenochtitlán",
@@ -784,6 +1152,12 @@
       "id": "enc-04",
       "categoria": "geografia",
       "pregunta": "Menciona un país que sea respuesta en la guía",
+      "distractores": [
+        "Brasil",
+        "Japón",
+        "Canadá",
+        "Egipto"
+      ],
       "respuestas": [
         {
           "texto": "Rusia",
@@ -837,6 +1211,12 @@
       "id": "enc-05",
       "categoria": "ciencias",
       "pregunta": "Menciona algo del cuerpo humano que se estudie en la guía",
+      "distractores": [
+        "El corazón",
+        "El cerebro",
+        "El hígado",
+        "Los pulmones"
+      ],
       "respuestas": [
         {
           "texto": "La piel",
@@ -882,6 +1262,11 @@
       "id": "enc-06",
       "categoria": "ciencias",
       "pregunta": "Menciona un planeta que aparezca en la guía",
+      "distractores": [
+        "Saturno",
+        "Venus",
+        "Mercurio"
+      ],
       "respuestas": [
         {
           "texto": "Marte",
@@ -907,6 +1292,11 @@
       "id": "enc-07",
       "categoria": "ciencias",
       "pregunta": "Menciona un elemento químico que aparezca en la guía",
+      "distractores": [
+        "Carbono",
+        "Nitrógeno",
+        "Plata"
+      ],
       "respuestas": [
         {
           "texto": "Oxígeno",
@@ -936,6 +1326,12 @@
       "id": "enc-08",
       "categoria": "literatura",
       "pregunta": "Menciona un escritor o artista que aparezca en la guía",
+      "distractores": [
+        "Octavio Paz",
+        "Frida Kahlo",
+        "Pablo Picasso",
+        "Jorge Luis Borges"
+      ],
       "respuestas": [
         {
           "texto": "Miguel de Cervantes",
@@ -1009,6 +1405,12 @@
       "id": "enc-09",
       "categoria": "matematicas",
       "pregunta": "Menciona un concepto matemático que aparezca en la guía",
+      "distractores": [
+        "Logaritmo",
+        "Propiedad asociativa",
+        "Derivada",
+        "Número par"
+      ],
       "respuestas": [
         {
           "texto": "Número primo",
@@ -1053,6 +1455,12 @@
       "id": "enc-10",
       "categoria": "tecnologia",
       "pregunta": "Menciona una empresa o marca de tecnología que aparezca en la guía",
+      "distractores": [
+        "Amazon",
+        "Samsung",
+        "Facebook",
+        "Netflix"
+      ],
       "respuestas": [
         {
           "texto": "Microsoft",

@@ -1,0 +1,1012 @@
+{
+  "version": 1,
+  "fuente": {
+    "titulo": "Guía de estudio LoboSabio",
+    "archivo": "LOBOSABIO_261015_185928.pdf",
+    "paginas": 5
+  },
+  "categorias": [
+    {
+      "id": "historia",
+      "codigo": "HIS",
+      "nombre": "Historia de México",
+      "preguntas": [
+        {
+          "id": "his-01",
+          "pregunta": "¿En qué año inició la Independencia de México?",
+          "respuesta": "1810",
+          "alias": [
+            "mil ochocientos diez"
+          ],
+          "distractores": [
+            "1821",
+            "1910",
+            "1800"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "his-02",
+          "pregunta": "¿Quién fue el líder del movimiento de Independencia?",
+          "respuesta": "Miguel Hidalgo y Costilla",
+          "alias": [
+            "Miguel Hidalgo",
+            "Hidalgo",
+            "Cura Hidalgo"
+          ],
+          "distractores": [
+            "José María Morelos",
+            "Ignacio Allende",
+            "Agustín de Iturbide"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "his-03",
+          "pregunta": "¿Qué tratado puso fin a la guerra entre México y Estados Unidos en 1848?",
+          "respuesta": "El Tratado de Guadalupe Hidalgo",
+          "alias": [
+            "Guadalupe Hidalgo"
+          ],
+          "distractores": [
+            "El Tratado de Córdoba",
+            "El Tratado de Velasco",
+            "El Tratado de La Mesilla"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "his-04",
+          "pregunta": "¿En qué año se promulgó la Constitución que actualmente nos rige?",
+          "respuesta": "1917",
+          "alias": [],
+          "distractores": [
+            "1857",
+            "1910",
+            "1824"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "his-05",
+          "pregunta": "¿Quién fue el primer presidente de México?",
+          "respuesta": "Guadalupe Victoria",
+          "alias": [],
+          "distractores": [
+            "Agustín de Iturbide",
+            "Vicente Guerrero",
+            "Benito Juárez"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "his-06",
+          "pregunta": "¿En qué año cayó Tenochtitlán?",
+          "respuesta": "1521",
+          "alias": [],
+          "distractores": [
+            "1519",
+            "1492",
+            "1810"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "his-07",
+          "pregunta": "¿Quién fue el emperador durante el Segundo Imperio Mexicano?",
+          "respuesta": "Maximiliano de Habsburgo",
+          "alias": [
+            "Maximiliano",
+            "Maximiliano I"
+          ],
+          "distractores": [
+            "Agustín de Iturbide",
+            "Carlos V",
+            "Napoleón III"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "his-08",
+          "pregunta": "¿Qué presidente impulsó las Leyes de Reforma?",
+          "respuesta": "Benito Juárez",
+          "alias": [
+            "Juárez"
+          ],
+          "distractores": [
+            "Porfirio Díaz",
+            "Lázaro Cárdenas",
+            "Antonio López de Santa Anna"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "his-09",
+          "pregunta": "¿Qué conflicto armado inició en 1910?",
+          "respuesta": "La Revolución Mexicana",
+          "alias": [
+            "Revolución"
+          ],
+          "distractores": [
+            "La Guerra de Reforma",
+            "La Guerra Cristera",
+            "La Guerra de Independencia"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "his-10",
+          "pregunta": "¿Qué civilización construyó la ciudad de Teotihuacán?",
+          "respuesta": "La civilización teotihuacana",
+          "alias": [
+            "teotihuacanos",
+            "cultura teotihuacana"
+          ],
+          "distractores": [
+            "Los mexicas",
+            "Los mayas",
+            "Los olmecas"
+          ],
+          "puntos": 40,
+          "nota": "Fue anterior a los mexicas."
+        }
+      ]
+    },
+    {
+      "id": "geografia",
+      "codigo": "GEO",
+      "nombre": "Geografía",
+      "preguntas": [
+        {
+          "id": "geo-01",
+          "pregunta": "¿Cuál es el río más largo de México?",
+          "respuesta": "El Río Bravo",
+          "alias": [
+            "Bravo",
+            "Río Bravo del Norte"
+          ],
+          "distractores": [
+            "El Río Lerma",
+            "El Río Usumacinta",
+            "El Río Balsas"
+          ],
+          "puntos": 100,
+          "nota": "Es frontera con Estados Unidos, donde lo llaman Río Grande. Si te piden uno que corra solo por territorio mexicano, suele citarse el Lerma-Santiago."
+        },
+        {
+          "id": "geo-02",
+          "pregunta": "¿En qué entidad se encuentra el volcán Popocatépetl?",
+          "respuesta": "Entre Puebla, Morelos y el Estado de México",
+          "alias": [
+            "Puebla, Morelos y Edomex"
+          ],
+          "distractores": [
+            "Entre Veracruz y Puebla",
+            "Entre Jalisco y Colima",
+            "Entre Michoacán y Guerrero"
+          ],
+          "puntos": 60,
+          "nota": "Menciona las tres entidades: Puebla, Morelos y Estado de México."
+        },
+        {
+          "id": "geo-03",
+          "pregunta": "¿Cuál es la capital más alta del mundo?",
+          "respuesta": "La Paz, Bolivia",
+          "alias": [
+            "La Paz"
+          ],
+          "distractores": [
+            "Quito, Ecuador",
+            "Bogotá, Colombia",
+            "Ciudad de México"
+          ],
+          "puntos": 60,
+          "nota": "La Paz es la sede de gobierno de Bolivia; la capital constitucional es Sucre."
+        },
+        {
+          "id": "geo-04",
+          "pregunta": "¿Qué océanos bañan las costas mexicanas?",
+          "respuesta": "Océano Pacífico y Océano Atlántico",
+          "alias": [
+            "Pacífico y Atlántico"
+          ],
+          "distractores": [
+            "Océano Pacífico y Océano Índico",
+            "Océano Atlántico y Océano Ártico",
+            "Solo el Océano Pacífico"
+          ],
+          "puntos": 100,
+          "nota": "Por el lado del Atlántico, a través del Golfo de México y el Mar Caribe."
+        },
+        {
+          "id": "geo-05",
+          "pregunta": "¿Cuál es el continente más poblado del mundo?",
+          "respuesta": "Asia",
+          "alias": [],
+          "distractores": [
+            "África",
+            "Europa",
+            "América"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "geo-06",
+          "pregunta": "¿Cuál es la capital del estado de Yucatán?",
+          "respuesta": "Mérida",
+          "alias": [],
+          "distractores": [
+            "Campeche",
+            "Cancún",
+            "Chetumal"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "geo-07",
+          "pregunta": "¿Qué país tiene forma alargada y se ubica en Sudamérica?",
+          "respuesta": "Chile",
+          "alias": [],
+          "distractores": [
+            "Argentina",
+            "Perú",
+            "Colombia"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "geo-08",
+          "pregunta": "¿Cuál es el país más pequeño del mundo?",
+          "respuesta": "El Vaticano",
+          "alias": [
+            "Ciudad del Vaticano"
+          ],
+          "distractores": [
+            "Mónaco",
+            "San Marino",
+            "Liechtenstein"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "geo-09",
+          "pregunta": "¿Qué continente no tiene desiertos?",
+          "respuesta": "Europa",
+          "alias": [],
+          "distractores": [
+            "Asia",
+            "Oceanía",
+            "América"
+          ],
+          "puntos": 40,
+          "nota": "Es la respuesta clásica de trivia que marca la guía."
+        },
+        {
+          "id": "geo-10",
+          "pregunta": "¿Cómo se llama la línea imaginaria que divide la Tierra en hemisferio norte y sur?",
+          "respuesta": "Ecuador",
+          "alias": [
+            "Línea del Ecuador",
+            "Línea ecuatorial"
+          ],
+          "distractores": [
+            "Meridiano de Greenwich",
+            "Trópico de Cáncer",
+            "Círculo Polar Ártico"
+          ],
+          "puntos": 100
+        }
+      ]
+    },
+    {
+      "id": "ciencias",
+      "codigo": "CIE",
+      "nombre": "Ciencias Naturales",
+      "preguntas": [
+        {
+          "id": "cie-01",
+          "pregunta": "¿Cuál es el elemento químico más abundante en el universo?",
+          "respuesta": "El hidrógeno",
+          "alias": [
+            "H"
+          ],
+          "distractores": [
+            "El helio",
+            "El oxígeno",
+            "El carbono"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cie-02",
+          "pregunta": "¿Cuál es el órgano más grande del cuerpo humano?",
+          "respuesta": "La piel",
+          "alias": [],
+          "distractores": [
+            "El hígado",
+            "El cerebro",
+            "Los pulmones"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cie-03",
+          "pregunta": "¿Qué planeta es conocido como el “planeta rojo”?",
+          "respuesta": "Marte",
+          "alias": [],
+          "distractores": [
+            "Venus",
+            "Júpiter",
+            "Mercurio"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cie-04",
+          "pregunta": "¿Cuántos huesos tiene el cuerpo humano adulto?",
+          "respuesta": "206",
+          "alias": [
+            "doscientos seis"
+          ],
+          "distractores": [
+            "208",
+            "212",
+            "196"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "cie-05",
+          "pregunta": "¿Qué científico propuso la teoría de la relatividad?",
+          "respuesta": "Albert Einstein",
+          "alias": [
+            "Einstein"
+          ],
+          "distractores": [
+            "Isaac Newton",
+            "Galileo Galilei",
+            "Stephen Hawking"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cie-06",
+          "pregunta": "¿Qué gas respiramos los seres humanos para vivir?",
+          "respuesta": "Oxígeno",
+          "alias": [
+            "O2"
+          ],
+          "distractores": [
+            "Nitrógeno",
+            "Dióxido de carbono",
+            "Hidrógeno"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cie-07",
+          "pregunta": "¿Qué tipo de sangre es conocido como “donador universal”?",
+          "respuesta": "O negativo (O−)",
+          "alias": [
+            "O-",
+            "0 negativo",
+            "O neg"
+          ],
+          "distractores": [
+            "AB positivo",
+            "O positivo",
+            "A negativo"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cie-08",
+          "pregunta": "¿Cuál es la unidad básica de la vida?",
+          "respuesta": "La célula",
+          "alias": [],
+          "distractores": [
+            "El átomo",
+            "El tejido",
+            "La molécula"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cie-09",
+          "pregunta": "¿Qué fuerza nos mantiene pegados a la Tierra?",
+          "respuesta": "La gravedad",
+          "alias": [
+            "Fuerza de gravedad",
+            "Gravitación"
+          ],
+          "distractores": [
+            "El magnetismo",
+            "La fricción",
+            "La fuerza centrífuga"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cie-10",
+          "pregunta": "¿Cuál es el planeta más grande del sistema solar?",
+          "respuesta": "Júpiter",
+          "alias": [],
+          "distractores": [
+            "Saturno",
+            "Neptuno",
+            "Urano"
+          ],
+          "puntos": 100
+        }
+      ]
+    },
+    {
+      "id": "cultura",
+      "codigo": "CUL",
+      "nombre": "Cultura General",
+      "preguntas": [
+        {
+          "id": "cul-01",
+          "pregunta": "¿Cuál es el idioma más hablado en el mundo?",
+          "respuesta": "El inglés",
+          "alias": [],
+          "distractores": [
+            "El español",
+            "El hindi",
+            "El francés"
+          ],
+          "puntos": 60,
+          "nota": "La guía lo da como idioma global, seguido del mandarín. Por hablantes nativos, el primero es el chino mandarín."
+        },
+        {
+          "id": "cul-02",
+          "pregunta": "¿En qué país se originaron los Juegos Olímpicos?",
+          "respuesta": "Grecia",
+          "alias": [
+            "Antigua Grecia"
+          ],
+          "distractores": [
+            "Italia",
+            "Egipto",
+            "Francia"
+          ],
+          "puntos": 100,
+          "nota": "Se celebraban en Olimpia."
+        },
+        {
+          "id": "cul-03",
+          "pregunta": "¿Qué día se celebra el Día Internacional de la Mujer?",
+          "respuesta": "El 8 de marzo",
+          "alias": [
+            "ocho de marzo"
+          ],
+          "distractores": [
+            "El 14 de febrero",
+            "El 10 de mayo",
+            "El 8 de abril"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cul-04",
+          "pregunta": "¿Qué instrumento mide la temperatura?",
+          "respuesta": "El termómetro",
+          "alias": [],
+          "distractores": [
+            "El barómetro",
+            "El higrómetro",
+            "El anemómetro"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cul-05",
+          "pregunta": "¿Cuál es el país más grande del mundo?",
+          "respuesta": "Rusia",
+          "alias": [],
+          "distractores": [
+            "Canadá",
+            "China",
+            "Estados Unidos"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cul-06",
+          "pregunta": "¿Qué símbolo químico representa al oro?",
+          "respuesta": "Au",
+          "alias": [],
+          "distractores": [
+            "Ag",
+            "Or",
+            "Fe"
+          ],
+          "puntos": 80,
+          "nota": "Viene del latín aurum."
+        },
+        {
+          "id": "cul-07",
+          "pregunta": "¿En qué país se encuentra la Torre Eiffel?",
+          "respuesta": "Francia",
+          "alias": [],
+          "distractores": [
+            "Italia",
+            "Bélgica",
+            "España"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "cul-08",
+          "pregunta": "¿Cuál es el animal terrestre más grande del planeta?",
+          "respuesta": "El elefante africano",
+          "alias": [],
+          "distractores": [
+            "La jirafa",
+            "El rinoceronte blanco",
+            "El elefante asiático"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cul-09",
+          "pregunta": "¿Qué día se celebra el Día de la Tierra?",
+          "respuesta": "El 22 de abril",
+          "alias": [
+            "veintidós de abril"
+          ],
+          "distractores": [
+            "El 5 de junio",
+            "El 21 de marzo",
+            "El 22 de mayo"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "cul-10",
+          "pregunta": "¿Qué colores tiene la bandera de Italia?",
+          "respuesta": "Verde, blanco y rojo",
+          "alias": [],
+          "distractores": [
+            "Verde, blanco y naranja",
+            "Rojo, blanco y azul",
+            "Rojo y blanco"
+          ],
+          "puntos": 80
+        }
+      ]
+    },
+    {
+      "id": "literatura",
+      "codigo": "LIT",
+      "nombre": "Literatura y Arte",
+      "preguntas": [
+        {
+          "id": "lit-01",
+          "pregunta": "¿Quién escribió “Don Quijote de la Mancha”?",
+          "respuesta": "Miguel de Cervantes Saavedra",
+          "alias": [
+            "Cervantes",
+            "Miguel de Cervantes"
+          ],
+          "distractores": [
+            "Lope de Vega",
+            "Federico García Lorca",
+            "Gabriel García Márquez"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "lit-02",
+          "pregunta": "¿Qué poeta mexicano escribió “Muerte sin fin”?",
+          "respuesta": "José Gorostiza",
+          "alias": [
+            "Gorostiza"
+          ],
+          "distractores": [
+            "Octavio Paz",
+            "Xavier Villaurrutia",
+            "Jaime Sabines"
+          ],
+          "puntos": 40
+        },
+        {
+          "id": "lit-03",
+          "pregunta": "¿Quién pintó “La noche estrellada”?",
+          "respuesta": "Vincent van Gogh",
+          "alias": [
+            "Van Gogh"
+          ],
+          "distractores": [
+            "Claude Monet",
+            "Pablo Picasso",
+            "Salvador Dalí"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "lit-04",
+          "pregunta": "¿Cuál es el género literario que narra hechos imaginarios o reales en prosa?",
+          "respuesta": "La novela",
+          "alias": [],
+          "distractores": [
+            "El cuento",
+            "La poesía",
+            "El teatro"
+          ],
+          "puntos": 60,
+          "nota": "El cuento también es narrativa en prosa, pero la respuesta de la guía es la novela."
+        },
+        {
+          "id": "lit-05",
+          "pregunta": "¿Qué escritor chileno ganó el Premio Nobel de Literatura en 1971?",
+          "respuesta": "Pablo Neruda",
+          "alias": [
+            "Neruda"
+          ],
+          "distractores": [
+            "Gabriela Mistral",
+            "Octavio Paz",
+            "Isabel Allende"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "lit-06",
+          "pregunta": "¿Quién escribió “Cien años de soledad”?",
+          "respuesta": "Gabriel García Márquez",
+          "alias": [
+            "García Márquez",
+            "Gabo"
+          ],
+          "distractores": [
+            "Mario Vargas Llosa",
+            "Julio Cortázar",
+            "Carlos Fuentes"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "lit-07",
+          "pregunta": "¿Qué famoso pintor mexicano fue esposo de Frida Kahlo?",
+          "respuesta": "Diego Rivera",
+          "alias": [
+            "Rivera"
+          ],
+          "distractores": [
+            "José Clemente Orozco",
+            "David Alfaro Siqueiros",
+            "Rufino Tamayo"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "lit-08",
+          "pregunta": "¿Cuál es la obra más famosa de William Shakespeare?",
+          "respuesta": "Romeo y Julieta",
+          "alias": [],
+          "distractores": [
+            "Don Quijote de la Mancha",
+            "La Divina Comedia",
+            "Cien años de soledad"
+          ],
+          "puntos": 80,
+          "nota": "Respuesta de la guía. Hamlet también suele considerarse su obra cumbre."
+        },
+        {
+          "id": "lit-09",
+          "pregunta": "¿Qué técnica pictórica utiliza pigmentos diluidos en agua sobre yeso fresco?",
+          "respuesta": "El fresco",
+          "alias": [
+            "Pintura al fresco"
+          ],
+          "distractores": [
+            "La acuarela",
+            "El óleo",
+            "El temple"
+          ],
+          "puntos": 40
+        },
+        {
+          "id": "lit-10",
+          "pregunta": "¿Qué autor escribió “El Principito”?",
+          "respuesta": "Antoine de Saint-Exupéry",
+          "alias": [
+            "Saint-Exupéry",
+            "Exupéry"
+          ],
+          "distractores": [
+            "Julio Verne",
+            "Victor Hugo",
+            "Albert Camus"
+          ],
+          "puntos": 80
+        }
+      ]
+    },
+    {
+      "id": "matematicas",
+      "codigo": "MAT",
+      "nombre": "Matemáticas y Lógica",
+      "preguntas": [
+        {
+          "id": "mat-01",
+          "pregunta": "¿Cuánto es ¾ + ¼?",
+          "respuesta": "1",
+          "alias": [
+            "uno",
+            "un entero"
+          ],
+          "distractores": [
+            "1/2",
+            "2",
+            "3/4"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "mat-02",
+          "pregunta": "¿Cuál es el resultado de 9 × 8?",
+          "respuesta": "72",
+          "alias": [
+            "setenta y dos"
+          ],
+          "distractores": [
+            "63",
+            "81",
+            "64"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "mat-03",
+          "pregunta": "¿Cuál es el valor de π (pi) aproximado a dos decimales?",
+          "respuesta": "3.14",
+          "alias": [],
+          "distractores": [
+            "3.41",
+            "3.16",
+            "3.12"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "mat-04",
+          "pregunta": "¿Cómo se llama un número que solo es divisible entre 1 y él mismo?",
+          "respuesta": "Número primo",
+          "alias": [
+            "Primo"
+          ],
+          "distractores": [
+            "Número par",
+            "Número compuesto",
+            "Número entero"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "mat-05",
+          "pregunta": "¿Qué rama de las matemáticas estudia las formas y figuras?",
+          "respuesta": "La geometría",
+          "alias": [],
+          "distractores": [
+            "El álgebra",
+            "La aritmética",
+            "La trigonometría"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "mat-06",
+          "pregunta": "¿Cuál es el cuadrado de 12?",
+          "respuesta": "144",
+          "alias": [
+            "ciento cuarenta y cuatro"
+          ],
+          "distractores": [
+            "124",
+            "122",
+            "169"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "mat-07",
+          "pregunta": "¿Qué resultado tiene 5³ (cinco al cubo)?",
+          "respuesta": "125",
+          "alias": [
+            "ciento veinticinco"
+          ],
+          "distractores": [
+            "15",
+            "25",
+            "625"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "mat-08",
+          "pregunta": "¿Cómo se llama el número que indica la cantidad de lados de un pentágono?",
+          "respuesta": "Cinco",
+          "alias": [],
+          "distractores": [
+            "Seis",
+            "Cuatro",
+            "Ocho"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "mat-09",
+          "pregunta": "¿Qué propiedad establece que el orden de los factores no altera el producto?",
+          "respuesta": "Propiedad conmutativa",
+          "alias": [
+            "Conmutativa",
+            "Ley conmutativa"
+          ],
+          "distractores": [
+            "Propiedad asociativa",
+            "Propiedad distributiva",
+            "Elemento neutro"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "mat-10",
+          "pregunta": "¿Cuál es el valor absoluto de -8?",
+          "respuesta": "8",
+          "alias": [],
+          "distractores": [
+            "0",
+            "16",
+            "1/8"
+          ],
+          "puntos": 80
+        }
+      ]
+    },
+    {
+      "id": "tecnologia",
+      "codigo": "TEC",
+      "nombre": "Actualidad y Tecnología",
+      "preguntas": [
+        {
+          "id": "tec-01",
+          "pregunta": "¿Qué significa “IA”?",
+          "respuesta": "Inteligencia Artificial",
+          "alias": [],
+          "distractores": [
+            "Interfaz Avanzada",
+            "Información Automática",
+            "Internet Abierto"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "tec-02",
+          "pregunta": "¿Cuál es el nombre del fundador de Microsoft?",
+          "respuesta": "Bill Gates",
+          "alias": [
+            "Gates",
+            "William Gates"
+          ],
+          "distractores": [
+            "Steve Jobs",
+            "Mark Zuckerberg",
+            "Elon Musk"
+          ],
+          "puntos": 100,
+          "nota": "Lo cofundó en 1975 junto con Paul Allen."
+        },
+        {
+          "id": "tec-03",
+          "pregunta": "¿En qué año se lanzó el primer iPhone?",
+          "respuesta": "2007",
+          "alias": [],
+          "distractores": [
+            "2005",
+            "2010",
+            "2001"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "tec-04",
+          "pregunta": "¿Qué país fue sede del Mundial de Fútbol 2022?",
+          "respuesta": "Catar (Qatar)",
+          "alias": [
+            "Qatar"
+          ],
+          "distractores": [
+            "Rusia",
+            "Brasil",
+            "Emiratos Árabes Unidos"
+          ],
+          "puntos": 100
+        },
+        {
+          "id": "tec-05",
+          "pregunta": "¿Qué red social es propiedad de Elon Musk desde 2022?",
+          "respuesta": "X",
+          "alias": [
+            "Twitter"
+          ],
+          "distractores": [
+            "Instagram",
+            "Threads",
+            "Facebook"
+          ],
+          "puntos": 100,
+          "nota": "Antes se llamaba Twitter."
+        },
+        {
+          "id": "tec-06",
+          "pregunta": "¿Qué significa “USB”?",
+          "respuesta": "Universal Serial Bus",
+          "alias": [],
+          "distractores": [
+            "Universal System Bridge",
+            "Unified Serial Board",
+            "Universal Service Bus"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "tec-07",
+          "pregunta": "¿Qué empresa creó el sistema operativo Android?",
+          "respuesta": "Google",
+          "alias": [],
+          "distractores": [
+            "Apple",
+            "Microsoft",
+            "Samsung"
+          ],
+          "puntos": 80,
+          "nota": "Google compró Android Inc. en 2005 y lanzó el sistema en 2008."
+        },
+        {
+          "id": "tec-08",
+          "pregunta": "¿Cuál es el nombre del vehículo de exploración enviado por la NASA a Marte en 2021?",
+          "respuesta": "Perseverance",
+          "alias": [
+            "Perseverancia"
+          ],
+          "distractores": [
+            "Curiosity",
+            "Opportunity",
+            "Spirit"
+          ],
+          "puntos": 60
+        },
+        {
+          "id": "tec-09",
+          "pregunta": "¿Qué plataforma en línea es más usada para videollamadas en educación y trabajo?",
+          "respuesta": "Zoom",
+          "alias": [],
+          "distractores": [
+            "Skype",
+            "Discord",
+            "Telegram"
+          ],
+          "puntos": 80
+        },
+        {
+          "id": "tec-10",
+          "pregunta": "¿Qué país lanzó el primer satélite artificial, el Sputnik 1?",
+          "respuesta": "La Unión Soviética (URSS)",
+          "alias": [
+            "URSS",
+            "Unión Soviética"
+          ],
+          "distractores": [
+            "Estados Unidos",
+            "China",
+            "Alemania"
+          ],
+          "puntos": 80,
+          "nota": "Fue en 1957. Hoy su sucesor es Rusia, pero la respuesta es la URSS."
+        }
+      ]
+    }
+  ]
+}

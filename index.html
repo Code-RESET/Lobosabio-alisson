@@ -1,0 +1,1727 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LoboQuiz UAD</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Trivia gamificada estilo 100 Mexicanos Dijeron para dominar la guía LoboSabio de la UAD.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  if (window.tailwind) tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Saira Condensed"', '"Arial Narrow"', 'Arial', 'sans-serif'],
+          sans: ['"Atkinson Hyperlegible"', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif']
+        },
+        colors: {
+          papel: 'var(--papel)', superficie: 'var(--superficie)', hundido: 'var(--hundido)',
+          tinta: 'var(--tinta)', tenue: 'var(--tenue)', linea: 'var(--linea)',
+          guinda: 'var(--guinda)', oro: 'var(--oro)', exito: 'var(--exito)', error: 'var(--error)'
+        }
+      }
+    }
+  };
+</script>
+<style>
+  /* Layout: encabezado fijo con la marca + navegación por modos; cada modo es una vista a una columna
+     que se abre en dos columnas (contenido + panel lateral) en pantallas anchas. El "tablero" de juego
+     es un set de televisión: siempre oscuro, guinda profundo con marco dorado, en ambos temas. */
+  :root {
+    --papel: #FAF6F5;        /* fondo general, blanco con sesgo rosado */
+    --superficie: #FFFFFF;
+    --hundido: #F3ECEC;
+    --tinta: #1E1417;
+    --tenue: #6D5A60;
+    --linea: #E7DADC;
+    --guinda: #7A1C33;       /* guinda académico UAD */
+    --guinda-hondo: #4C0F20;
+    --oro: #A9802A;          /* dorado legible sobre claro */
+    --oro-vivo: #D9B45E;     /* dorado sobre oscuro */
+    --exito: #1E7A50;
+    --error: #B42335;
+    --sobre-guinda: #FFFFFF;
+    --tablero: #24080F;
+    --tablero-celda: #3A0E1B;
+    --tablero-texto: #FFF6EC;
+    --tablero-tenue: #CDB3B9;
+    --sombra: 0 1px 2px rgba(60, 15, 28, .06), 0 8px 24px -12px rgba(60, 15, 28, .18);
+    --f-display: "Saira Condensed", "Arial Narrow", Arial, sans-serif;
+    --f-texto: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --papel: #140C0F; --superficie: #1D1317; --hundido: #261A1F; --tinta: #F4EBED; --tenue: #B9A5AB;
+      --linea: #3A2930; --guinda: #C04563; --guinda-hondo: #7A1C33; --oro: #D9B45E; --oro-vivo: #E6C878;
+      --exito: #4CC08A; --error: #F0697A; --sobre-guinda: #FFFFFF;
+      --sombra: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --papel: #140C0F; --superficie: #1D1317; --hundido: #261A1F; --tinta: #F4EBED; --tenue: #B9A5AB;
+    --linea: #3A2930; --guinda: #C04563; --guinda-hondo: #7A1C33; --oro: #D9B45E; --oro-vivo: #E6C878;
+    --exito: #4CC08A; --error: #F0697A; --sobre-guinda: #FFFFFF;
+    --sombra: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+
+  html, body { min-height: 100%; }
+  body { background: var(--papel); color: var(--tinta); font-family: var(--f-texto); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--superficie); }
+  .gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: .01em; line-height: 1.05; }
+  .num { font-family: var(--f-display); font-variant-numeric: tabular-nums; }
+  .eyebrow { font-family: var(--f-display); text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; font-weight: 700; color: var(--oro); }
+  .tenue { color: var(--tenue); }
+  :focus-visible { outline: 3px solid var(--oro-vivo); outline-offset: 2px; border-radius: 6px; }
+
+  /* Encabezado */
+  .encabezado { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--superficie); border-bottom: 1px solid var(--linea); }
+  .marca { white-space: nowrap; font-family: var(--f-display); font-weight: 800; font-size: clamp(1.2rem, 4.6vw, 1.45rem); line-height: 1; letter-spacing: .01em; }
+  .marca b { color: var(--guinda); font-weight: 800; }
+  .marca i { font-style: normal; color: var(--oro); }
+  .nav-scroll { overflow-x: auto; scrollbar-width: none; }
+  .nav-scroll::-webkit-scrollbar { display: none; }
+  .nav-btn { font-family: var(--f-display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .9rem; padding: .55rem .85rem; border-radius: 8px; color: var(--tenue); white-space: nowrap; transition: color .15s, background .15s; }
+  .nav-btn:hover { color: var(--tinta); background: var(--hundido); }
+  .nav-btn[aria-current="page"] { color: var(--sobre-guinda); background: var(--guinda); }
+
+  /* Superficies y controles */
+  .panel { background: var(--superficie); border: 1px solid var(--linea); border-radius: 14px; box-shadow: var(--sombra); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-family: var(--f-display); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: .95rem; padding: .7rem 1.1rem; border-radius: 10px; border: 1px solid transparent; transition: transform .08s, filter .15s, background .15s; cursor: pointer; line-height: 1; white-space: nowrap; }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-guinda { background: var(--guinda); color: var(--sobre-guinda); }
+  .btn-guinda:hover { filter: brightness(1.08); }
+  .btn-oro { background: linear-gradient(180deg, #E8C877, #C39A3F); color: #2A1A06; border-color: #A7822F; }
+  .btn-oro:hover { filter: brightness(1.05); }
+  .btn-linea { background: transparent; color: var(--tinta); border-color: var(--linea); }
+  .btn-linea:hover { background: var(--hundido); }
+  .btn-sm { padding: .5rem .75rem; font-size: .82rem; border-radius: 8px; }
+  .campo { width: 100%; background: var(--superficie); color: var(--tinta); border: 1.5px solid var(--linea); border-radius: 10px; padding: .75rem .9rem; font-size: 1.05rem; }
+  .campo:focus { outline: none; border-color: var(--guinda); box-shadow: 0 0 0 3px color-mix(in srgb, var(--guinda) 22%, transparent); }
+  select.campo { padding-right: 2rem; }
+  .chip { display: inline-flex; align-items: center; gap: .3rem; font-family: var(--f-display); font-weight: 700; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; padding: .2rem .5rem; border-radius: 6px; background: var(--hundido); color: var(--tenue); border: 1px solid var(--linea); }
+  .chip-cod { background: var(--guinda); color: var(--sobre-guinda); border-color: transparent; }
+  .chip-ok { color: var(--exito); border-color: color-mix(in srgb, var(--exito) 40%, transparent); background: color-mix(in srgb, var(--exito) 10%, transparent); }
+  .chip-mal { color: var(--error); border-color: color-mix(in srgb, var(--error) 40%, transparent); background: color-mix(in srgb, var(--error) 10%, transparent); }
+  .chip-oro { color: var(--oro); border-color: color-mix(in srgb, var(--oro) 45%, transparent); background: color-mix(in srgb, var(--oro) 10%, transparent); }
+  .barra { height: 8px; border-radius: 99px; background: var(--hundido); overflow: hidden; }
+  .barra > span { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--guinda), var(--oro)); transition: width .5s ease; }
+  .tarjeta-opcion { text-align: left; transition: border-color .15s, transform .12s; }
+  .tarjeta-opcion:hover { border-color: var(--guinda); transform: translateY(-1px); }
+  .aviso { border-radius: 10px; padding: .75rem 1rem; border: 1px solid var(--linea); background: var(--hundido); }
+  .aviso-ok { border-color: color-mix(in srgb, var(--exito) 45%, transparent); background: color-mix(in srgb, var(--exito) 10%, var(--superficie)); }
+  .aviso-mal { border-color: color-mix(in srgb, var(--error) 45%, transparent); background: color-mix(in srgb, var(--error) 9%, var(--superficie)); }
+  .aviso-casi { border-color: color-mix(in srgb, var(--oro) 50%, transparent); background: color-mix(in srgb, var(--oro) 12%, var(--superficie)); }
+
+  /* Tablero de TV */
+  .tablero { position: relative; background: radial-gradient(120% 90% at 50% 0%, #4A1222 0%, var(--tablero) 60%); border: 3px solid #B88F3A; border-radius: 18px; padding: clamp(12px, 3vw, 22px); color: var(--tablero-texto); box-shadow: inset 0 0 0 2px #5E1A2C, 0 18px 40px -20px rgba(36, 8, 15, .7); }
+  .tablero-pregunta { font-family: var(--f-display); font-weight: 700; font-size: clamp(1.25rem, 3.4vw, 1.9rem); line-height: 1.15; text-align: center; padding: .9rem 1rem; border-radius: 12px; background: #16050A; border: 1px solid #6B2236; text-wrap: balance; }
+  .celdas { display: grid; gap: 8px; }
+  @media (min-width: 640px) { .celdas { grid-template-columns: 1fr 1fr; grid-auto-flow: column; } }
+  .celda { perspective: 900px; min-height: 64px; }
+  .celda-int { position: relative; height: 100%; min-height: 64px; border-radius: 10px; display: flex; align-items: center; gap: .75rem; padding: .55rem .7rem; background: linear-gradient(180deg, #4A1424, var(--tablero-celda)); border: 1px solid #7A2A40; color: var(--tablero-texto); text-align: left; width: 100%; }
+  .celda-oculta .celda-int { justify-content: center; }
+  button.celda-int { cursor: pointer; }
+  button.celda-int:hover { border-color: var(--oro-vivo); }
+  .celda-activa .celda-int { border: 2px solid var(--oro-vivo); box-shadow: 0 0 0 3px rgba(217, 180, 94, .18), inset 0 0 18px rgba(217,180,94,.12); }
+  .celda-num { flex: none; width: 2.1rem; height: 2.1rem; border-radius: 99px; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 1.15rem; color: #2A1A06; background: linear-gradient(180deg, #F1D78A, #C39A3F); box-shadow: inset 0 -2px 0 rgba(0,0,0,.2); }
+  .celda-revelada .celda-int { background: linear-gradient(180deg, #FFF8EA, #F1E3C4); color: #2A0B15; border-color: #D9B45E; }
+  .celda-fallada .celda-int { background: linear-gradient(180deg, #2C0C15, #1E070D); color: var(--tablero-tenue); border-style: dashed; border-color: #8B3247; }
+  .celda-texto { flex: 1; min-width: 0; font-family: var(--f-display); font-weight: 700; font-size: 1.12rem; line-height: 1.1; text-transform: uppercase; letter-spacing: .02em; overflow-wrap: anywhere; }
+  .celda-sub { display: block; font-family: var(--f-texto); text-transform: none; letter-spacing: 0; font-weight: 400; font-size: .76rem; line-height: 1.25; opacity: .78; margin-top: .2rem; }
+  .celda-pts { flex: none; min-width: 3rem; text-align: center; font-family: var(--f-display); font-weight: 800; font-size: 1.4rem; padding: .15rem .4rem; border-radius: 6px; background: #2A0B15; color: var(--oro-vivo); font-variant-numeric: tabular-nums; }
+  .celda-fallada .celda-pts { background: transparent; color: #E58A98; font-size: 1.05rem; }
+  .voltear .celda-int { animation: voltear .55s cubic-bezier(.2,.7,.3,1.2); transform-origin: center; }
+  @keyframes voltear { 0% { transform: rotateX(90deg); } 100% { transform: rotateX(0); } }
+  .x-capa { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; z-index: 5; }
+  .x-capa .x { font-family: var(--f-display); font-weight: 800; color: #FF3B4E; font-size: clamp(5rem, 22vw, 11rem); line-height: 1; text-shadow: 0 0 30px rgba(255, 59, 78, .7), 0 6px 0 #5C0A16; animation: xgolpe .9s ease forwards; letter-spacing: -.04em; }
+  @keyframes xgolpe { 0% { transform: scale(2.2); opacity: 0; } 18% { transform: scale(1); opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; transform: scale(.94); } }
+  .strike { width: 2.3rem; height: 2.3rem; border-radius: 8px; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 1.5rem; border: 2px solid var(--linea); color: var(--linea); background: var(--superficie); }
+  .strike-on { background: var(--error); border-color: var(--error); color: #fff; }
+  .marcador { background: var(--tablero); color: var(--oro-vivo); border: 2px solid #B88F3A; border-radius: 12px; padding: .35rem .9rem; text-align: center; min-width: 6.5rem; }
+  .marcador b { display: block; font-family: var(--f-display); font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .marcador small { font-family: var(--f-display); text-transform: uppercase; letter-spacing: .14em; font-size: .68rem; color: var(--tablero-tenue); }
+  .reloj { height: 6px; border-radius: 99px; background: rgba(255,255,255,.1); overflow: hidden; }
+  .reloj > span { display: block; height: 100%; background: linear-gradient(90deg, #F1D78A, #C39A3F); transition: width .25s linear; }
+  .reloj.urgente > span { background: linear-gradient(90deg, #FF7A88, #FF3B4E); }
+
+  /* Tarjetas de estudio */
+  .flash { perspective: 1200px; }
+  .flash-int { position: relative; min-height: 15rem; transition: transform .5s ease; transform-style: preserve-3d; }
+  .flash.girada .flash-int { transform: rotateY(180deg); }
+  .flash-cara { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 1.5rem; border-radius: 14px; }
+  .flash-frente { background: var(--superficie); border: 1px solid var(--linea); }
+  .flash-reverso { transform: rotateY(180deg); background: var(--tablero); color: var(--tablero-texto); border: 2px solid #B88F3A; }
+
+  /* Zona de carga */
+  .soltar { border: 2px dashed var(--linea); border-radius: 14px; background: var(--hundido); transition: border-color .15s, background .15s; }
+  .soltar.encima { border-color: var(--guinda); background: color-mix(in srgb, var(--guinda) 8%, var(--superficie)); }
+
+  /* Anillo de dominio */
+  .anillo-fondo { stroke: var(--hundido); }
+  .anillo-valor { stroke: var(--guinda); transition: stroke-dashoffset .8s ease; }
+  .anillo-texto { fill: var(--tinta); font-family: var(--f-display); font-weight: 800; }
+  .anillo-sub { fill: var(--tenue); font-family: var(--f-display); font-weight: 600; letter-spacing: .12em; }
+
+  /* Logo interactivo */
+  .logo { display: block; flex: none; overflow: visible; }
+  .logo .nodo { transform-box: fill-box; transform-origin: center; }
+  .logo .chispa { transform-box: fill-box; transform-origin: center; }
+  .logo-vivo .nodo { animation: pulso 2.6s ease-in-out infinite; }
+  .logo-vivo .nodo:nth-of-type(2) { animation-delay: .3s; } .logo-vivo .nodo:nth-of-type(3) { animation-delay: .6s; }
+  .logo-vivo .nodo:nth-of-type(4) { animation-delay: .9s; } .logo-vivo .nodo:nth-of-type(5) { animation-delay: 1.2s; }
+  .logo-vivo .nodo:nth-of-type(6) { animation-delay: 1.5s; }
+  .logo-vivo .chispa { animation: destello 3.4s ease-in-out infinite; }
+  .logo-vivo .red path { stroke-dasharray: 40; stroke-dashoffset: 0; }
+  .logo-vivo:hover .red path, .logo-vivo.activo .red path { animation: trazo 1.2s ease forwards; }
+  .logo-vivo:hover .ojo, .logo-vivo.activo .ojo { filter: drop-shadow(0 0 5px #F6DC8E); }
+  .logo-vivo.activo .chispa { animation: estallido .7s ease; }
+  .logo-vivo { cursor: pointer; }
+  @keyframes pulso { 0%, 100% { transform: scale(1); opacity: .85; } 50% { transform: scale(1.5); opacity: 1; } }
+  @keyframes destello { 0%, 100% { transform: scale(.85) rotate(0); opacity: .8; } 50% { transform: scale(1.12) rotate(45deg); opacity: 1; } }
+  @keyframes estallido { 0% { transform: scale(1); } 50% { transform: scale(1.9) rotate(90deg); } 100% { transform: scale(1); } }
+  @keyframes trazo { from { stroke-dashoffset: 40; } to { stroke-dashoffset: 0; } }
+
+  @keyframes entrar { from { transform: translateY(6px); } to { transform: none; } }
+  .entrar { animation: entrar .35s ease both; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+</style>
+</head>
+<body>
+<div id="app" class="min-h-full flex flex-col">
+
+  <header class="encabezado">
+    <div class="gutter max-w-6xl mx-auto flex items-center gap-3 py-2.5">
+      <button type="button" class="flex items-center gap-2.5 min-w-0" data-accion="ir" data-vista="inicio" aria-label="Ir al inicio">
+        <span id="logo-mini"></span>
+        <span class="flex flex-col items-start min-w-0">
+          <span class="marca">Lobo<b>Quiz</b> <i>UAD</i></span>
+          <span class="text-[.7rem] tenue font-display uppercase tracking-[.16em] whitespace-nowrap hidden sm:block">Lobos UAD · Trivia Master</span>
+        </span>
+      </button>
+      <nav class="hidden md:flex items-center gap-1 ml-auto" aria-label="Modos" id="nav-escritorio"></nav>
+      <div class="flex items-center gap-1 ml-auto md:ml-2">
+        <button type="button" class="btn btn-linea btn-sm" data-accion="sonido" id="btn-sonido" aria-pressed="true" title="Sonido">Sonido</button>
+        <button type="button" class="btn btn-linea btn-sm" data-accion="tema" id="btn-tema" title="Cambiar tema">Tema</button>
+      </div>
+    </div>
+    <nav class="md:hidden nav-scroll gutter flex gap-1 pb-2" aria-label="Modos" id="nav-movil"></nav>
+  </header>
+
+  <main class="gutter max-w-6xl mx-auto w-full flex-1 py-6 md:py-8">
+    <section id="v-inicio" data-vista-sec="inicio"></section>
+    <section id="v-tablero" data-vista-sec="tablero" hidden></section>
+    <section id="v-concurso" data-vista-sec="concurso" hidden></section>
+    <section id="v-estudio" data-vista-sec="estudio" hidden></section>
+    <section id="v-documentos" data-vista-sec="documentos" hidden></section>
+  </main>
+
+  <footer class="gutter max-w-6xl mx-auto w-full py-6 text-sm tenue flex flex-wrap gap-x-4 gap-y-1 justify-between border-t border-linea">
+    <span>LoboQuiz UAD · Preparación para el concurso LoboSabio</span>
+    <span id="pie-banco"></span>
+  </footer>
+</div>
+
+<!-- ============================================================
+     BANCO BASE · extraído de "GUIA DE ESTUDIO PARA LOBOSABIO" (PDF, 5 páginas)
+     Esquema:
+     {
+       version, fuente:{titulo, archivo, paginas},
+       categorias:[{ id, codigo, nombre, preguntas:[{ id, pregunta, respuesta, alias[], puntos, nota? }] }],
+       encuestas:[{ id, categoria, pregunta, respuestas:[{ texto, alias[], puntos, ref }] }]
+     }
+     · puntos (preguntas): relevancia 20–100, ordena el tablero como en "100 Mexicanos Dijeron".
+     · alias: otras formas aceptadas al calificar (la comparación ignora acentos, artículos y mayúsculas).
+     · encuestas: tableros de respuesta múltiple; puntos suman 100; ref = id de la pregunta de la guía.
+     ============================================================ -->
+<script type="application/json" id="banco-base">
+{
+  "version": 1,
+  "fuente": { "titulo": "Guía de estudio LoboSabio", "archivo": "LOBOSABIO_261015_185928.pdf", "paginas": 5 },
+  "categorias": [
+    { "id": "historia", "codigo": "HIS", "nombre": "Historia de México", "preguntas": [
+      { "id": "his-01", "pregunta": "¿En qué año inició la Independencia de México?", "respuesta": "1810", "alias": ["mil ochocientos diez"], "puntos": 100 },
+      { "id": "his-02", "pregunta": "¿Quién fue el líder del movimiento de Independencia?", "respuesta": "Miguel Hidalgo y Costilla", "alias": ["Miguel Hidalgo", "Hidalgo", "Cura Hidalgo"], "puntos": 100 },
+      { "id": "his-03", "pregunta": "¿Qué tratado puso fin a la guerra entre México y Estados Unidos en 1848?", "respuesta": "El Tratado de Guadalupe Hidalgo", "alias": ["Guadalupe Hidalgo"], "puntos": 60 },
+      { "id": "his-04", "pregunta": "¿En qué año se promulgó la Constitución que actualmente nos rige?", "respuesta": "1917", "alias": [], "puntos": 100 },
+      { "id": "his-05", "pregunta": "¿Quién fue el primer presidente de México?", "respuesta": "Guadalupe Victoria", "alias": [], "puntos": 80 },
+      { "id": "his-06", "pregunta": "¿En qué año cayó Tenochtitlán?", "respuesta": "1521", "alias": [], "puntos": 80 },
+      { "id": "his-07", "pregunta": "¿Quién fue el emperador durante el Segundo Imperio Mexicano?", "respuesta": "Maximiliano de Habsburgo", "alias": ["Maximiliano", "Maximiliano I"], "puntos": 60 },
+      { "id": "his-08", "pregunta": "¿Qué presidente impulsó las Leyes de Reforma?", "respuesta": "Benito Juárez", "alias": ["Juárez"], "puntos": 100 },
+      { "id": "his-09", "pregunta": "¿Qué conflicto armado inició en 1910?", "respuesta": "La Revolución Mexicana", "alias": ["Revolución"], "puntos": 100 },
+      { "id": "his-10", "pregunta": "¿Qué civilización construyó la ciudad de Teotihuacán?", "respuesta": "La civilización teotihuacana", "alias": ["teotihuacanos", "cultura teotihuacana"], "puntos": 40, "nota": "Fue anterior a los mexicas." }
+    ]},
+    { "id": "geografia", "codigo": "GEO", "nombre": "Geografía", "preguntas": [
+      { "id": "geo-01", "pregunta": "¿Cuál es el río más largo de México?", "respuesta": "El Río Bravo", "alias": ["Bravo", "Río Bravo del Norte"], "puntos": 100, "nota": "Es frontera con Estados Unidos, donde lo llaman Río Grande. Si te piden uno que corra solo por territorio mexicano, suele citarse el Lerma-Santiago." },
+      { "id": "geo-02", "pregunta": "¿En qué entidad se encuentra el volcán Popocatépetl?", "respuesta": "Entre Puebla, Morelos y el Estado de México", "alias": ["Puebla, Morelos y Edomex"], "puntos": 60, "nota": "Menciona las tres entidades: Puebla, Morelos y Estado de México." },
+      { "id": "geo-03", "pregunta": "¿Cuál es la capital más alta del mundo?", "respuesta": "La Paz, Bolivia", "alias": ["La Paz"], "puntos": 60, "nota": "La Paz es la sede de gobierno de Bolivia; la capital constitucional es Sucre." },
+      { "id": "geo-04", "pregunta": "¿Qué océanos bañan las costas mexicanas?", "respuesta": "Océano Pacífico y Océano Atlántico", "alias": ["Pacífico y Atlántico"], "puntos": 100, "nota": "Por el lado del Atlántico, a través del Golfo de México y el Mar Caribe." },
+      { "id": "geo-05", "pregunta": "¿Cuál es el continente más poblado del mundo?", "respuesta": "Asia", "alias": [], "puntos": 100 },
+      { "id": "geo-06", "pregunta": "¿Cuál es la capital del estado de Yucatán?", "respuesta": "Mérida", "alias": [], "puntos": 80 },
+      { "id": "geo-07", "pregunta": "¿Qué país tiene forma alargada y se ubica en Sudamérica?", "respuesta": "Chile", "alias": [], "puntos": 80 },
+      { "id": "geo-08", "pregunta": "¿Cuál es el país más pequeño del mundo?", "respuesta": "El Vaticano", "alias": ["Ciudad del Vaticano"], "puntos": 100 },
+      { "id": "geo-09", "pregunta": "¿Qué continente no tiene desiertos?", "respuesta": "Europa", "alias": [], "puntos": 40, "nota": "Es la respuesta clásica de trivia que marca la guía." },
+      { "id": "geo-10", "pregunta": "¿Cómo se llama la línea imaginaria que divide la Tierra en hemisferio norte y sur?", "respuesta": "Ecuador", "alias": ["Línea del Ecuador", "Línea ecuatorial"], "puntos": 100 }
+    ]},
+    { "id": "ciencias", "codigo": "CIE", "nombre": "Ciencias Naturales", "preguntas": [
+      { "id": "cie-01", "pregunta": "¿Cuál es el elemento químico más abundante en el universo?", "respuesta": "El hidrógeno", "alias": ["H"], "puntos": 80 },
+      { "id": "cie-02", "pregunta": "¿Cuál es el órgano más grande del cuerpo humano?", "respuesta": "La piel", "alias": [], "puntos": 100 },
+      { "id": "cie-03", "pregunta": "¿Qué planeta es conocido como el “planeta rojo”?", "respuesta": "Marte", "alias": [], "puntos": 100 },
+      { "id": "cie-04", "pregunta": "¿Cuántos huesos tiene el cuerpo humano adulto?", "respuesta": "206", "alias": ["doscientos seis"], "puntos": 80 },
+      { "id": "cie-05", "pregunta": "¿Qué científico propuso la teoría de la relatividad?", "respuesta": "Albert Einstein", "alias": ["Einstein"], "puntos": 100 },
+      { "id": "cie-06", "pregunta": "¿Qué gas respiramos los seres humanos para vivir?", "respuesta": "Oxígeno", "alias": ["O2"], "puntos": 100 },
+      { "id": "cie-07", "pregunta": "¿Qué tipo de sangre es conocido como “donador universal”?", "respuesta": "O negativo (O−)", "alias": ["O-", "0 negativo", "O neg"], "puntos": 60 },
+      { "id": "cie-08", "pregunta": "¿Cuál es la unidad básica de la vida?", "respuesta": "La célula", "alias": [], "puntos": 100 },
+      { "id": "cie-09", "pregunta": "¿Qué fuerza nos mantiene pegados a la Tierra?", "respuesta": "La gravedad", "alias": ["Fuerza de gravedad", "Gravitación"], "puntos": 100 },
+      { "id": "cie-10", "pregunta": "¿Cuál es el planeta más grande del sistema solar?", "respuesta": "Júpiter", "alias": [], "puntos": 100 }
+    ]},
+    { "id": "cultura", "codigo": "CUL", "nombre": "Cultura General", "preguntas": [
+      { "id": "cul-01", "pregunta": "¿Cuál es el idioma más hablado en el mundo?", "respuesta": "El inglés", "alias": [], "puntos": 60, "nota": "La guía lo da como idioma global, seguido del mandarín. Por hablantes nativos, el primero es el chino mandarín." },
+      { "id": "cul-02", "pregunta": "¿En qué país se originaron los Juegos Olímpicos?", "respuesta": "Grecia", "alias": ["Antigua Grecia"], "puntos": 100, "nota": "Se celebraban en Olimpia." },
+      { "id": "cul-03", "pregunta": "¿Qué día se celebra el Día Internacional de la Mujer?", "respuesta": "El 8 de marzo", "alias": ["ocho de marzo"], "puntos": 100 },
+      { "id": "cul-04", "pregunta": "¿Qué instrumento mide la temperatura?", "respuesta": "El termómetro", "alias": [], "puntos": 100 },
+      { "id": "cul-05", "pregunta": "¿Cuál es el país más grande del mundo?", "respuesta": "Rusia", "alias": [], "puntos": 100 },
+      { "id": "cul-06", "pregunta": "¿Qué símbolo químico representa al oro?", "respuesta": "Au", "alias": [], "puntos": 80, "nota": "Viene del latín aurum." },
+      { "id": "cul-07", "pregunta": "¿En qué país se encuentra la Torre Eiffel?", "respuesta": "Francia", "alias": [], "puntos": 100 },
+      { "id": "cul-08", "pregunta": "¿Cuál es el animal terrestre más grande del planeta?", "respuesta": "El elefante africano", "alias": [], "puntos": 60 },
+      { "id": "cul-09", "pregunta": "¿Qué día se celebra el Día de la Tierra?", "respuesta": "El 22 de abril", "alias": ["veintidós de abril"], "puntos": 60 },
+      { "id": "cul-10", "pregunta": "¿Qué colores tiene la bandera de Italia?", "respuesta": "Verde, blanco y rojo", "alias": [], "puntos": 80 }
+    ]},
+    { "id": "literatura", "codigo": "LIT", "nombre": "Literatura y Arte", "preguntas": [
+      { "id": "lit-01", "pregunta": "¿Quién escribió “Don Quijote de la Mancha”?", "respuesta": "Miguel de Cervantes Saavedra", "alias": ["Cervantes", "Miguel de Cervantes"], "puntos": 100 },
+      { "id": "lit-02", "pregunta": "¿Qué poeta mexicano escribió “Muerte sin fin”?", "respuesta": "José Gorostiza", "alias": ["Gorostiza"], "puntos": 40 },
+      { "id": "lit-03", "pregunta": "¿Quién pintó “La noche estrellada”?", "respuesta": "Vincent van Gogh", "alias": ["Van Gogh"], "puntos": 100 },
+      { "id": "lit-04", "pregunta": "¿Cuál es el género literario que narra hechos imaginarios o reales en prosa?", "respuesta": "La novela", "alias": [], "puntos": 60, "nota": "El cuento también es narrativa en prosa, pero la respuesta de la guía es la novela." },
+      { "id": "lit-05", "pregunta": "¿Qué escritor chileno ganó el Premio Nobel de Literatura en 1971?", "respuesta": "Pablo Neruda", "alias": ["Neruda"], "puntos": 60 },
+      { "id": "lit-06", "pregunta": "¿Quién escribió “Cien años de soledad”?", "respuesta": "Gabriel García Márquez", "alias": ["García Márquez", "Gabo"], "puntos": 100 },
+      { "id": "lit-07", "pregunta": "¿Qué famoso pintor mexicano fue esposo de Frida Kahlo?", "respuesta": "Diego Rivera", "alias": ["Rivera"], "puntos": 100 },
+      { "id": "lit-08", "pregunta": "¿Cuál es la obra más famosa de William Shakespeare?", "respuesta": "Romeo y Julieta", "alias": [], "puntos": 80, "nota": "Respuesta de la guía. Hamlet también suele considerarse su obra cumbre." },
+      { "id": "lit-09", "pregunta": "¿Qué técnica pictórica utiliza pigmentos diluidos en agua sobre yeso fresco?", "respuesta": "El fresco", "alias": ["Pintura al fresco"], "puntos": 40 },
+      { "id": "lit-10", "pregunta": "¿Qué autor escribió “El Principito”?", "respuesta": "Antoine de Saint-Exupéry", "alias": ["Saint-Exupéry", "Exupéry"], "puntos": 80 }
+    ]},
+    { "id": "matematicas", "codigo": "MAT", "nombre": "Matemáticas y Lógica", "preguntas": [
+      { "id": "mat-01", "pregunta": "¿Cuánto es ¾ + ¼?", "respuesta": "1", "alias": ["uno", "un entero"], "puntos": 100 },
+      { "id": "mat-02", "pregunta": "¿Cuál es el resultado de 9 × 8?", "respuesta": "72", "alias": ["setenta y dos"], "puntos": 100 },
+      { "id": "mat-03", "pregunta": "¿Cuál es el valor de π (pi) aproximado a dos decimales?", "respuesta": "3.14", "alias": [], "puntos": 100 },
+      { "id": "mat-04", "pregunta": "¿Cómo se llama un número que solo es divisible entre 1 y él mismo?", "respuesta": "Número primo", "alias": ["Primo"], "puntos": 100 },
+      { "id": "mat-05", "pregunta": "¿Qué rama de las matemáticas estudia las formas y figuras?", "respuesta": "La geometría", "alias": [], "puntos": 100 },
+      { "id": "mat-06", "pregunta": "¿Cuál es el cuadrado de 12?", "respuesta": "144", "alias": ["ciento cuarenta y cuatro"], "puntos": 80 },
+      { "id": "mat-07", "pregunta": "¿Qué resultado tiene 5³ (cinco al cubo)?", "respuesta": "125", "alias": ["ciento veinticinco"], "puntos": 80 },
+      { "id": "mat-08", "pregunta": "¿Cómo se llama el número que indica la cantidad de lados de un pentágono?", "respuesta": "Cinco", "alias": [], "puntos": 100 },
+      { "id": "mat-09", "pregunta": "¿Qué propiedad establece que el orden de los factores no altera el producto?", "respuesta": "Propiedad conmutativa", "alias": ["Conmutativa", "Ley conmutativa"], "puntos": 60 },
+      { "id": "mat-10", "pregunta": "¿Cuál es el valor absoluto de -8?", "respuesta": "8", "alias": [], "puntos": 80 }
+    ]},
+    { "id": "tecnologia", "codigo": "TEC", "nombre": "Actualidad y Tecnología", "preguntas": [
+      { "id": "tec-01", "pregunta": "¿Qué significa “IA”?", "respuesta": "Inteligencia Artificial", "alias": [], "puntos": 100 },
+      { "id": "tec-02", "pregunta": "¿Cuál es el nombre del fundador de Microsoft?", "respuesta": "Bill Gates", "alias": ["Gates", "William Gates"], "puntos": 100, "nota": "Lo cofundó en 1975 junto con Paul Allen." },
+      { "id": "tec-03", "pregunta": "¿En qué año se lanzó el primer iPhone?", "respuesta": "2007", "alias": [], "puntos": 80 },
+      { "id": "tec-04", "pregunta": "¿Qué país fue sede del Mundial de Fútbol 2022?", "respuesta": "Catar (Qatar)", "alias": ["Qatar"], "puntos": 100 },
+      { "id": "tec-05", "pregunta": "¿Qué red social es propiedad de Elon Musk desde 2022?", "respuesta": "X", "alias": ["Twitter"], "puntos": 100, "nota": "Antes se llamaba Twitter." },
+      { "id": "tec-06", "pregunta": "¿Qué significa “USB”?", "respuesta": "Universal Serial Bus", "alias": [], "puntos": 60 },
+      { "id": "tec-07", "pregunta": "¿Qué empresa creó el sistema operativo Android?", "respuesta": "Google", "alias": [], "puntos": 80, "nota": "Google compró Android Inc. en 2005 y lanzó el sistema en 2008." },
+      { "id": "tec-08", "pregunta": "¿Cuál es el nombre del vehículo de exploración enviado por la NASA a Marte en 2021?", "respuesta": "Perseverance", "alias": ["Perseverancia"], "puntos": 60 },
+      { "id": "tec-09", "pregunta": "¿Qué plataforma en línea es más usada para videollamadas en educación y trabajo?", "respuesta": "Zoom", "alias": [], "puntos": 80 },
+      { "id": "tec-10", "pregunta": "¿Qué país lanzó el primer satélite artificial, el Sputnik 1?", "respuesta": "La Unión Soviética (URSS)", "alias": ["URSS", "Unión Soviética"], "puntos": 80, "nota": "Fue en 1957. Hoy su sucesor es Rusia, pero la respuesta es la URSS." }
+    ]}
+  ],
+  "encuestas": [
+    { "id": "enc-01", "categoria": "historia", "pregunta": "Menciona un personaje de la Historia de México que aparezca en la guía", "respuestas": [
+      { "texto": "Miguel Hidalgo", "alias": ["Hidalgo", "Miguel Hidalgo y Costilla"], "puntos": 34, "ref": "his-02" },
+      { "texto": "Benito Juárez", "alias": ["Juárez"], "puntos": 28, "ref": "his-08" },
+      { "texto": "Guadalupe Victoria", "alias": [], "puntos": 22, "ref": "his-05" },
+      { "texto": "Maximiliano de Habsburgo", "alias": ["Maximiliano"], "puntos": 16, "ref": "his-07" }
+    ]},
+    { "id": "enc-02", "categoria": "historia", "pregunta": "Menciona un año clave de la Historia de México según la guía", "respuestas": [
+      { "texto": "1810", "alias": [], "puntos": 30, "ref": "his-01" },
+      { "texto": "1910", "alias": [], "puntos": 25, "ref": "his-09" },
+      { "texto": "1917", "alias": [], "puntos": 20, "ref": "his-04" },
+      { "texto": "1521", "alias": [], "puntos": 15, "ref": "his-06" },
+      { "texto": "1848", "alias": [], "puntos": 10, "ref": "his-03" }
+    ]},
+    { "id": "enc-03", "categoria": "geografia", "pregunta": "Menciona un lugar de México que aparezca en la guía", "respuestas": [
+      { "texto": "Tenochtitlán", "alias": ["México-Tenochtitlán"], "puntos": 26, "ref": "his-06" },
+      { "texto": "Teotihuacán", "alias": [], "puntos": 22, "ref": "his-10" },
+      { "texto": "Río Bravo", "alias": ["Bravo"], "puntos": 20, "ref": "geo-01" },
+      { "texto": "Popocatépetl", "alias": ["Popo"], "puntos": 18, "ref": "geo-02" },
+      { "texto": "Mérida", "alias": ["Yucatán"], "puntos": 14, "ref": "geo-06" }
+    ]},
+    { "id": "enc-04", "categoria": "geografia", "pregunta": "Menciona un país que sea respuesta en la guía", "respuestas": [
+      { "texto": "Rusia", "alias": [], "puntos": 24, "ref": "cul-05" },
+      { "texto": "Francia", "alias": [], "puntos": 20, "ref": "cul-07" },
+      { "texto": "Grecia", "alias": [], "puntos": 16, "ref": "cul-02" },
+      { "texto": "Chile", "alias": [], "puntos": 14, "ref": "geo-07" },
+      { "texto": "Catar", "alias": ["Qatar"], "puntos": 12, "ref": "tec-04" },
+      { "texto": "El Vaticano", "alias": ["Ciudad del Vaticano"], "puntos": 8, "ref": "geo-08" },
+      { "texto": "Bolivia", "alias": [], "puntos": 6, "ref": "geo-03" }
+    ]},
+    { "id": "enc-05", "categoria": "ciencias", "pregunta": "Menciona algo del cuerpo humano que se estudie en la guía", "respuestas": [
+      { "texto": "La piel", "alias": [], "puntos": 30, "ref": "cie-02" },
+      { "texto": "Los huesos", "alias": ["206 huesos", "Esqueleto"], "puntos": 25, "ref": "cie-04" },
+      { "texto": "La célula", "alias": [], "puntos": 20, "ref": "cie-08" },
+      { "texto": "La sangre", "alias": ["Tipo de sangre", "O negativo"], "puntos": 15, "ref": "cie-07" },
+      { "texto": "El oxígeno", "alias": ["Respiración"], "puntos": 10, "ref": "cie-06" }
+    ]},
+    { "id": "enc-06", "categoria": "ciencias", "pregunta": "Menciona un planeta que aparezca en la guía", "respuestas": [
+      { "texto": "Marte", "alias": [], "puntos": 45, "ref": "cie-03" },
+      { "texto": "Júpiter", "alias": [], "puntos": 35, "ref": "cie-10" },
+      { "texto": "La Tierra", "alias": [], "puntos": 20, "ref": "cie-09" }
+    ]},
+    { "id": "enc-07", "categoria": "ciencias", "pregunta": "Menciona un elemento químico que aparezca en la guía", "respuestas": [
+      { "texto": "Oxígeno", "alias": ["O2"], "puntos": 40, "ref": "cie-06" },
+      { "texto": "Hidrógeno", "alias": [], "puntos": 35, "ref": "cie-01" },
+      { "texto": "Oro", "alias": ["Au"], "puntos": 25, "ref": "cul-06" }
+    ]},
+    { "id": "enc-08", "categoria": "literatura", "pregunta": "Menciona un escritor o artista que aparezca en la guía", "respuestas": [
+      { "texto": "Miguel de Cervantes", "alias": ["Cervantes"], "puntos": 20, "ref": "lit-01" },
+      { "texto": "Gabriel García Márquez", "alias": ["García Márquez", "Gabo"], "puntos": 18, "ref": "lit-06" },
+      { "texto": "Vincent van Gogh", "alias": ["Van Gogh"], "puntos": 15, "ref": "lit-03" },
+      { "texto": "Diego Rivera", "alias": ["Rivera"], "puntos": 13, "ref": "lit-07" },
+      { "texto": "Pablo Neruda", "alias": ["Neruda"], "puntos": 11, "ref": "lit-05" },
+      { "texto": "William Shakespeare", "alias": ["Shakespeare"], "puntos": 9, "ref": "lit-08" },
+      { "texto": "José Gorostiza", "alias": ["Gorostiza"], "puntos": 8, "ref": "lit-02" },
+      { "texto": "Antoine de Saint-Exupéry", "alias": ["Saint-Exupéry", "Exupéry"], "puntos": 6, "ref": "lit-10" }
+    ]},
+    { "id": "enc-09", "categoria": "matematicas", "pregunta": "Menciona un concepto matemático que aparezca en la guía", "respuestas": [
+      { "texto": "Número primo", "alias": ["Primo"], "puntos": 28, "ref": "mat-04" },
+      { "texto": "Geometría", "alias": [], "puntos": 24, "ref": "mat-05" },
+      { "texto": "Propiedad conmutativa", "alias": ["Conmutativa"], "puntos": 20, "ref": "mat-09" },
+      { "texto": "Valor absoluto", "alias": [], "puntos": 16, "ref": "mat-10" },
+      { "texto": "Pi", "alias": ["π", "Número pi"], "puntos": 12, "ref": "mat-03" }
+    ]},
+    { "id": "enc-10", "categoria": "tecnologia", "pregunta": "Menciona una empresa o marca de tecnología que aparezca en la guía", "respuestas": [
+      { "texto": "Microsoft", "alias": [], "puntos": 26, "ref": "tec-02" },
+      { "texto": "Google", "alias": ["Android"], "puntos": 22, "ref": "tec-07" },
+      { "texto": "Apple", "alias": ["iPhone"], "puntos": 18, "ref": "tec-03" },
+      { "texto": "X", "alias": ["Twitter"], "puntos": 14, "ref": "tec-05" },
+      { "texto": "Zoom", "alias": [], "puntos": 12, "ref": "tec-09" },
+      { "texto": "NASA", "alias": [], "puntos": 8, "ref": "tec-08" }
+    ]}
+  ]
+}
+</script>
+
+<script>
+(() => {
+'use strict';
+document.documentElement.lang = 'es';
+
+/* ---------- utilidades ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const barajar = a => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const uid = () => Math.random().toString(36).slice(2, 8);
+const almacen = {
+  get(k, d) { try { const v = localStorage.getItem('loboquiz:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('loboquiz:' + k, JSON.stringify(v)); } catch (e) { /* almacenamiento no disponible */ } }
+};
+
+const BASE = JSON.parse($('#banco-base').textContent);
+
+/* ---------- estado ---------- */
+const S = {
+  vista: 'inicio',
+  tema: almacen.get('tema', 'sistema'),
+  sonido: almacen.get('sonido', true),
+  stats: almacen.get('stats', {}),
+  docs: almacen.get('docs', []),
+  baseActiva: almacen.get('baseActiva', true),
+  record: almacen.get('record', { tablero: 0, concurso: 0 }),
+  cfg: almacen.get('cfg', { tiempoTablero: 0, cqNum: 10, cqTiempo: 15, cqCat: 'todas', cqElim: true }),
+  juego: null, totalSesion: 0, rondas: 0,
+  concurso: null,
+  estudio: { tab: 'practica', cat: 'todas', cola: [], idx: 0, fase: 'pregunta', res: null, girada: false, busqueda: '', vuelta: false },
+  docsUI: { preview: null, procesando: false, error: null, confirmar: null, verJson: false }
+};
+const guardarStats = () => almacen.set('stats', S.stats);
+
+/* ---------- banco activo ---------- */
+function banco() {
+  const cats = [], encs = [];
+  if (S.baseActiva) {
+    BASE.categorias.forEach(c => cats.push({ ...c, docId: 'base', docNombre: BASE.fuente.titulo }));
+    BASE.encuestas.forEach(e => encs.push({ ...e, docId: 'base' }));
+  }
+  S.docs.filter(d => d.activo).forEach(d => {
+    d.categorias.forEach(c => cats.push({ ...c, docId: d.id, docNombre: d.nombre }));
+    (d.encuestas || []).forEach(e => encs.push({ ...e, docId: d.id }));
+  });
+  return { cats, encs };
+}
+function todasPreguntas(catId) {
+  return banco().cats.filter(c => !catId || catId === 'todas' || c.id === catId)
+    .flatMap(c => c.preguntas.map(p => ({ ...p, catId: c.id, catNombre: c.nombre, codigo: c.codigo })));
+}
+function preguntaPorId(id) { return todasPreguntas().find(p => p.id === id) || null; }
+const dominada = id => (S.stats[id]?.r || 0) >= 2;
+function estadoPregunta(id) {
+  const s = S.stats[id];
+  if (!s) return { cls: '', txt: 'Nueva' };
+  if (s.r >= 2) return { cls: 'chip-ok', txt: 'Dominada' };
+  if (s.f > 0 && s.r === 0) return { cls: 'chip-mal', txt: 'Con errores' };
+  return { cls: 'chip-oro', txt: 'En progreso' };
+}
+function dominio(catId) {
+  const qs = todasPreguntas(catId);
+  const d = qs.filter(q => dominada(q.id)).length;
+  return { total: qs.length, dom: d, pct: qs.length ? Math.round(d / qs.length * 100) : 0 };
+}
+function necesidad(p) {
+  const s = S.stats[p.id];
+  if (!s) return 2 + Math.random() * 0.4;
+  if (s.r >= 2) return Math.random() * 0.4;
+  return 1 + Math.min(s.f, 4) * 0.4 + Math.random() * 0.4;
+}
+const priorizar = lista => lista.map(p => [necesidad(p), p]).sort((a, b) => b[0] - a[0]).map(x => x[1]);
+
+function registrar(id, ok) {
+  const prev = S.stats[id] ? { ...S.stats[id] } : null;
+  const s = S.stats[id] ? { ...S.stats[id] } : { v: 0, a: 0, f: 0, r: 0 };
+  s.v++; if (ok) { s.a++; s.r++; } else { s.f++; s.r = 0; }
+  s.t = Date.now(); S.stats[id] = s; guardarStats();
+  return prev;
+}
+function corregirARegistroCorrecto(id, prev) {
+  if (prev) S.stats[id] = prev; else delete S.stats[id];
+  registrar(id, true);
+}
+
+/* ---------- calificación de respuestas ---------- */
+const NUMEROS = { cero: 0, uno: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5, seis: 6, siete: 7, ocho: 8, nueve: 9, diez: 10, once: 11, doce: 12, trece: 13, catorce: 14, quince: 15, dieciseis: 16, diecisiete: 17, dieciocho: 18, diecinueve: 19, veinte: 20, veintiuno: 21, veintidos: 22, veintitres: 23, veinticuatro: 24, veinticinco: 25, veintiseis: 26, veintisiete: 27, veintiocho: 28, veintinueve: 29, treinta: 30, cien: 100 };
+const VACIAS = new Set(['el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'de', 'del', 'y', 'e', 'en', 'al', 'lo', 'que', 'es', 'son', 'fue', 'por', 'para', 'con', 'se', 'su', 'sus', 'entre']);
+function normalizar(s) {
+  return String(s ?? '').toLowerCase()
+    .replace(/π/g, ' pi ')
+    .replace(/\b([o0])\s*[-−–](?![a-z0-9])/g, 'o negativo')
+    .replace(/\b([o0])\s*\+/g, 'o positivo')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ').trim();
+}
+const fichas = s => normalizar(s).split(' ').filter(t => t && !VACIAS.has(t)).map(t => NUMEROS[t] !== undefined ? String(NUMEROS[t]) : t);
+function lev(a, b) {
+  if (a === b) return 0; if (!a.length) return b.length; if (!b.length) return a.length;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    prev = cur;
+  }
+  return prev[b.length];
+}
+function fichaIgual(a, b) {
+  if (a === b) return true;
+  if (/^\d+$/.test(a) || /^\d+$/.test(b)) return false;
+  if (Math.min(a.length, b.length) < 4) return false;
+  return lev(a, b) <= (Math.max(a.length, b.length) >= 8 ? 2 : 1);
+}
+function evaluar(respuesta, variantes) {
+  const u = fichas(respuesta);
+  if (!u.length) return { ok: false, casi: false, score: 0 };
+  const uj = u.join(' ');
+  let mejor = 0;
+  for (const v of variantes) {
+    const t = [...new Set(fichas(v))];
+    if (!t.length) continue;
+    const tj = t.join(' ');
+    if (tj === uj) return { ok: true, casi: false, score: 1 };
+    let sc = t.filter(x => u.some(y => fichaIgual(x, y))).length / t.length;
+    const L = Math.max(tj.length, uj.length);
+    if (L >= 6 && !/\d/.test(tj) && 1 - lev(tj, uj) / L >= 0.85) sc = 1;
+    mejor = Math.max(mejor, sc);
+  }
+  return { ok: mejor >= 0.66, casi: mejor > 0 && mejor < 0.66, score: mejor };
+}
+const sinParentesis = s => String(s).replace(/\s*\([^)]*\)/g, '').trim();
+const variantesDe = p => [...new Set([p.respuesta ?? p.texto, sinParentesis(p.respuesta ?? p.texto), ...(p.alias || [])].filter(Boolean))];
+function mascara(texto) {
+  return sinParentesis(texto).split(/\s+/).map(w => w.length <= 2 && !/\d/.test(w) ? w : w[0] + ' ' + '_ '.repeat(Math.max(0, w.length - 1)).trim()).join('   ');
+}
+
+/* ---------- sonido ---------- */
+let audio;
+function sonar(tipo) {
+  if (!S.sonido) return;
+  try {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    const ahora = audio.currentTime;
+    const tono = (f, t0, dur, forma = 'sine', vol = 0.16) => {
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.type = forma; o.frequency.setValueAtTime(f, ahora + t0);
+      g.gain.setValueAtTime(0.0001, ahora + t0); g.gain.exponentialRampToValueAtTime(vol, ahora + t0 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, ahora + t0 + dur);
+      o.connect(g).connect(audio.destination); o.start(ahora + t0); o.stop(ahora + t0 + dur + 0.05);
+    };
+    if (tipo === 'ok') { tono(880, 0, 0.18); tono(1320, 0.12, 0.35); }
+    else if (tipo === 'mal') { tono(150, 0, 0.5, 'sawtooth', 0.12); tono(110, 0.05, 0.5, 'square', 0.06); }
+    else if (tipo === 'casi') { tono(560, 0, 0.15, 'triangle'); }
+    else if (tipo === 'fin') { [523, 659, 784, 1046].forEach((f, i) => tono(f, i * 0.11, 0.3, 'triangle', 0.12)); }
+  } catch (e) { /* audio no disponible */ }
+}
+
+/* ---------- logo SVG ---------- */
+let logoN = 0;
+function logoSVG(size = 44, vivo = true) {
+  const k = 'lq' + (logoN++);
+  return `<svg class="logo ${vivo ? 'logo-vivo' : ''}" width="${size}" height="${size}" viewBox="0 0 240 240" role="img" aria-label="Logotipo LoboQuiz UAD: lobo con red neuronal" data-logo>
+  <defs>
+    <linearGradient id="${k}e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#94243F"/><stop offset="1" stop-color="#4A0E1E"/></linearGradient>
+    <linearGradient id="${k}o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6DE95"/><stop offset=".55" stop-color="#C8A04A"/><stop offset="1" stop-color="#8F6B22"/></linearGradient>
+    <linearGradient id="${k}p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E2D7DA"/></linearGradient>
+  </defs>
+  <path d="M120 8 L212 44 V124 C212 178 172 214 120 232 C68 214 28 178 28 124 V44 Z" fill="url(#${k}e)" stroke="url(#${k}o)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M120 22 L200 53 V124 C200 170 166 201 120 218 C74 201 40 170 40 124 V53 Z" fill="none" stroke="#D9B45E" stroke-opacity=".35" stroke-width="1.5"/>
+  <path class="chispa" d="M120 26 L124.5 39.5 L138 44 L124.5 48.5 L120 62 L115.5 48.5 L102 44 L115.5 39.5 Z" fill="url(#${k}o)"/>
+  <g class="lobo">
+    <path d="M120 70 L96 74 L64 38 L60 104 L50 130 L76 158 L104 184 L120 194 L136 184 L164 158 L190 130 L180 104 L176 38 L144 74 Z" fill="url(#${k}p)"/>
+    <path d="M70 54 L90 76 L66 94 Z" fill="#5C1226"/><path d="M170 54 L150 76 L174 94 Z" fill="#5C1226"/>
+    <path d="M60 104 L50 130 L76 158 L84 124 Z" fill="#CDBEC3"/><path d="M180 104 L190 130 L164 158 L156 124 Z" fill="#CDBEC3"/>
+    <path d="M76 158 L104 184 L106 158 Z" fill="#B9A7AD"/><path d="M164 158 L136 184 L134 158 Z" fill="#B9A7AD"/>
+    <path d="M96 74 L120 70 L144 74 L132 112 L120 134 L108 112 Z" fill="#2A0B15"/>
+    <path class="ojo" d="M74 110 L104 117 L95 128 Z" fill="url(#${k}o)"/><path class="ojo" d="M166 110 L136 117 L145 128 Z" fill="url(#${k}o)"/>
+    <path d="M108 142 L120 134 L132 142 L130 172 L120 186 L110 172 Z" fill="#FFFFFF"/>
+    <path d="M109 165 L131 165 L120 178 Z" fill="#1A1214"/>
+    <path d="M120 178 V186" stroke="#1A1214" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+  <g class="red" stroke="url(#${k}o)" stroke-width="1.8" fill="none" stroke-linecap="round">
+    <path d="M120 82 L110 93"/><path d="M120 82 L130 93"/><path d="M110 93 L130 93"/><path d="M110 93 L114 107"/>
+    <path d="M130 93 L126 107"/><path d="M114 107 L126 107"/><path d="M114 107 L120 121"/><path d="M126 107 L120 121"/><path d="M110 93 L126 107"/>
+  </g>
+  <g fill="#F6DE95">
+    <circle class="nodo" cx="120" cy="82" r="3.4"/><circle class="nodo" cx="110" cy="93" r="2.7"/><circle class="nodo" cx="130" cy="93" r="2.7"/>
+    <circle class="nodo" cx="114" cy="107" r="2.7"/><circle class="nodo" cx="126" cy="107" r="2.7"/><circle class="nodo" cx="120" cy="121" r="3.4"/>
+  </g>
+  <g class="panel-trivia">
+    <rect x="56" y="196" width="128" height="26" rx="5" fill="#1A1214" stroke="url(#${k}o)" stroke-width="2.5"/>
+    <path d="M98.7 199 V219 M141.3 199 V219" stroke="#C8A04A" stroke-opacity=".6" stroke-width="1.5"/>
+    <g fill="#F6DE95" font-family="Saira Condensed, Arial Narrow, Arial, sans-serif" font-weight="800" font-size="15" text-anchor="middle">
+      <text x="77.3" y="214.5">100</text><text x="120" y="214.5">80</text><text x="162.7" y="214.5">60</text>
+    </g>
+  </g>
+</svg>`;
+}
+
+/* ---------- navegación ---------- */
+const VISTAS = [
+  ['inicio', 'Inicio'], ['tablero', 'Tablero Lobo'], ['concurso', 'Concurso UAD'], ['estudio', 'Estudio'], ['documentos', 'Documentos']
+];
+function pintarNav() {
+  const html = VISTAS.map(([id, txt]) => `<button type="button" class="nav-btn" data-accion="ir" data-vista="${id}" ${S.vista === id ? 'aria-current="page"' : ''}>${txt}</button>`).join('');
+  $('#nav-escritorio').innerHTML = html; $('#nav-movil').innerHTML = html;
+  const b = $('#btn-sonido'); b.textContent = S.sonido ? 'Sonido' : 'Silencio'; b.setAttribute('aria-pressed', String(S.sonido));
+  $('#btn-tema').textContent = { sistema: 'Auto', light: 'Claro', dark: 'Oscuro' }[S.tema];
+  const n = todasPreguntas().length;
+  $('#pie-banco').textContent = `${n} preguntas activas · ${banco().cats.length} categorías · ${banco().encs.length} encuestas`;
+}
+function aplicarTema() {
+  if (S.tema === 'sistema') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', S.tema);
+}
+function ir(vista) {
+  detenerRelojes();
+  S.vista = vista;
+  render();
+  window.scrollTo({ top: 0 });
+}
+function render() {
+  $$('[data-vista-sec]').forEach(s => { s.hidden = s.dataset.vistaSec !== S.vista; });
+  pintarNav();
+  ({ inicio: renderInicio, tablero: renderTablero, concurso: renderConcurso, estudio: renderEstudio, documentos: renderDocumentos })[S.vista]();
+}
+
+/* ---------- relojes ---------- */
+let relojId = null;
+function detenerRelojes() { if (relojId) { clearInterval(relojId); relojId = null; } }
+function iniciarReloj(seg, alTerminar, idBarra, idNum) {
+  detenerRelojes();
+  if (!seg) return null;
+  const fin = Date.now() + seg * 1000;
+  const tick = () => {
+    const rest = Math.max(0, fin - Date.now());
+    const barra = document.getElementById(idBarra), num = document.getElementById(idNum);
+    if (barra) { barra.firstElementChild.style.width = (rest / (seg * 1000) * 100) + '%'; barra.classList.toggle('urgente', rest < 5000); }
+    if (num) num.textContent = Math.ceil(rest / 1000) + ' s';
+    if (rest <= 0) { detenerRelojes(); alTerminar(); }
+  };
+  relojId = setInterval(tick, 200);
+  requestAnimationFrame(tick);
+  return fin;
+}
+
+/* ============================================================
+   INICIO
+   ============================================================ */
+function anillo(pct, size = 168) {
+  const r = 70, c = 2 * Math.PI * r;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 180 180" role="img" aria-label="Dominio de la guía: ${pct} por ciento">
+    <circle cx="90" cy="90" r="${r}" fill="none" class="anillo-fondo" stroke-width="16"/>
+    <circle cx="90" cy="90" r="${r}" fill="none" class="anillo-valor" stroke-width="16" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - pct / 100)}" transform="rotate(-90 90 90)"/>
+    <text x="90" y="96" text-anchor="middle" class="anillo-texto" font-size="44">${pct}%</text>
+    <text x="90" y="120" text-anchor="middle" class="anillo-sub" font-size="12">DOMINADO</text>
+  </svg>`;
+}
+function renderInicio() {
+  const { cats } = banco();
+  const g = dominio();
+  const filas = cats.map(c => { const d = dominio(c.id); return { c, d }; });
+  const debil = [...filas].sort((a, b) => a.d.pct - b.d.pct)[0];
+  const totalVistas = Object.keys(S.stats).length;
+  $('#v-inicio').innerHTML = `
+  <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-6 entrar">
+    <div class="panel p-6 md:p-8 flex flex-col gap-6 overflow-hidden relative">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+        <div class="shrink-0">${logoSVG(132)}</div>
+        <div class="min-w-0">
+          <p class="eyebrow">Concurso universitario LoboSabio</p>
+          <h1 class="text-[2.6rem] md:text-[3.4rem] font-extrabold mt-1">Domina la guía <span style="color:var(--guinda)">al 100&nbsp;%</span></h1>
+          <p class="tenue mt-2 max-w-[56ch]">Juega rondas al estilo <em>100 Mexicanos Dijeron</em>, simula el concurso con preguntas rápidas y repasa cada error con la respuesta oficial de la guía. Una pregunta cuenta como dominada cuando la contestas bien dos veces seguidas.</p>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-3">
+        <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-1" data-accion="ir" data-vista="tablero">
+          <span class="chip chip-cod self-start">Feud</span>
+          <strong class="font-display text-xl uppercase tracking-wide">Tablero Lobo</strong>
+          <span class="text-sm tenue">Respuestas ocultas por puntos, tres strikes y fuera.</span>
+        </button>
+        <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-1" data-accion="ir" data-vista="concurso">
+          <span class="chip chip-oro self-start">Relámpago</span>
+          <strong class="font-display text-xl uppercase tracking-wide">Concurso UAD</strong>
+          <span class="text-sm tenue">Preguntas rápidas contra reloj, como el día del concurso.</span>
+        </button>
+        <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-1" data-accion="ir" data-vista="estudio">
+          <span class="chip self-start">Práctica</span>
+          <strong class="font-display text-xl uppercase tracking-wide">Modo Estudio</strong>
+          <span class="text-sm tenue">Tarjetas, práctica guiada y repaso de errores.</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="panel p-6 flex flex-col gap-5">
+      <div class="flex items-center gap-5">
+        ${anillo(g.pct, 150)}
+        <div class="min-w-0">
+          <p class="eyebrow">Tu avance</p>
+          <p class="num text-4xl font-extrabold leading-none mt-1">${g.dom}<span class="tenue text-2xl">/${g.total}</span></p>
+          <p class="text-sm tenue">preguntas dominadas</p>
+          <p class="text-sm tenue mt-2">${totalVistas ? `${totalVistas} practicadas al menos una vez` : 'Aún no has practicado. Empieza por cualquier modo.'}</p>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3">
+        ${filas.map(({ c, d }) => `
+          <button type="button" class="grid grid-cols-[3.2rem_1fr_auto] items-center gap-3 text-left group" data-accion="estudiar-cat" data-cat="${esc(c.id)}" title="Practicar ${esc(c.nombre)}">
+            <span class="chip chip-cod justify-center">${esc(c.codigo || '···')}</span>
+            <span class="min-w-0"><span class="block text-sm font-bold truncate group-hover:underline">${esc(c.nombre)}</span><span class="barra mt-1 block"><span style="width:${d.pct}%"></span></span></span>
+            <span class="num text-sm tenue w-12 text-right">${d.dom}/${d.total}</span>
+          </button>`).join('') || '<p class="tenue">No hay categorías activas. Activa la guía base o carga un documento.</p>'}
+      </div>
+      ${debil ? `<div class="aviso flex flex-wrap items-center justify-between gap-3">
+        <span class="text-sm"><strong>Siguiente paso:</strong> ${esc(debil.c.nombre)} es tu categoría con menos dominio (${debil.d.pct}&nbsp;%).</span>
+        <button type="button" class="btn btn-guinda btn-sm" data-accion="estudiar-cat" data-cat="${esc(debil.c.id)}">Practicar</button>
+      </div>` : ''}
+      <div class="grid grid-cols-2 gap-3 text-center">
+        <div class="aviso"><p class="eyebrow">Récord tablero</p><p class="num text-3xl font-extrabold">${S.record.tablero}</p></div>
+        <div class="aviso"><p class="eyebrow">Récord concurso</p><p class="num text-3xl font-extrabold">${S.record.concurso}</p></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   TABLERO LOBO (100 Mexicanos Dijeron)
+   ============================================================ */
+function renderTablero() {
+  if (S.juego) return renderJuego();
+  const { cats, encs } = banco();
+  const t = S.cfg.tiempoTablero;
+  $('#v-tablero').innerHTML = `
+  <div class="grid lg:grid-cols-[1fr_300px] gap-6 entrar">
+    <div class="flex flex-col gap-6 min-w-0">
+      <div>
+        <p class="eyebrow">Tablero Lobo</p>
+        <h2 class="text-4xl font-extrabold">¡Lobos UAD dijeron!</h2>
+        <p class="tenue mt-1 max-w-[62ch]">Elige un tablero. En los de categoría, cada casilla esconde la respuesta a una pregunta de la guía; en las encuestas, adivina todas las respuestas posibles a una sola pregunta.</p>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold uppercase tracking-wide mb-3">Por categoría</h3>
+        <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-3">
+          ${cats.map(c => { const d = dominio(c.id); return `
+            <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-2" data-accion="jugar-cat" data-cat="${esc(c.id)}">
+              <span class="flex items-center justify-between gap-2"><span class="chip chip-cod">${esc(c.codigo || '···')}</span><span class="text-xs tenue">${c.preguntas.length} preguntas</span></span>
+              <strong class="font-display text-lg uppercase tracking-wide leading-tight">${esc(c.nombre)}</strong>
+              <span class="barra"><span style="width:${d.pct}%"></span></span>
+              <span class="text-xs tenue">${d.pct}&nbsp;% dominado${c.docId !== 'base' ? ' · ' + esc(c.docNombre) : ''}</span>
+            </button>`; }).join('') || '<p class="tenue">No hay categorías activas.</p>'}
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold uppercase tracking-wide mb-3">Encuestas Lobo</h3>
+        <div class="grid sm:grid-cols-2 gap-3">
+          ${encs.map(e => `
+            <button type="button" class="panel tarjeta-opcion p-4 flex items-start gap-3" data-accion="jugar-enc" data-enc="${esc(e.id)}">
+              <span class="celda-num" aria-hidden="true">${e.respuestas.length}</span>
+              <span class="min-w-0"><strong class="block leading-snug">${esc(e.pregunta)}</strong><span class="text-xs tenue">${e.respuestas.length} respuestas en el tablero${e.auto ? ' · generada del documento' : ''}</span></span>
+            </button>`).join('') || '<p class="tenue">No hay encuestas activas.</p>'}
+        </div>
+      </div>
+    </div>
+    <aside class="flex flex-col gap-4">
+      <div class="panel p-5 flex flex-col gap-4">
+        <button type="button" class="btn btn-oro w-full" data-accion="jugar-azar" ${cats.length ? '' : 'disabled'}>Tablero al azar</button>
+        <label class="flex flex-col gap-1 text-sm font-bold" for="cfg-tiempo-tablero">Tiempo por respuesta
+          <select id="cfg-tiempo-tablero" class="campo" data-cfg="tiempoTablero">
+            ${[[0, 'Sin tiempo'], [15, '15 segundos'], [30, '30 segundos'], [45, '45 segundos']].map(([v, l]) => `<option value="${v}" ${t === v ? 'selected' : ''}>${l}</option>`).join('')}
+          </select>
+        </label>
+      </div>
+      <div class="panel p-5 text-sm flex flex-col gap-2">
+        <p class="eyebrow">Reglas</p>
+        <ul class="flex flex-col gap-2 list-disc pl-4">
+          <li>Las casillas van de mayor a menor puntaje, como en el programa.</li>
+          <li>Cada error o tiempo agotado es un <strong>strike</strong>. Con tres strikes termina la ronda.</li>
+          <li>Si te acercas, verás un aviso de <strong>«casi»</strong> sin strike, una vez por casilla.</li>
+          <li>La pista muestra la primera letra y cuesta la mitad de los puntos.</li>
+          <li>¿Te calificó mal un sinónimo? Usa <strong>«Mi respuesta era correcta»</strong>.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>`;
+}
+
+function iniciarJuegoCategoria(catId) {
+  const cat = banco().cats.find(c => c.id === catId);
+  if (!cat || !cat.preguntas.length) return;
+  const elegidas = priorizar(cat.preguntas).slice(0, 5).sort((a, b) => b.puntos - a.puntos);
+  S.juego = {
+    tipo: 'categoria', origen: catId, titulo: cat.nombre, codigo: cat.codigo,
+    slots: elegidas.map(p => ({ texto: sinParentesis(p.respuesta), variantes: variantesDe(p), puntos: p.puntos, pregunta: p.pregunta, ref: p.id, nota: p.nota, estado: 'oculto' })),
+    activo: 0, strikes: 0, puntos: 0, terminado: false, msg: null, casi: {}, ultimo: null, x: false, revel: -1
+  };
+  S.rondas++; arrancarJuego();
+}
+function iniciarJuegoEncuesta(encId) {
+  const enc = banco().encs.find(e => e.id === encId);
+  if (!enc) return;
+  const cat = banco().cats.find(c => c.id === enc.categoria);
+  S.juego = {
+    tipo: 'encuesta', origen: encId, titulo: 'Encuesta Lobo', codigo: cat?.codigo || 'ENC', prompt: enc.pregunta,
+    slots: [...enc.respuestas].sort((a, b) => b.puntos - a.puntos).map(r => {
+      const p = r.ref ? preguntaPorId(r.ref) : null;
+      return { texto: r.texto, variantes: variantesDe(r), puntos: r.puntos, pregunta: p ? p.pregunta : '', ref: r.ref, estado: 'oculto' };
+    }),
+    activo: -1, strikes: 0, puntos: 0, terminado: false, msg: null, casi: {}, ultimo: null, x: false, revel: -1
+  };
+  S.rondas++; arrancarJuego();
+}
+function arrancarJuego() { render(); reiniciarRelojJuego(); enfocar('#resp-juego'); }
+function reiniciarRelojJuego() {
+  const J = S.juego;
+  if (!J || J.terminado || !S.cfg.tiempoTablero) { detenerRelojes(); return; }
+  iniciarReloj(S.cfg.tiempoTablero, () => {
+    if (!S.juego || S.juego.terminado) return;
+    if (J.tipo === 'categoria') fallarCasilla(J.activo, '', 'Se acabó el tiempo.');
+    else strikeEncuesta('', 'Se acabó el tiempo.');
+  }, 'reloj-juego', 'reloj-juego-num');
+}
+const ocultos = J => J.slots.map((s, i) => s.estado === 'oculto' ? i : -1).filter(i => i >= 0);
+function siguienteActivo(J) { const o = ocultos(J); const sig = o.find(i => i > J.activo); J.activo = sig ?? o[0] ?? -1; }
+
+function acertarCasilla(i, texto) {
+  const J = S.juego, s = J.slots[i];
+  s.estado = 'acertado';
+  s.ganados = s.pista ? Math.round(s.puntos / 2) : s.puntos;
+  J.puntos += s.ganados; J.revel = i; J.x = false; J.ultimo = null;
+  if (J.tipo === 'categoria' && s.ref) registrar(s.ref, true);
+  J.msg = { tipo: 'ok', html: `<strong>¡Está en el tablero!</strong> «${esc(s.texto)}» vale ${s.ganados} puntos.${s.nota ? ` <span class="tenue">${esc(s.nota)}</span>` : ''}` };
+  sonar('ok');
+  if (J.tipo === 'categoria') siguienteActivo(J);
+  if (!ocultos(J).length) return terminarRonda(true);
+  render(); reiniciarRelojJuego(); enfocar('#resp-juego');
+}
+function fallarCasilla(i, texto, motivo) {
+  const J = S.juego, s = J.slots[i];
+  if (!s) return;
+  s.estado = 'fallado'; J.strikes++; J.revel = i; J.x = true;
+  const prev = s.ref ? registrar(s.ref, false) : null;
+  J.ultimo = texto ? { i, texto, prev } : null;
+  J.msg = { tipo: 'mal', html: `<strong>${esc(motivo || 'Incorrecta.')}</strong> La respuesta de la guía es «${esc(s.texto)}».${texto ? ` Tú escribiste «${esc(texto)}».` : ''}${s.nota ? ` <span class="tenue">${esc(s.nota)}</span>` : ''}` };
+  sonar('mal');
+  siguienteActivo(J);
+  if (J.strikes >= 3 || !ocultos(J).length) return terminarRonda(false);
+  render(); reiniciarRelojJuego(); enfocar('#resp-juego');
+}
+function strikeEncuesta(texto, motivo) {
+  const J = S.juego;
+  J.strikes++; J.x = true; J.revel = -1; J.ultimo = null;
+  J.msg = { tipo: 'mal', html: `<strong>${esc(motivo || '¡No está en el tablero!')}</strong>${texto ? ` «${esc(texto)}» no es una de las respuestas.` : ''} Te quedan ${Math.max(0, 3 - J.strikes)} oportunidades.` };
+  sonar('mal');
+  if (J.strikes >= 3) return terminarRonda(false);
+  render(); reiniciarRelojJuego(); enfocar('#resp-juego');
+}
+function terminarRonda(completo) {
+  const J = S.juego;
+  J.terminado = true; J.completo = completo; detenerRelojes();
+  J.slots.forEach(s => { if (s.estado === 'oculto') { s.estado = 'fallado'; s.alFinal = true; } });
+  S.totalSesion += J.puntos;
+  if (J.puntos > S.record.tablero) { S.record.tablero = J.puntos; J.nuevoRecord = true; almacen.set('record', S.record); }
+  if (completo) sonar('fin');
+  render();
+}
+function responderJuego(texto) {
+  const J = S.juego;
+  if (!J || J.terminado) return;
+  const t = texto.trim();
+  if (!t) return;
+  if (J.tipo === 'categoria') {
+    const i = J.activo, r = evaluar(t, J.slots[i].variantes);
+    if (r.ok) return acertarCasilla(i, t);
+    if (r.casi && !J.casi[i]) {
+      J.casi[i] = true; J.x = false; J.revel = -1;
+      J.msg = { tipo: 'casi', html: `<strong>¡Casi!</strong> «${esc(t)}» va por buen camino. Completa o sé más específico.` };
+      sonar('casi'); render(); enfocar('#resp-juego', true); return;
+    }
+    return fallarCasilla(i, t, r.casi ? 'Respuesta incompleta.' : 'Incorrecta.');
+  }
+  let mejor = -1, sc = 0, casi = -1;
+  J.slots.forEach((s, i) => {
+    if (s.estado !== 'oculto') return;
+    const r = evaluar(t, s.variantes);
+    if (r.ok && r.score > sc) { mejor = i; sc = r.score; } else if (r.casi && casi < 0) casi = i;
+  });
+  if (mejor >= 0) return acertarCasilla(mejor, t);
+  if (J.slots.some(s => s.estado !== 'oculto' && evaluar(t, s.variantes).ok)) {
+    J.x = false; J.revel = -1; J.msg = { tipo: 'info', html: 'Esa respuesta ya está descubierta. Prueba con otra.' };
+    render(); enfocar('#resp-juego', true); return;
+  }
+  if (casi >= 0 && !J.casi[casi]) {
+    J.casi[casi] = true; J.x = false; J.revel = -1;
+    J.msg = { tipo: 'casi', html: `<strong>¡Casi!</strong> Hay una respuesta parecida a «${esc(t)}». Sé más específico.` };
+    sonar('casi'); render(); enfocar('#resp-juego', true); return;
+  }
+  strikeEncuesta(t);
+}
+function corregirJuego() {
+  const J = S.juego;
+  if (!J || !J.ultimo) return;
+  const { i, prev } = J.ultimo, s = J.slots[i];
+  if (J.terminado) {
+    J.slots.forEach(x => { if (x.alFinal) { x.estado = 'oculto'; delete x.alFinal; } });
+    S.totalSesion -= J.puntos; J.terminado = false; J.nuevoRecord = false;
+  }
+  if (s.ref) corregirARegistroCorrecto(s.ref, prev);
+  s.estado = 'acertado'; s.ganados = s.pista ? Math.round(s.puntos / 2) : s.puntos;
+  J.puntos += s.ganados; J.strikes = Math.max(0, J.strikes - 1); J.ultimo = null; J.x = false; J.revel = i;
+  J.msg = { tipo: 'ok', html: `Corregido: se contó como acierto y se quitó el strike. Agrega ese sinónimo a tus notas.` };
+  if (J.activo < 0 || J.slots[J.activo].estado !== 'oculto') siguienteActivo(J);
+  if (!ocultos(J).length) return terminarRonda(true);
+  render(); reiniciarRelojJuego(); enfocar('#resp-juego');
+}
+function pistaJuego() {
+  const J = S.juego;
+  if (!J || J.terminado) return;
+  const i = J.tipo === 'categoria' ? J.activo : ocultos(J)[0];
+  const s = J.slots[i];
+  if (!s || s.pista) return;
+  s.pista = true; J.x = false; J.revel = -1;
+  J.msg = J.tipo === 'categoria'
+    ? { tipo: 'info', html: `Pista para la casilla ${i + 1}: <span class="num text-lg tracking-wider">${esc(mascara(s.texto))}</span>` }
+    : { tipo: 'info', html: `Pista para la casilla ${i + 1} (${esc(mascara(s.texto))}): ${s.pregunta ? `es la respuesta a «${esc(s.pregunta)}»` : 'revisa la guía.'}` };
+  render(); enfocar('#resp-juego', true);
+}
+function celdaHTML(s, i, J) {
+  const activa = J.tipo === 'categoria' && !J.terminado && i === J.activo;
+  const cls = ['celda', s.estado === 'oculto' ? 'celda-oculta' : s.estado === 'acertado' ? 'celda-revelada' : 'celda-fallada', activa ? 'celda-activa' : '', i === J.revel ? 'voltear' : ''].join(' ');
+  if (s.estado === 'oculto') {
+    const puedeElegir = J.tipo === 'categoria' && !J.terminado;
+    const tag = puedeElegir ? 'button type="button" data-accion="elegir-casilla" data-i="' + i + '"' : 'div';
+    return `<div class="${cls}"><${tag} class="celda-int" aria-label="Casilla ${i + 1}${activa ? ', activa' : ''}"><span class="celda-num">${i + 1}</span>${puedeElegir && !activa ? '<span class="sr-only">Elegir</span>' : ''}</${puedeElegir ? 'button' : 'div'}></div>`;
+  }
+  const sub = s.pregunta ? `<span class="celda-sub">${esc(s.pregunta)}</span>` : '';
+  const pts = s.estado === 'acertado' ? s.ganados : (s.alFinal ? '—' : '✕');
+  return `<div class="${cls}"><div class="celda-int"><span class="celda-num">${i + 1}</span><span class="celda-texto">${esc(s.texto)}${sub}</span><span class="celda-pts">${pts}</span></div></div>`;
+}
+function avisoHTML(m) {
+  if (!m) return '';
+  const cls = { ok: 'aviso-ok', mal: 'aviso-mal', casi: 'aviso-casi', info: '' }[m.tipo] || '';
+  return `<div class="aviso ${cls}">${m.html}</div>`;
+}
+function renderJuego() {
+  const J = S.juego;
+  const n = J.slots.length, filas = Math.ceil(n / 2);
+  const prompt = J.tipo === 'categoria' ? (J.terminado ? `${J.titulo}: ronda terminada` : J.slots[J.activo]?.pregunta) : J.prompt;
+  const aciertos = J.slots.filter(s => s.estado === 'acertado').length;
+  const total = J.slots.reduce((a, s) => a + s.puntos, 0);
+  $('#v-tablero').innerHTML = `
+  <div class="flex flex-col gap-4 entrar">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div class="min-w-0">
+        <button type="button" class="text-sm tenue hover:underline" data-accion="salir-juego">← Elegir otro tablero</button>
+        <div class="flex items-center gap-2 mt-1"><span class="chip chip-cod">${esc(J.codigo)}</span><span class="eyebrow">Ronda ${S.rondas}${J.tipo === 'categoria' ? ' · Categoría' : ' · Encuesta'}</span></div>
+        <h2 class="text-3xl md:text-4xl font-extrabold mt-1">${esc(J.titulo)}</h2>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="flex gap-1.5" role="img" aria-label="${J.strikes} de 3 strikes">${[0, 1, 2].map(k => `<span class="strike ${k < J.strikes ? 'strike-on' : ''}">✕</span>`).join('')}</div>
+        <div class="marcador"><b class="num">${J.puntos}</b><small>Puntos</small></div>
+      </div>
+    </div>
+
+    <div class="tablero flex flex-col gap-3">
+      <div class="tablero-pregunta" aria-live="polite">${esc(prompt || '')}</div>
+      <div class="celdas" style="grid-template-rows: repeat(${filas}, minmax(64px, auto));">${J.slots.map((s, i) => celdaHTML(s, i, J)).join('')}</div>
+      ${S.cfg.tiempoTablero && !J.terminado ? `<div class="flex items-center gap-3"><div class="reloj flex-1" id="reloj-juego"><span style="width:100%"></span></div><span class="num text-sm" id="reloj-juego-num" style="color:var(--tablero-tenue)">${S.cfg.tiempoTablero} s</span></div>` : ''}
+      ${J.x ? '<div class="x-capa" aria-hidden="true"><span class="x">✕</span></div>' : ''}
+    </div>
+
+    ${J.terminado ? `
+      <div class="panel p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-5">
+        <div class="flex-1 min-w-0">
+          <p class="eyebrow">${J.completo ? '¡Tablero completo!' : 'Tres strikes'}</p>
+          <h3 class="text-3xl font-extrabold">${J.puntos} de ${total} puntos</h3>
+          <p class="tenue">${aciertos} de ${n} respuestas descubiertas · Total de la sesión: <span class="num">${S.totalSesion}</span>${J.nuevoRecord ? ' · <strong style="color:var(--oro)">¡Nuevo récord!</strong>' : ''}</p>
+          ${J.ultimo ? '<button type="button" class="btn btn-linea btn-sm mt-3" data-accion="corregir-juego">Mi última respuesta era correcta</button>' : ''}
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="btn btn-oro" data-accion="otra-ronda">Siguiente ronda</button>
+          <button type="button" class="btn btn-linea" data-accion="salir-juego">Otro tablero</button>
+          ${J.tipo === 'categoria' && aciertos < n ? `<button type="button" class="btn btn-linea" data-accion="estudiar-cat" data-cat="${esc(J.origen)}">Repasar esta categoría</button>` : ''}
+        </div>
+      </div>` : `
+      <form class="flex flex-col sm:flex-row gap-2" data-form="juego" autocomplete="off">
+        <label for="resp-juego" class="sr-only">Tu respuesta</label>
+        <input id="resp-juego" class="campo flex-1" placeholder="${J.tipo === 'categoria' ? `Respuesta para la casilla ${J.activo + 1}…` : 'Escribe una respuesta…'}" maxlength="120" enterkeyhint="send">
+        <div class="flex flex-wrap gap-2">
+          <button class="btn btn-guinda flex-1 basis-full sm:basis-auto sm:flex-none" type="submit">Responder</button>
+          <button class="btn btn-linea flex-1 sm:flex-none" type="button" data-accion="pista-juego" title="Muestra la primera letra; la casilla vale la mitad">Pista</button>
+          <button class="btn btn-linea flex-1 sm:flex-none" type="button" data-accion="pasar-juego" title="${J.tipo === 'categoria' ? 'Revela la respuesta y cuenta como strike' : 'Termina la ronda y revela el tablero'}">${J.tipo === 'categoria' ? 'Pasar' : 'Rendirse'}</button>
+        </div>
+      </form>`}
+    <div aria-live="polite" class="flex flex-col gap-2">
+      ${avisoHTML(J.msg)}
+      ${!J.terminado && J.ultimo ? '<div><button type="button" class="btn btn-linea btn-sm" data-accion="corregir-juego">Mi respuesta era correcta</button></div>' : ''}
+    </div>
+  </div>`;
+  if (J.x) setTimeout(() => { if (S.juego === J) { J.x = false; const c = $('.x-capa'); if (c) c.remove(); } }, 950);
+  J.revel = -1;
+}
+
+/* ============================================================
+   CONCURSO UAD (ronda relámpago)
+   ============================================================ */
+function renderConcurso() {
+  const C = S.concurso;
+  if (!C) return renderConfigConcurso();
+  if (C.fase === 'fin') return renderResultadosConcurso();
+  const q = C.lista[C.i];
+  const mult = C.racha >= 5 ? 2 : C.racha >= 3 ? 1.5 : 1;
+  $('#v-concurso').innerHTML = `
+  <div class="max-w-3xl mx-auto flex flex-col gap-4 entrar">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <button type="button" class="text-sm tenue hover:underline" data-accion="abandonar-concurso">← Abandonar</button>
+        <p class="eyebrow mt-1">Concurso UAD · Pregunta ${C.i + 1} de ${C.lista.length}</p>
+        <div class="flex gap-1 mt-2" aria-hidden="true">${C.lista.map((_, k) => `<span style="width:${Math.max(6, 280 / C.lista.length)}px;height:6px;border-radius:9px;background:${k < C.i ? (C.res[k] ? 'var(--exito)' : 'var(--error)') : k === C.i ? 'var(--oro)' : 'var(--linea)'}"></span>`).join('')}</div>
+      </div>
+      <div class="flex items-center gap-4">
+        ${S.cfg.cqElim ? `<div class="flex gap-1.5" role="img" aria-label="${C.strikes} de 3 strikes">${[0, 1, 2].map(k => `<span class="strike ${k < C.strikes ? 'strike-on' : ''}">✕</span>`).join('')}</div>` : ''}
+        <div class="marcador"><b class="num">${C.puntos}</b><small>Racha ×${mult}</small></div>
+      </div>
+    </div>
+    <div class="tablero flex flex-col gap-4">
+      <div class="flex items-center justify-between gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="text-sm" style="color:var(--tablero-tenue)">${esc(q.catNombre)} · ${q.puntos} pts</span></div>
+      <div class="tablero-pregunta" style="font-size:clamp(1.35rem,3.8vw,2.1rem)">${esc(q.pregunta)}</div>
+      ${S.cfg.cqTiempo && C.fase === 'pregunta' ? `<div class="flex items-center gap-3"><div class="reloj flex-1" id="reloj-cq"><span style="width:100%"></span></div><span class="num text-sm" id="reloj-cq-num" style="color:var(--tablero-tenue)">${S.cfg.cqTiempo} s</span></div>` : ''}
+      ${C.fase === 'feedback' && !C.ultimoOk ? '<div class="x-capa" aria-hidden="true"><span class="x">✕</span></div>' : ''}
+    </div>
+    ${C.fase === 'pregunta' ? `
+    <form class="flex flex-col sm:flex-row gap-2" data-form="concurso" autocomplete="off">
+      <label for="resp-cq" class="sr-only">Tu respuesta</label>
+      <input id="resp-cq" class="campo flex-1" placeholder="Escribe tu respuesta y presiona Enter" maxlength="120" enterkeyhint="send">
+      <div class="flex gap-2"><button class="btn btn-guinda flex-1 sm:flex-none" type="submit">Responder</button><button class="btn btn-linea" type="button" data-accion="saltar-cq">Saltar</button></div>
+    </form>` : `
+    <div class="flex flex-col gap-3" aria-live="polite">
+      ${avisoHTML(C.msg)}
+      <div class="flex flex-wrap gap-2">
+        <button type="button" class="btn btn-oro" data-accion="siguiente-cq" id="btn-sig-cq">${C.i + 1 >= C.lista.length || C.terminarYa ? 'Ver resultados' : 'Siguiente pregunta'}</button>
+        ${!C.ultimoOk && C.ultimoTexto ? '<button type="button" class="btn btn-linea" data-accion="corregir-cq">Mi respuesta era correcta</button>' : ''}
+      </div>
+    </div>`}
+  </div>`;
+}
+function renderConfigConcurso() {
+  const cats = banco().cats, c = S.cfg;
+  const disp = todasPreguntas(c.cqCat).length;
+  $('#v-concurso').innerHTML = `
+  <div class="grid lg:grid-cols-[1fr_320px] gap-6 entrar">
+    <div class="tablero flex flex-col gap-5 justify-center min-h-[18rem]">
+      <p class="eyebrow" style="color:var(--oro-vivo)">Simulador del concurso</p>
+      <h2 class="text-4xl md:text-5xl font-extrabold">Concurso UAD</h2>
+      <p class="max-w-[58ch]" style="color:var(--tablero-tenue)">Preguntas rápidas de todas las categorías, una tras otra. Ganas los puntos de la pregunta más un bono por velocidad, y tu racha multiplica: ×1.5 desde 3 aciertos seguidos y ×2 desde 5.</p>
+      <div class="flex flex-wrap gap-2"><button type="button" class="btn btn-oro" data-accion="iniciar-concurso" ${disp ? '' : 'disabled'}>Empezar ronda</button></div>
+    </div>
+    <div class="panel p-5 flex flex-col gap-4">
+      <p class="eyebrow">Configuración</p>
+      <label class="flex flex-col gap-1 text-sm font-bold" for="cfg-cq-cat">Categoría
+        <select id="cfg-cq-cat" class="campo" data-cfg="cqCat">
+          <option value="todas">Todas las categorías</option>
+          ${cats.map(k => `<option value="${esc(k.id)}" ${c.cqCat === k.id ? 'selected' : ''}>${esc(k.nombre)}</option>`).join('')}
+        </select>
+      </label>
+      <label class="flex flex-col gap-1 text-sm font-bold" for="cfg-cq-num">Preguntas
+        <select id="cfg-cq-num" class="campo" data-cfg="cqNum">${[5, 10, 15, 20, 30].map(v => `<option value="${v}" ${c.cqNum === v ? 'selected' : ''}>${v} preguntas</option>`).join('')}</select>
+      </label>
+      <label class="flex flex-col gap-1 text-sm font-bold" for="cfg-cq-tiempo">Tiempo por pregunta
+        <select id="cfg-cq-tiempo" class="campo" data-cfg="cqTiempo">${[[10, '10 segundos'], [15, '15 segundos'], [20, '20 segundos'], [0, 'Sin tiempo']].map(([v, l]) => `<option value="${v}" ${c.cqTiempo === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
+      </label>
+      <label class="flex items-center gap-2 text-sm" for="cfg-cq-elim"><input id="cfg-cq-elim" type="checkbox" data-cfg="cqElim" ${c.cqElim ? 'checked' : ''} class="w-4 h-4"> Eliminación con tres strikes</label>
+      <p class="text-xs tenue">${disp} preguntas disponibles con esta selección.</p>
+    </div>
+  </div>`;
+}
+function iniciarConcurso() {
+  const pool = priorizar(todasPreguntas(S.cfg.cqCat));
+  if (!pool.length) return;
+  const lista = barajar(pool.slice(0, Math.min(S.cfg.cqNum, pool.length)));
+  S.concurso = { lista, i: 0, puntos: 0, strikes: 0, racha: 0, mejorRacha: 0, res: [], tiempos: [], fallos: [], fase: 'pregunta', msg: null };
+  preguntaConcurso();
+}
+function preguntaConcurso() {
+  const C = S.concurso;
+  C.fase = 'pregunta'; C.msg = null; C.inicio = Date.now();
+  render(); enfocar('#resp-cq');
+  iniciarReloj(S.cfg.cqTiempo, () => { if (S.concurso === C && C.fase === 'pregunta') responderConcurso('', true); }, 'reloj-cq', 'reloj-cq-num');
+}
+function responderConcurso(texto, agotado = false) {
+  const C = S.concurso;
+  if (!C || C.fase !== 'pregunta') return;
+  detenerRelojes();
+  const q = C.lista[C.i], t = texto.trim();
+  const seg = (Date.now() - C.inicio) / 1000;
+  const r = t ? evaluar(t, variantesDe(q)) : { ok: false };
+  C.tiempos.push(seg); C.ultimoTexto = t; C.ultimoOk = r.ok;
+  C.prev = registrar(q.id, r.ok);
+  if (r.ok) {
+    C.racha++; C.mejorRacha = Math.max(C.mejorRacha, C.racha);
+    const mult = C.racha >= 5 ? 2 : C.racha >= 3 ? 1.5 : 1;
+    const bono = S.cfg.cqTiempo ? Math.round(50 * Math.max(0, 1 - seg / S.cfg.cqTiempo)) : 0;
+    const pts = Math.round((q.puntos + bono) * mult);
+    C.ultimosPts = pts; C.puntos += pts; C.res.push(true);
+    C.msg = { tipo: 'ok', html: `<strong>¡Correcto! +${pts}</strong> (${q.puntos} base${bono ? ` + ${bono} por velocidad` : ''}${mult > 1 ? ` × ${mult} de racha` : ''}). Respuesta: «${esc(sinParentesis(q.respuesta))}».${q.nota ? ` <span class="tenue">${esc(q.nota)}</span>` : ''}` };
+    sonar('ok');
+  } else {
+    C.racha = 0; C.res.push(false); C.fallos.push({ id: q.id, texto: t });
+    if (S.cfg.cqElim) C.strikes++;
+    C.msg = { tipo: 'mal', html: `<strong>${agotado ? 'Se acabó el tiempo.' : t ? 'Incorrecta.' : 'Pregunta saltada.'}</strong> La respuesta es «${esc(q.respuesta)}».${t ? ` Escribiste «${esc(t)}».` : ''}${q.nota ? ` <span class="tenue">${esc(q.nota)}</span>` : ''}` };
+    sonar('mal');
+  }
+  C.terminarYa = S.cfg.cqElim && C.strikes >= 3;
+  C.fase = 'feedback';
+  render();
+  const b = $('#btn-sig-cq'); if (b) b.focus();
+  if (r.ok && !C.terminarYa) { const ref = C.i; C.auto = setTimeout(() => { if (S.concurso === C && C.i === ref && C.fase === 'feedback' && S.vista === 'concurso') siguienteConcurso(); }, 1600); }
+}
+function siguienteConcurso() {
+  const C = S.concurso;
+  if (!C) return;
+  clearTimeout(C.auto);
+  if (C.terminarYa || C.i + 1 >= C.lista.length) {
+    C.fase = 'fin';
+    if (C.puntos > S.record.concurso) { S.record.concurso = C.puntos; C.nuevoRecord = true; almacen.set('record', S.record); }
+    sonar('fin'); render(); return;
+  }
+  C.i++; preguntaConcurso();
+}
+function corregirConcurso() {
+  const C = S.concurso;
+  if (!C || C.ultimoOk) return;
+  const q = C.lista[C.i];
+  corregirARegistroCorrecto(q.id, C.prev);
+  C.res[C.res.length - 1] = true; C.fallos = C.fallos.filter(f => f.id !== q.id);
+  if (S.cfg.cqElim) C.strikes = Math.max(0, C.strikes - 1);
+  C.racha++; C.mejorRacha = Math.max(C.mejorRacha, C.racha);
+  C.puntos += q.puntos; C.ultimoOk = true; C.terminarYa = S.cfg.cqElim && C.strikes >= 3;
+  C.msg = { tipo: 'ok', html: `Corregido: «${esc(C.ultimoTexto)}» se contó como acierto (+${q.puntos}, sin bono).` };
+  render();
+}
+function renderResultadosConcurso() {
+  const C = S.concurso, n = C.res.length, ok = C.res.filter(Boolean).length;
+  const prom = C.tiempos.length ? (C.tiempos.reduce((a, b) => a + b, 0) / C.tiempos.length).toFixed(1) : '0';
+  $('#v-concurso').innerHTML = `
+  <div class="max-w-4xl mx-auto flex flex-col gap-5 entrar">
+    <div class="tablero text-center flex flex-col items-center gap-2 py-8">
+      <p class="eyebrow" style="color:var(--oro-vivo)">${C.terminarYa ? 'Eliminado con tres strikes' : 'Ronda terminada'}</p>
+      <p class="num font-extrabold leading-none" style="font-size:clamp(3.5rem,12vw,6rem);color:var(--oro-vivo)">${C.puntos}</p>
+      <p style="color:var(--tablero-tenue)">puntos${C.nuevoRecord ? ' · ¡Nuevo récord!' : ` · Récord: ${S.record.concurso}`}</p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      ${[['Aciertos', `${ok}/${n}`], ['Precisión', `${n ? Math.round(ok / n * 100) : 0}%`], ['Mejor racha', C.mejorRacha], ['Tiempo medio', `${prom} s`]].map(([l, v]) => `<div class="panel p-4 text-center"><p class="eyebrow">${l}</p><p class="num text-3xl font-extrabold">${v}</p></div>`).join('')}
+    </div>
+    <div class="panel p-5">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+        <h3 class="text-2xl font-bold">${C.fallos.length ? 'Para repasar' : 'Sin errores. ¡Así se compite!'}</h3>
+        ${C.fallos.length ? '<button type="button" class="btn btn-guinda btn-sm" data-accion="estudiar-errores">Repasar estos errores</button>' : ''}
+      </div>
+      ${C.fallos.length ? `<ul class="flex flex-col divide-y" style="border-color:var(--linea)">${C.fallos.map(f => { const q = preguntaPorId(f.id); return q ? `
+        <li class="py-3 grid sm:grid-cols-[1fr_auto] gap-1 sm:gap-4" style="border-color:var(--linea)">
+          <span class="min-w-0"><span class="chip chip-cod mr-2">${esc(q.codigo || '···')}</span>${esc(q.pregunta)}</span>
+          <span class="text-sm"><strong style="color:var(--exito)">${esc(q.respuesta)}</strong>${f.texto ? ` <span class="tenue">· tú: ${esc(f.texto)}</span>` : ''}</span>
+        </li>` : ''; }).join('')}</ul>` : '<p class="tenue">Todas las respuestas fueron correctas.</p>'}
+    </div>
+    <div class="flex flex-wrap gap-2 justify-center">
+      <button type="button" class="btn btn-oro" data-accion="iniciar-concurso">Jugar otra vez</button>
+      <button type="button" class="btn btn-linea" data-accion="config-concurso">Cambiar configuración</button>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   MODO ESTUDIO
+   ============================================================ */
+function poolEstudio() {
+  const E = S.estudio, qs = todasPreguntas(E.cat);
+  if (E.tab === 'errores') return qs.filter(q => (S.stats[q.id]?.f || 0) > 0 && !dominada(q.id));
+  return qs;
+}
+function armarCola(vuelta = false) {
+  const E = S.estudio;
+  E.cola = priorizar(poolEstudio()).map(q => q.id);
+  E.idx = 0; E.fase = 'pregunta'; E.res = null; E.girada = false; E.vuelta = vuelta;
+}
+function preguntaEstudio() {
+  const E = S.estudio;
+  if (E.idx >= E.cola.length) { armarCola(true); }
+  const id = E.cola[E.idx];
+  return id ? preguntaPorId(id) : null;
+}
+function renderEstudio() {
+  const E = S.estudio, cats = banco().cats;
+  const d = dominio(E.cat);
+  const nErr = todasPreguntas(E.cat).filter(q => (S.stats[q.id]?.f || 0) > 0 && !dominada(q.id)).length;
+  const tabs = [['practica', 'Práctica guiada'], ['tarjetas', 'Tarjetas'], ['errores', `Repaso de errores (${nErr})`], ['guia', 'Guía completa']];
+  let cuerpo = '';
+  if (E.tab === 'guia') cuerpo = guiaHTML();
+  else {
+    if (!E.cola.length || E.cola.some(id => !preguntaPorId(id))) armarCola();
+    const q = preguntaEstudio();
+    if (!q) cuerpo = `<div class="panel p-8 text-center flex flex-col items-center gap-3">
+      <h3 class="text-2xl font-bold">${E.tab === 'errores' ? 'No tienes errores pendientes' : 'No hay preguntas en esta selección'}</h3>
+      <p class="tenue max-w-[48ch]">${E.tab === 'errores' ? 'Las preguntas que falles en cualquier modo aparecerán aquí hasta que las contestes bien dos veces seguidas.' : 'Cambia la categoría o activa un documento en la sección Documentos.'}</p>
+      ${E.tab === 'errores' ? '<button type="button" class="btn btn-guinda" data-accion="tab-estudio" data-tab="practica">Ir a práctica guiada</button>' : ''}
+    </div>`;
+    else cuerpo = E.tab === 'tarjetas' ? tarjetaHTML(q) : practicaHTML(q);
+  }
+  $('#v-estudio').innerHTML = `
+  <div class="flex flex-col gap-5 entrar">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div><p class="eyebrow">Modo Estudio</p><h2 class="text-4xl font-extrabold">Repasa hasta dominarla</h2></div>
+      <div class="flex items-center gap-3 w-full sm:w-auto">
+        <label for="est-cat" class="sr-only">Categoría</label>
+        <select id="est-cat" class="campo sm:w-64" data-accion-cambio="cat-estudio">
+          <option value="todas">Todas las categorías</option>
+          ${cats.map(c => `<option value="${esc(c.id)}" ${E.cat === c.id ? 'selected' : ''}>${esc(c.nombre)}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="panel p-4 flex flex-wrap items-center gap-4">
+      <div class="flex-1 min-w-[12rem]"><div class="flex justify-between text-sm mb-1"><strong>Dominio${E.cat !== 'todas' ? ' de la categoría' : ' total'}</strong><span class="num">${d.dom}/${d.total} · ${d.pct}%</span></div><div class="barra"><span style="width:${d.pct}%"></span></div></div>
+      <div class="flex gap-1 nav-scroll max-w-full" role="tablist">${tabs.map(([id, l]) => `<button type="button" role="tab" aria-selected="${E.tab === id}" class="nav-btn" ${E.tab === id ? 'aria-current="page"' : ''} data-accion="tab-estudio" data-tab="${id}">${l}</button>`).join('')}</div>
+    </div>
+    ${E.vuelta && E.tab !== 'guia' ? '<div class="aviso aviso-casi text-sm">Completaste una vuelta. La nueva vuelta empieza por las preguntas que aún no dominas.</div>' : ''}
+    ${cuerpo}
+  </div>`;
+}
+function practicaHTML(q) {
+  const E = S.estudio, st = estadoPregunta(q.id), r = E.res;
+  const pos = `${E.idx + 1} de ${E.cola.length}`;
+  return `
+  <div class="grid lg:grid-cols-[1fr_300px] gap-5">
+    <div class="panel p-5 md:p-7 flex flex-col gap-5 min-w-0">
+      <div class="flex flex-wrap items-center gap-2"><span class="chip chip-cod">${esc(q.codigo || '···')}</span><span class="chip ${st.cls}">${st.txt}</span><span class="text-sm tenue ml-auto">${pos}</span></div>
+      <h3 class="text-2xl md:text-3xl font-bold leading-tight">${esc(q.pregunta)}</h3>
+      ${E.fase === 'pregunta' ? `
+      <form class="flex flex-col sm:flex-row gap-2" data-form="estudio" autocomplete="off">
+        <label for="resp-est" class="sr-only">Tu respuesta</label>
+        <input id="resp-est" class="campo flex-1" placeholder="Escribe tu respuesta" maxlength="160" enterkeyhint="send">
+        <div class="flex gap-2"><button class="btn btn-guinda flex-1 sm:flex-none" type="submit">Comprobar</button><button class="btn btn-linea" type="button" data-accion="nolase-est">No la sé</button></div>
+      </form>
+      ${r && r.casi ? `<div class="aviso aviso-casi"><strong>¡Casi!</strong> «${esc(r.texto)}» va bien, pero le falta precisión. Inténtalo otra vez.</div>` : ''}` : `
+      <div class="aviso ${r.ok ? 'aviso-ok' : 'aviso-mal'} flex flex-col gap-2" aria-live="polite">
+        <p class="font-display text-xl font-bold uppercase tracking-wide" style="color:${r.ok ? 'var(--exito)' : 'var(--error)'}">${r.ok ? (r.corregida ? 'Marcada como correcta' : 'Correcto') : r.texto ? 'Incorrecto' : 'Respuesta revelada'}</p>
+        ${r.texto ? `<p><span class="tenue">Tu respuesta:</span> ${esc(r.texto)}</p>` : ''}
+        <p><span class="tenue">Respuesta de la guía:</span> <strong>${esc(q.respuesta)}</strong></p>
+        ${q.alias && q.alias.length ? `<p class="text-sm"><span class="tenue">También se acepta:</span> ${q.alias.map(esc).join(' · ')}</p>` : ''}
+        ${q.nota ? `<p class="text-sm"><span class="tenue">Para recordar:</span> ${esc(q.nota)}</p>` : ''}
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button type="button" class="btn btn-oro" data-accion="sig-est" id="btn-sig-est">Siguiente</button>
+        ${!r.ok && r.texto ? '<button type="button" class="btn btn-linea" data-accion="corregir-est">Mi respuesta era correcta</button>' : ''}
+      </div>`}
+    </div>
+    ${historialHTML(q)}
+  </div>`;
+}
+function historialHTML(q) {
+  const s = S.stats[q.id];
+  return `<aside class="panel p-5 flex flex-col gap-3 text-sm">
+    <p class="eyebrow">Esta pregunta</p>
+    <div class="grid grid-cols-3 gap-2 text-center">
+      ${[['Intentos', s?.v || 0], ['Aciertos', s?.a || 0], ['Errores', s?.f || 0]].map(([l, v]) => `<div class="aviso px-2 py-2"><p class="num text-2xl font-extrabold">${v}</p><p class="text-xs tenue">${l}</p></div>`).join('')}
+    </div>
+    <p class="tenue">${dominada(q.id) ? 'Ya la dominas. Seguirá apareciendo de vez en cuando para que no se olvide.' : `Te faltan ${2 - Math.min(2, s?.r || 0)} aciertos seguidos para dominarla.`}</p>
+    <p class="tenue">Vale <strong class="num">${q.puntos}</strong> puntos en los tableros.</p>
+  </aside>`;
+}
+function tarjetaHTML(q) {
+  const E = S.estudio;
+  return `
+  <div class="max-w-2xl w-full mx-auto flex flex-col gap-4">
+    <div class="flex items-center justify-between text-sm tenue"><span><span class="chip chip-cod mr-2">${esc(q.codigo || '···')}</span>${esc(q.catNombre)}</span><span>${E.idx + 1} de ${E.cola.length}</span></div>
+    <button type="button" class="flash ${E.girada ? 'girada' : ''} text-left w-full" data-accion="girar" aria-label="${E.girada ? 'Ver pregunta' : 'Ver respuesta'}">
+      <div class="flash-int">
+        <div class="flash-cara flash-frente gap-3"><p class="eyebrow">Pregunta</p><p class="font-display font-bold text-2xl md:text-3xl leading-tight">${esc(q.pregunta)}</p><p class="text-sm tenue">Toca la tarjeta o presiona espacio para voltear</p></div>
+        <div class="flash-cara flash-reverso gap-3"><p class="eyebrow" style="color:var(--oro-vivo)">Respuesta</p><p class="font-display font-extrabold text-3xl md:text-4xl uppercase">${esc(q.respuesta)}</p>${q.nota ? `<p class="text-sm" style="color:var(--tablero-tenue)">${esc(q.nota)}</p>` : ''}</div>
+      </div>
+    </button>
+    <div class="grid grid-cols-2 gap-2">
+      <button type="button" class="btn btn-linea" data-accion="tarjeta-no" ${E.girada ? '' : 'disabled'}>No la sabía</button>
+      <button type="button" class="btn btn-guinda" data-accion="tarjeta-si" ${E.girada ? '' : 'disabled'}>La sabía</button>
+    </div>
+  </div>`;
+}
+function guiaHTML() {
+  const E = S.estudio, b = normalizar(E.busqueda);
+  const cats = banco().cats.filter(c => E.cat === 'todas' || c.id === E.cat);
+  const bloques = cats.map(c => {
+    const qs = c.preguntas.filter(q => !b || normalizar(q.pregunta + ' ' + q.respuesta + ' ' + (q.alias || []).join(' ')).includes(b));
+    if (!qs.length) return '';
+    return `<section class="panel overflow-hidden">
+      <div class="flex items-center gap-2 px-5 py-3" style="background:var(--hundido);border-bottom:1px solid var(--linea)"><span class="chip chip-cod">${esc(c.codigo || '···')}</span><h3 class="text-xl font-bold">${esc(c.nombre)}</h3><span class="text-xs tenue ml-auto">${c.docId === 'base' ? 'Guía base' : esc(c.docNombre)}</span></div>
+      <ol class="divide-y" style="border-color:var(--linea)">${qs.map(q => { const st = estadoPregunta(q.id); return `
+        <li class="px-5 py-3 grid md:grid-cols-[1fr_minmax(0,16rem)_auto] gap-x-4 gap-y-1 items-start" style="border-color:var(--linea)">
+          <span class="min-w-0">${esc(q.pregunta)}${q.nota ? `<span class="block text-sm tenue mt-0.5">${esc(q.nota)}</span>` : ''}</span>
+          <strong class="min-w-0" style="color:var(--guinda)">${esc(q.respuesta)}</strong>
+          <span class="flex gap-2 items-center"><span class="chip ${st.cls}">${st.txt}</span><span class="num text-sm tenue w-8 text-right">${q.puntos}</span></span>
+        </li>`; }).join('')}</ol>
+    </section>`;
+  }).join('');
+  return `<div class="flex flex-col gap-4">
+    <label for="busca-guia" class="sr-only">Buscar en la guía</label>
+    <input id="busca-guia" class="campo" placeholder="Buscar pregunta, respuesta o concepto…" value="${esc(E.busqueda)}" data-accion-input="buscar-guia">
+    <div id="guia-res" class="flex flex-col gap-4">${bloques || '<p class="tenue">Sin resultados para esa búsqueda.</p>'}</div>
+  </div>`;
+}
+function responderEstudio(texto) {
+  const E = S.estudio, q = preguntaPorId(E.cola[E.idx]);
+  const t = texto.trim();
+  if (!q || !t) return;
+  const r = evaluar(t, variantesDe(q));
+  if (r.casi && !(E.res && E.res.casi)) { E.res = { casi: true, texto: t }; sonar('casi'); render(); enfocar('#resp-est', true); return; }
+  E.res = { ok: r.ok, texto: t, prev: registrar(q.id, r.ok) };
+  E.fase = 'feedback'; sonar(r.ok ? 'ok' : 'mal'); render(); enfocar('#btn-sig-est');
+}
+function siguienteEstudio() {
+  const E = S.estudio;
+  E.idx++; E.fase = 'pregunta'; E.res = null; E.girada = false; E.vuelta = false;
+  if (E.tab === 'errores') { const id = E.cola[E.idx]; if (!id || dominada(id)) { const pend = E.cola.slice(E.idx).filter(x => !dominada(x)); E.cola = pend.length ? pend : priorizar(poolEstudio()).map(q => q.id); E.idx = 0; } }
+  render(); enfocar(E.tab === 'tarjetas' ? '.flash' : '#resp-est');
+}
+
+/* ============================================================
+   DOCUMENTOS · ingesta y procesamiento
+   ============================================================ */
+const PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+const PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const MAMMOTH = 'https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js';
+function cargarScript(src) {
+  return new Promise((ok, mal) => {
+    if (document.querySelector(`script[src="${src}"]`)?.dataset.listo) return ok();
+    const s = document.createElement('script');
+    s.src = src; s.onload = () => { s.dataset.listo = '1'; ok(); };
+    s.onerror = () => mal(new Error('No se pudo cargar el lector de documentos. Revisa tu conexión e inténtalo de nuevo.'));
+    document.head.appendChild(s);
+  });
+}
+async function textoDePDF(buf) {
+  await cargarScript(PDFJS);
+  await cargarScript(PDFJS_WORKER); // corre en el hilo principal: evita depender de un Worker de otro origen
+  const lib = window.pdfjsLib;
+  lib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+  const pdf = await lib.getDocument({ data: new Uint8Array(buf), isEvalSupported: false }).promise;
+  const lineas = [];
+  for (let n = 1; n <= pdf.numPages; n++) {
+    const pag = await pdf.getPage(n);
+    const tc = await pag.getTextContent();
+    let y0 = null, xFin = null, cur = '';
+    for (const it of tc.items) {
+      if (!('str' in it)) continue;
+      const x = it.transform[4], y = it.transform[5];
+      if (y0 !== null && Math.abs(y - y0) > 3) { lineas.push(cur); cur = ''; xFin = null; }
+      if (xFin !== null && x - xFin > 1.5 && !cur.endsWith(' ') && !it.str.startsWith(' ')) cur += ' ';
+      cur += it.str; xFin = x + (it.width || 0); y0 = y;
+    }
+    if (cur) lineas.push(cur);
+    lineas.push('');
+  }
+  return lineas.join('\n');
+}
+async function textoDeDOCX(buf) {
+  await cargarScript(MAMMOTH);
+  const r = await window.mammoth.extractRawText({ arrayBuffer: buf });
+  return r.value;
+}
+const RE_NUMERAL = /^(\(?\d{1,3}[.)]|[a-zA-Z][.)])\s+/;
+const RE_VINETA = /^[•·▪◦●■\-–*]\s*/;
+function quitarNumeracion(l) {
+  let s = l, antes;
+  do { antes = s; s = s.replace(RE_NUMERAL, '').replace(RE_VINETA, '').trim(); } while (s !== antes);
+  return s;
+}
+const limpiarRespuesta = s => s.replace(/^(r|resp|respuesta)\s*[:.-]\s*/i, '').replace(/\s+/g, ' ').replace(/[.;]\s*$/, '').trim();
+const COMUNES = new Set('para como entre sobre desde hasta tiene tienen cual cuál cuales qué que quien quién donde dónde cuando cuándo cuanto cuántos cuántas cuanta este esta estos estas ese esa aquel también porque pero sino solo sólo muy más menos todo toda todos todas otro otra otros otras cada mismo misma años año país mundo nombre llama llamada conocido conocida según guia guía estudio pregunta respuesta grande grandes primer primera primero inicio inició escribio escribió encuentra encuentran puso pone hace hizo nombre llama mismo largo pequeño mayor menor famoso famosa actualmente usada usado mantiene conocido base'.split(' ').map(w => normalizar(w)));
+function palabrasClave(texto, n = 28) {
+  const cuenta = {};
+  normalizar(texto).split(' ').forEach(w => { if (w.length > 3 && !VACIAS.has(w) && !COMUNES.has(w) && !/^\d+$/.test(w)) cuenta[w] = (cuenta[w] || 0) + 1; });
+  return Object.entries(cuenta).sort((a, b) => b[1] - a[1]).slice(0, n).map(([w, c]) => ({ w, c }));
+}
+function parsearTexto(texto, nombreDoc) {
+  const crudas = texto.replace(/\r/g, '').split('\n').map(l => l.replace(/\s+/g, ' ').trim());
+  const cats = [];
+  let cat = null, q = null, esperando = false, acumulandoPregunta = false, titulo = '';
+  const nuevaCat = nombre => { cat = { nombre: nombre.replace(/[:.]\s*$/, '').trim(), preguntas: [] }; cats.push(cat); };
+  const cerrarQ = () => { if (q && q.respuesta) { if (!cat) nuevaCat('General'); cat.preguntas.push(q); } q = null; esperando = false; acumulandoPregunta = false; };
+  for (const raw of crudas) {
+    if (!raw) continue;
+    const l = quitarNumeracion(raw);
+    if (!l) continue;
+    if (acumulandoPregunta) { q.pregunta += ' ' + l; if (l.includes('?')) { acumulandoPregunta = false; esperando = true; } continue; }
+    const marcaP = /^(p|pregunta)\s*[:.-]\s*/i.test(l);
+    const marcaR = /^(r|resp|respuesta)\s*[:.-]\s*/i.test(l);
+    const esPregunta = marcaP || /[¿?]/.test(l);
+    if (esPregunta && !marcaR) {
+      cerrarQ();
+      q = { pregunta: l.replace(/^(p|pregunta)\s*[:.-]\s*/i, ''), respuesta: '' };
+      if (l.includes('¿') && !l.includes('?')) acumulandoPregunta = true; else esperando = true;
+      continue;
+    }
+    const numerada = /^\(?\d{1,2}[.)]\s+\S/.test(raw);
+    const mayusculas = l.length >= 4 && l === l.toUpperCase() && /[A-ZÁÉÍÓÚÑ]{4}/.test(l);
+    const esEncabezado = !marcaR && l.length <= 60 && !/[.;,]$/.test(l) && (numerada || mayusculas || /:$/.test(l));
+    if (q && esperando && !q.respuesta) { q.respuesta = limpiarRespuesta(l); continue; }
+    if (esEncabezado) { cerrarQ(); if (!titulo && !cats.length && mayusculas) titulo = l; nuevaCat(l); continue; }
+    if (q && q.respuesta) { q.respuesta = limpiarRespuesta(q.respuesta + ' ' + l); continue; }
+  }
+  cerrarQ();
+  let lista = cats.filter(c => c.preguntas.length);
+  let modo = 'preguntas';
+  if (lista.reduce((a, c) => a + c.preguntas.length, 0) < 3) {
+    const defs = [];
+    crudas.forEach(raw => {
+      const l = quitarNumeracion(raw);
+      let m = l.match(/^([^:]{2,60}):\s+(.{8,240})$/);
+      if (m && !/[¿?]/.test(m[1])) { defs.push({ pregunta: `¿Qué concepto se define así? «${m[2].replace(/\.$/, '')}»`, respuesta: m[1].trim() }); return; }
+      m = l.match(/^([A-ZÁÉÍÓÚÑ][^,.;:]{2,50}?)\s+(es|son|fue|se define como|consiste en)\s+(.{8,220})\.?$/);
+      if (m) defs.push({ pregunta: `¿A qué concepto se refiere: «… ${m[2]} ${m[3].replace(/\.$/, '')}»?`, respuesta: m[1].trim() });
+    });
+    if (defs.length) { lista = [{ nombre: 'Conceptos clave', preguntas: defs }]; modo = 'definiciones'; }
+  }
+  const docId = 'd' + uid();
+  const PUNTOS = [100, 80, 60, 40, 20];
+  const categorias = lista.map((c, ci) => ({
+    id: `${docId}-c${ci + 1}`,
+    codigo: normalizar(c.nombre).replace(/\s/g, '').slice(0, 3).toUpperCase() || 'GEN',
+    nombre: c.nombre === c.nombre.toUpperCase() ? c.nombre.charAt(0) + c.nombre.slice(1).toLowerCase() : c.nombre,
+    preguntas: c.preguntas.map((p, pi) => {
+      const alias = [];
+      (p.respuesta.match(/\(([^)]+)\)/g) || []).forEach(x => { const t = x.slice(1, -1).trim(); if (t.split(/\s+/).length <= 2) alias.push(t); });
+      const primera = sinParentesis(p.respuesta).split(/,\s*seguid|;\s*/i)[0].trim();
+      if (primera && primera !== p.respuesta) alias.push(primera);
+      return { id: `${docId}-c${ci + 1}-q${pi + 1}`, pregunta: p.pregunta.trim(), respuesta: p.respuesta, alias, puntos: PUNTOS[pi % 5] };
+    })
+  }));
+  const encuestas = categorias.filter(c => c.preguntas.length >= 4).map((c, i) => {
+    const elegidas = [...c.preguntas].sort((a, b) => b.puntos - a.puntos).slice(0, 6);
+    const pesos = elegidas.map((_, k) => elegidas.length - k), suma = pesos.reduce((a, b) => a + b, 0);
+    return { id: `${docId}-e${i + 1}`, categoria: c.id, auto: true, pregunta: `Menciona una respuesta clave de «${c.nombre}»`, respuestas: elegidas.map((p, k) => ({ texto: sinParentesis(p.respuesta), alias: p.alias, puntos: Math.round(pesos[k] / suma * 100), ref: p.id })) };
+  });
+  return {
+    id: docId, nombre: nombreDoc, titulo, modo, fecha: new Date().toISOString(), activo: true,
+    categorias, encuestas, palabras: palabrasClave(texto), caracteres: texto.length
+  };
+}
+async function procesarArchivo(file) {
+  const U = S.docsUI;
+  U.procesando = true; U.error = null; U.preview = null; render();
+  try {
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    if (file.size > 25 * 1024 * 1024) throw new Error('El archivo pesa más de 25 MB. Divide el documento o exporta solo el texto.');
+    let texto = '';
+    if (ext === 'json') {
+      const data = JSON.parse(await file.text());
+      if (!Array.isArray(data.categorias)) throw new Error('El JSON no tiene la lista "categorias". Usa la estructura que aparece abajo.');
+      const docId = 'd' + uid();
+      const doc = { id: docId, nombre: file.name, modo: 'json', fecha: new Date().toISOString(), activo: true,
+        categorias: data.categorias.map((c, ci) => ({ id: `${docId}-${c.id || 'c' + ci}`, codigo: c.codigo || 'JSN', nombre: c.nombre || 'Categoría', preguntas: (c.preguntas || []).filter(p => p.pregunta && p.respuesta).map((p, pi) => ({ id: `${docId}-${p.id || 'q' + ci + '-' + pi}`, pregunta: p.pregunta, respuesta: p.respuesta, alias: p.alias || [], puntos: p.puntos || 60, nota: p.nota })) })),
+        encuestas: [], palabras: [] };
+      doc.encuestas = (data.encuestas || []).map((e, i) => ({ ...e, id: `${docId}-${e.id || 'e' + i}`, categoria: `${docId}-${e.categoria}`, respuestas: (e.respuestas || []).map(r => ({ ...r, ref: r.ref ? `${docId}-${r.ref}` : undefined })) }));
+      U.preview = doc;
+    } else {
+      if (ext === 'pdf') texto = await textoDePDF(await file.arrayBuffer());
+      else if (ext === 'docx') texto = await textoDeDOCX(await file.arrayBuffer());
+      else if (ext === 'txt' || ext === 'md' || file.type.startsWith('text/')) texto = await file.text();
+      else throw new Error(`No reconozco el formato «.${ext}». Usa PDF, DOCX, TXT o JSON.`);
+      if (texto.replace(/\s/g, '').length < 20) throw new Error('No encontré texto en el archivo. Si es un PDF escaneado, conviértelo primero con OCR o pega el texto abajo.');
+      U.preview = parsearTexto(texto, file.name);
+    }
+    if (!U.preview.categorias.some(c => c.preguntas.length)) U.error = 'Leí el documento, pero no encontré preguntas ni definiciones. Usa el formato «¿Pregunta?» seguido de la respuesta en la siguiente línea, o «Término: definición».';
+  } catch (e) {
+    U.error = e.message || String(e);
+  }
+  U.procesando = false; render();
+}
+function renderDocumentos() {
+  const U = S.docsUI, P = U.preview;
+  const docsFila = (d, base) => {
+    const n = d.categorias.reduce((a, c) => a + c.preguntas.length, 0);
+    const activo = base ? S.baseActiva : d.activo;
+    return `<li class="py-3 flex flex-wrap items-center gap-3" style="border-color:var(--linea)">
+      <span class="chip ${base ? 'chip-cod' : ''}">${base ? 'PDF' : esc((d.nombre.split('.').pop() || 'txt').toUpperCase())}</span>
+      <span class="flex-1 min-w-0"><strong class="block truncate">${esc(base ? d.fuente.titulo : d.nombre)}</strong><span class="text-sm tenue">${d.categorias.length} categorías · ${n} preguntas${base ? ' · ' + esc(d.fuente.archivo) : ' · ' + new Date(d.fecha).toLocaleDateString('es-MX')}</span></span>
+      <label class="flex items-center gap-2 text-sm" for="act-${base ? 'base' : esc(d.id)}"><input type="checkbox" id="act-${base ? 'base' : esc(d.id)}" class="w-4 h-4" data-accion-cambio="activar-doc" data-doc="${base ? 'base' : esc(d.id)}" ${activo ? 'checked' : ''}> En juego</label>
+      ${base ? '' : U.confirmar === d.id
+        ? `<span class="flex gap-1"><button type="button" class="btn btn-sm btn-guinda" data-accion="borrar-doc" data-doc="${esc(d.id)}">Eliminar</button><button type="button" class="btn btn-sm btn-linea" data-accion="cancelar-borrar">Cancelar</button></span>`
+        : `<button type="button" class="btn btn-sm btn-linea" data-accion="confirmar-borrar" data-doc="${esc(d.id)}">Eliminar</button>`}
+    </li>`;
+  };
+  $('#v-documentos').innerHTML = `
+  <div class="flex flex-col gap-6 entrar">
+    <div><p class="eyebrow">Gestor de documentos</p><h2 class="text-4xl font-extrabold">Convierte tus apuntes en tableros</h2>
+      <p class="tenue mt-1 max-w-[66ch]">Sube una guía en PDF, DOCX o TXT. La app detecta las categorías, las preguntas que empiezan con «¿» y sus respuestas, asigna puntos y crea encuestas para el tablero. Todo se procesa en tu navegador; nada se envía a internet.</p></div>
+
+    <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-6">
+      <div class="flex flex-col gap-4 min-w-0">
+        <label for="archivo" class="soltar p-8 flex flex-col items-center justify-center text-center gap-2 cursor-pointer" id="zona-soltar">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--guinda)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 17v-6"/><path d="M9.5 13.5 12 11l2.5 2.5"/></svg>
+          <strong class="font-display text-xl uppercase tracking-wide">${U.procesando ? 'Procesando documento…' : 'Arrastra tu archivo aquí'}</strong>
+          <span class="text-sm tenue">o haz clic para elegirlo · PDF, DOCX, TXT o JSON del banco</span>
+          <input id="archivo" type="file" class="sr-only" accept=".pdf,.docx,.txt,.md,.json,application/pdf,text/plain,application/json,application/vnd.openxmlformats-officedocument.wordprocessingml.document" data-accion-cambio="archivo">
+        </label>
+        <details class="panel p-4">
+          <summary class="cursor-pointer font-bold">Pegar texto en lugar de subir un archivo</summary>
+          <form class="flex flex-col gap-2 mt-3" data-form="pegar">
+            <label for="texto-pegado" class="sr-only">Texto de la guía</label>
+            <textarea id="texto-pegado" class="campo min-h-[9rem] text-base" placeholder="1. Historia&#10;¿En qué año inició la Independencia de México?&#10;1810."></textarea>
+            <button type="submit" class="btn btn-guinda self-start">Procesar texto</button>
+          </form>
+        </details>
+        ${U.error ? `<div class="aviso aviso-mal">${esc(U.error)}</div>` : ''}
+        ${P ? previewHTML(P) : ''}
+      </div>
+
+      <div class="flex flex-col gap-4 min-w-0">
+        <div class="panel p-5">
+          <p class="eyebrow mb-1">Documentos en tu banco</p>
+          <ul class="divide-y" style="border-color:var(--linea)">${docsFila(BASE, true)}${S.docs.map(d => docsFila(d, false)).join('')}</ul>
+        </div>
+        <div class="panel p-5 flex flex-col gap-3">
+          <p class="eyebrow">Formato que reconoce el lector</p>
+          <pre class="text-sm overflow-x-auto p-3 rounded-lg" style="background:var(--hundido)"><code>2. Geografía                 ← encabezado de categoría
+1. ¿Cuál es la capital de Yucatán?
+       Mérida.                ← respuesta (línea siguiente)
+P: ¿Pregunta?  R: Respuesta  ← también válido
+Fotosíntesis: proceso por…   ← definición</code></pre>
+        </div>
+        <div class="panel p-5 flex flex-col gap-3">
+          <div class="flex flex-wrap items-center justify-between gap-2"><p class="eyebrow">Estructura de datos (JSON)</p>
+            <span class="flex gap-2"><button type="button" class="btn btn-sm btn-linea" data-accion="ver-json">${U.verJson ? 'Ocultar' : 'Ver banco'}</button><button type="button" class="btn btn-sm btn-guinda" data-accion="copiar-json">Copiar JSON</button></span></div>
+          <p class="text-sm tenue">Cada categoría tiene preguntas con <code>respuesta</code>, <code>alias</code> aceptados y <code>puntos</code> de relevancia. Puedes editar el JSON y volver a subirlo.</p>
+          ${U.verJson ? `<label for="json-banco" class="sr-only">Banco en JSON</label><textarea id="json-banco" class="campo font-mono text-xs min-h-[16rem]" readonly>${esc(JSON.stringify(bancoExportable(), null, 2))}</textarea>` : ''}
+          <p class="text-sm" id="msg-copia" aria-live="polite"></p>
+        </div>
+        <div class="panel p-5 flex flex-wrap items-center justify-between gap-3">
+          <span class="text-sm"><strong>Progreso guardado en este navegador.</strong> <span class="tenue">${Object.keys(S.stats).length} preguntas con historial.</span></span>
+          ${U.confirmar === 'progreso'
+            ? '<span class="flex gap-1"><button type="button" class="btn btn-sm btn-guinda" data-accion="borrar-progreso">Sí, borrar</button><button type="button" class="btn btn-sm btn-linea" data-accion="cancelar-borrar">Cancelar</button></span>'
+            : '<button type="button" class="btn btn-sm btn-linea" data-accion="confirmar-borrar" data-doc="progreso">Reiniciar progreso</button>'}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function previewHTML(P) {
+  const n = P.categorias.reduce((a, c) => a + c.preguntas.length, 0);
+  return `<div class="panel overflow-hidden">
+    <div class="p-5 flex flex-wrap items-center justify-between gap-3" style="background:var(--hundido);border-bottom:1px solid var(--linea)">
+      <div class="min-w-0"><p class="eyebrow">Vista previa</p><h3 class="text-2xl font-bold truncate">${esc(P.titulo || P.nombre)}</h3>
+        <p class="text-sm tenue">${P.categorias.length} categorías · ${n} preguntas · ${P.encuestas.length} encuestas${P.modo === 'definiciones' ? ' · generadas a partir de definiciones' : ''}</p></div>
+      <div class="flex gap-2"><button type="button" class="btn btn-guinda" data-accion="guardar-doc" ${n ? '' : 'disabled'}>Agregar al banco</button><button type="button" class="btn btn-linea" data-accion="descartar-doc">Descartar</button></div>
+    </div>
+    ${P.palabras && P.palabras.length ? `<div class="px-5 pt-4"><p class="eyebrow mb-2">Índice de conceptos</p><div class="flex flex-wrap gap-1.5">${P.palabras.map(p => `<span class="chip">${esc(p.w)} <span class="num">${p.c}</span></span>`).join('')}</div></div>` : ''}
+    <div class="p-5 flex flex-col gap-4 max-h-[32rem] overflow-y-auto">
+      ${P.categorias.map((c, ci) => `<div><h4 class="font-display text-lg font-bold uppercase tracking-wide mb-1"><span class="chip chip-cod mr-2">${esc(c.codigo)}</span>${esc(c.nombre)} <span class="tenue text-sm normal-case">(${c.preguntas.length})</span></h4>
+        <ul class="flex flex-col">${c.preguntas.map((p, pi) => `<li class="py-2 grid grid-cols-[1fr_auto] gap-3 items-start border-b" style="border-color:var(--linea)">
+          <span class="min-w-0 text-sm">${esc(p.pregunta)}<strong class="block" style="color:var(--guinda)">${esc(p.respuesta)}</strong></span>
+          <button type="button" class="btn btn-sm btn-linea" data-accion="quitar-preview" data-ci="${ci}" data-pi="${pi}" aria-label="Quitar pregunta">Quitar</button></li>`).join('')}</ul></div>`).join('')}
+    </div>
+  </div>`;
+}
+function bancoExportable() {
+  const { cats, encs } = banco();
+  return { version: 1, generado: new Date().toISOString(), categorias: cats.map(({ docId, docNombre, ...c }) => c), encuestas: encs.map(({ docId, ...e }) => e) };
+}
+
+/* ---------- foco ---------- */
+function enfocar(sel, seleccionar = false) {
+  requestAnimationFrame(() => {
+    const el = $(sel);
+    if (!el) return;
+    if (window.matchMedia('(pointer: coarse)').matches && el.tagName === 'INPUT' && !seleccionar) return; // en móvil no forzamos el teclado
+    el.focus({ preventScroll: true });
+    if (seleccionar && el.select) el.select();
+  });
+}
+
+/* ---------- eventos ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-accion]');
+  if (!b || b.disabled) return;
+  const a = b.dataset.accion;
+  const acciones = {
+    'ir': () => ir(b.dataset.vista),
+    'tema': () => { S.tema = { sistema: 'light', light: 'dark', dark: 'sistema' }[S.tema]; almacen.set('tema', S.tema); aplicarTema(); pintarNav(); },
+    'sonido': () => { S.sonido = !S.sonido; almacen.set('sonido', S.sonido); pintarNav(); if (S.sonido) sonar('ok'); },
+    'estudiar-cat': () => { detenerRelojes(); S.juego = null; S.estudio.cat = b.dataset.cat; S.estudio.tab = 'practica'; armarCola(); ir('estudio'); },
+    'jugar-cat': () => iniciarJuegoCategoria(b.dataset.cat),
+    'jugar-enc': () => iniciarJuegoEncuesta(b.dataset.enc),
+    'jugar-azar': () => {
+      const { cats, encs } = banco();
+      const ops = [...cats.map(c => ['c', c.id]), ...encs.map(x => ['e', x.id])];
+      const [t, id] = ops[Math.floor(Math.random() * ops.length)];
+      t === 'c' ? iniciarJuegoCategoria(id) : iniciarJuegoEncuesta(id);
+    },
+    'elegir-casilla': () => { const J = S.juego; J.activo = +b.dataset.i; J.msg = null; J.x = false; render(); reiniciarRelojJuego(); enfocar('#resp-juego'); },
+    'pista-juego': pistaJuego,
+    'pasar-juego': () => { const J = S.juego; if (J.tipo === 'categoria') fallarCasilla(J.activo, '', 'Pasaste.'); else terminarRonda(false); },
+    'corregir-juego': corregirJuego,
+    'otra-ronda': () => {
+      const J = S.juego, { cats, encs } = banco();
+      if (J.tipo === 'categoria') { const otras = cats.filter(c => c.id !== J.origen); iniciarJuegoCategoria((otras.length ? otras[Math.floor(Math.random() * otras.length)] : cats[0]).id); }
+      else { const otras = encs.filter(x => x.id !== J.origen); iniciarJuegoEncuesta((otras.length ? otras[Math.floor(Math.random() * otras.length)] : encs[0]).id); }
+    },
+    'salir-juego': () => { detenerRelojes(); S.juego = null; render(); },
+    'iniciar-concurso': iniciarConcurso,
+    'saltar-cq': () => responderConcurso(''),
+    'siguiente-cq': siguienteConcurso,
+    'corregir-cq': corregirConcurso,
+    'abandonar-concurso': () => { detenerRelojes(); clearTimeout(S.concurso?.auto); S.concurso = null; render(); },
+    'config-concurso': () => { S.concurso = null; render(); },
+    'estudiar-errores': () => { S.concurso = null; S.estudio.tab = 'errores'; S.estudio.cat = 'todas'; armarCola(); ir('estudio'); },
+    'tab-estudio': () => { S.estudio.tab = b.dataset.tab; armarCola(); render(); },
+    'nolase-est': () => { const E = S.estudio, q = preguntaPorId(E.cola[E.idx]); E.res = { ok: false, texto: '', prev: registrar(q.id, false) }; E.fase = 'feedback'; render(); enfocar('#btn-sig-est'); },
+    'sig-est': siguienteEstudio,
+    'corregir-est': () => { const E = S.estudio, id = E.cola[E.idx]; corregirARegistroCorrecto(id, E.res.prev); E.res = { ...E.res, ok: true, corregida: true }; render(); },
+    'girar': () => { S.estudio.girada = !S.estudio.girada; $('.flash')?.classList.toggle('girada', S.estudio.girada); $$('[data-accion="tarjeta-si"],[data-accion="tarjeta-no"]').forEach(x => { x.disabled = !S.estudio.girada; }); },
+    'tarjeta-si': () => { registrar(S.estudio.cola[S.estudio.idx], true); siguienteEstudio(); },
+    'tarjeta-no': () => { registrar(S.estudio.cola[S.estudio.idx], false); siguienteEstudio(); },
+    'guardar-doc': () => { const P = S.docsUI.preview; P.categorias = P.categorias.filter(c => c.preguntas.length); S.docs.push(P); almacen.set('docs', S.docs); S.docsUI.preview = null; S.docsUI.error = null; render(); },
+    'descartar-doc': () => { S.docsUI.preview = null; S.docsUI.error = null; render(); },
+    'quitar-preview': () => {
+      const P = S.docsUI.preview, c = P.categorias[+b.dataset.ci], id = c.preguntas[+b.dataset.pi].id;
+      c.preguntas.splice(+b.dataset.pi, 1);
+      P.encuestas.forEach(x => { x.respuestas = x.respuestas.filter(r => r.ref !== id); });
+      P.encuestas = P.encuestas.filter(x => x.respuestas.length >= 3);
+      render();
+    },
+    'confirmar-borrar': () => { S.docsUI.confirmar = b.dataset.doc; render(); },
+    'cancelar-borrar': () => { S.docsUI.confirmar = null; render(); },
+    'borrar-doc': () => { S.docs = S.docs.filter(d => d.id !== b.dataset.doc); almacen.set('docs', S.docs); S.docsUI.confirmar = null; render(); },
+    'borrar-progreso': () => { S.stats = {}; guardarStats(); S.record = { tablero: 0, concurso: 0 }; almacen.set('record', S.record); S.docsUI.confirmar = null; render(); },
+    'ver-json': () => { S.docsUI.verJson = !S.docsUI.verJson; render(); },
+    'copiar-json': () => {
+      const txt = JSON.stringify(bancoExportable(), null, 2), msg = $('#msg-copia');
+      const respaldo = () => { S.docsUI.verJson = true; render(); const t = $('#json-banco'); if (t) { t.focus(); t.select(); } const m = $('#msg-copia'); if (m) m.textContent = 'No se pudo copiar automáticamente: el texto quedó seleccionado, cópialo con Ctrl+C.'; };
+      try { navigator.clipboard.writeText(txt).then(() => { if (msg) msg.textContent = 'JSON copiado al portapapeles.'; }, respaldo); } catch (err) { respaldo(); }
+    }
+  };
+  if (acciones[a]) { e.preventDefault(); acciones[a](); }
+});
+document.addEventListener('click', e => {
+  const l = e.target.closest('[data-logo]');
+  if (!l) return;
+  l.classList.remove('activo'); void l.getBoundingClientRect(); l.classList.add('activo');
+  setTimeout(() => l.classList.remove('activo'), 1300);
+});
+document.addEventListener('submit', e => {
+  const f = e.target.closest('[data-form]');
+  if (!f) return;
+  e.preventDefault();
+  const tipo = f.dataset.form;
+  if (tipo === 'juego') responderJuego($('#resp-juego').value);
+  else if (tipo === 'concurso') responderConcurso($('#resp-cq').value);
+  else if (tipo === 'estudio') responderEstudio($('#resp-est').value);
+  else if (tipo === 'pegar') {
+    const t = $('#texto-pegado').value;
+    if (t.trim().length < 10) { S.docsUI.error = 'Pega al menos una pregunta con su respuesta.'; render(); return; }
+    S.docsUI.preview = parsearTexto(t, 'Texto pegado ' + new Date().toLocaleDateString('es-MX'));
+    S.docsUI.error = S.docsUI.preview.categorias.length ? null : 'No encontré preguntas en el texto pegado.';
+    render();
+  }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.dataset.cfg) {
+    const k = t.dataset.cfg;
+    S.cfg[k] = t.type === 'checkbox' ? t.checked : (isNaN(+t.value) ? t.value : +t.value);
+    almacen.set('cfg', S.cfg);
+    if (S.vista === 'concurso') render();
+    return;
+  }
+  const a = t.dataset.accionCambio;
+  if (a === 'cat-estudio') { S.estudio.cat = t.value; armarCola(); render(); }
+  else if (a === 'archivo' && t.files[0]) procesarArchivo(t.files[0]);
+  else if (a === 'activar-doc') {
+    if (t.dataset.doc === 'base') { S.baseActiva = t.checked; almacen.set('baseActiva', S.baseActiva); }
+    else { const d = S.docs.find(x => x.id === t.dataset.doc); if (d) { d.activo = t.checked; almacen.set('docs', S.docs); } }
+    S.juego = null; S.concurso = null; armarCola(); render();
+  }
+});
+document.addEventListener('input', e => {
+  if (e.target.dataset.accionInput === 'buscar-guia') {
+    S.estudio.busqueda = e.target.value;
+    const tmp = document.createElement('div'); tmp.innerHTML = guiaHTML();
+    $('#guia-res').innerHTML = tmp.querySelector('#guia-res').innerHTML;
+  }
+});
+document.addEventListener('keydown', e => {
+  if (S.vista !== 'estudio' || S.estudio.tab !== 'tarjetas' || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
+  if (e.code === 'Space' && document.activeElement?.dataset.accion !== 'girar') { e.preventDefault(); $('[data-accion="girar"]')?.click(); }
+  else if (S.estudio.girada && (e.key === 'ArrowRight' || e.key === '1')) $('[data-accion="tarjeta-si"]')?.click();
+  else if (S.estudio.girada && (e.key === 'ArrowLeft' || e.key === '2')) $('[data-accion="tarjeta-no"]')?.click();
+});
+['dragenter', 'dragover'].forEach(ev => document.addEventListener(ev, e => {
+  const z = e.target.closest?.('#zona-soltar'); if (!z) return; e.preventDefault(); z.classList.add('encima');
+}));
+['dragleave', 'drop'].forEach(ev => document.addEventListener(ev, e => {
+  const z = e.target.closest?.('#zona-soltar'); if (!z) return; e.preventDefault(); z.classList.remove('encima');
+  if (ev === 'drop' && e.dataTransfer.files[0]) procesarArchivo(e.dataTransfer.files[0]);
+}));
+
+/* ---------- arranque ---------- */
+aplicarTema();
+$('#logo-mini').innerHTML = logoSVG(40);
+const ancla = (location.hash || '').slice(1);
+if (VISTAS.some(([id]) => id === ancla)) S.vista = ancla;
+render();
+
+// Expuesto para pruebas y depuración desde la consola.
+window.LoboQuiz = { evaluar, parsearTexto, banco: () => bancoExportable(), BASE };
+})();
+</script>
+</body>
+</html>

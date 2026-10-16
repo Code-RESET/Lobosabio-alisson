@@ -1,15 +1,17 @@
-# LoboQuiz UAD · Lobos UAD Trivia Master
+# Loboitos · Trivia Master
 
-Aplicación web de estudio gamificada para preparar el concurso universitario **LoboSabio** de la Universidad Autónoma de Durango. Funciona como *100 Mexicanos Dijeron*: las respuestas están ocultas en un tablero, ordenadas por puntos, y tres strikes terminan la ronda.
+Creado por el **Ing. Luis Angel Díaz Bernal**.
 
-Todo vive en un solo archivo: **`index.html`** (HTML5 + Tailwind CSS por CDN + JavaScript sin frameworks). Ábrelo en el navegador y ya funciona.
+Aplicación web de estudio gamificada para preparar el concurso **LoboSabio**. Funciona como un concurso de encuestas: las respuestas están ocultas en un tablero, ordenadas por puntos, y tres strikes terminan la ronda.
+
+Todo vive en un solo archivo: **`index.html`** (HTML5 + Tailwind CSS por CDN + JavaScript sin frameworks). Ábrelo en el navegador y ya funciona. Arranca en **modo oscuro**; el botón del encabezado cambia a modo claro y la elección se recuerda.
 
 ## Modos de juego
 
 | Modo | Qué hace |
 |---|---|
 | **Tablero Lobo** | Tableros de 5 casillas por categoría (cada casilla es una pregunta de la guía, de 100 a 20 pts) y **Encuestas Lobo** de respuesta múltiple (los puntos suman 100). Strikes, temporizador opcional (15/30/45 s), pista que cuesta la mitad de los puntos, aviso de «casi» sin strike. |
-| **Concurso UAD** | Ronda relámpago de 5 a 30 preguntas contra reloj (10/15/20 s). Puntos base + bono por velocidad, y la racha multiplica (×1.5 desde 3 aciertos, ×2 desde 5). Eliminación opcional con 3 strikes. Al final muestra los errores con la respuesta correcta. |
+| **Modo Concurso** | Ronda relámpago de 5 a 30 preguntas contra reloj (10/15/20 s). Puntos base + bono por velocidad, y la racha multiplica (×1.5 desde 3 aciertos, ×2 desde 5). Eliminación opcional con 3 strikes. Al final muestra los errores con la respuesta correcta. |
 | **Modo Estudio** | Práctica guiada con retroalimentación explícita (tu respuesta, la respuesta de la guía, sinónimos aceptados y notas), tarjetas que se voltean, repaso de errores y la guía completa con buscador. |
 
 Una pregunta queda **dominada** cuando la contestas bien dos veces seguidas. La pantalla de inicio muestra el porcentaje dominado por categoría y te sugiere la más débil. En los tableros y la práctica salen primero las preguntas nuevas o falladas.
@@ -65,4 +67,4 @@ Algunas preguntas tienen una **nota**. La respuesta oficial de la guía se respe
 
 ## Marca
 
-`assets/logo-loboquiz.svg`: escudo guinda con marco dorado, un lobo de facetas con una red de nodos en la frente, un destello y una barra de respuestas 100 / 80 / 60, al estilo de un tablero de trivia. Es animado: los nodos laten y, al pasar el cursor, la red se dibuja y los ojos brillan. Dentro de la app, el logo también responde al clic.
+`assets/logo-loboitos.svg`: escudo guinda con marco dorado, un lobo de facetas con una red de nodos en la frente, un destello y una barra de respuestas 100 / 80 / 60, al estilo de un tablero de trivia. Es animado: los nodos laten y, al pasar el cursor, la red se dibuja y los ojos brillan. Dentro de la app, el logo también responde al clic.

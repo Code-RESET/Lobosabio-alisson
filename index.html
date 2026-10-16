@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>LoboQuiz UAD</title>
+<title>Loboitos Trivia</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Trivia gamificada estilo 100 Mexicanos Dijeron para dominar la guía LoboSabio de la UAD.">
+<meta name="description" content="Trivia gamificada de encuestas para dominar la guía LoboSabio. Creada por el Ing. Luis Angel Díaz Bernal.">
+<meta name="author" content="Ing. Luis Angel Díaz Bernal">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
@@ -38,7 +39,7 @@
     --tinta: #1E1417;
     --tenue: #6D5A60;
     --linea: #E7DADC;
-    --guinda: #7A1C33;       /* guinda académico UAD */
+    --guinda: #7A1C33;       /* guinda */
     --guinda-hondo: #4C0F20;
     --oro: #A9802A;          /* dorado legible sobre claro */
     --oro-vivo: #D9B45E;     /* dorado sobre oscuro */
@@ -205,8 +206,8 @@
       <button type="button" class="flex items-center gap-2.5 min-w-0" data-accion="ir" data-vista="inicio" aria-label="Ir al inicio">
         <span id="logo-mini"></span>
         <span class="flex flex-col items-start min-w-0">
-          <span class="marca">Lobo<b>Quiz</b> <i>UAD</i></span>
-          <span class="text-[.7rem] tenue font-display uppercase tracking-[.16em] whitespace-nowrap hidden sm:block">Lobos UAD · Trivia Master</span>
+          <span class="marca">Lobo<b>itos</b></span>
+          <span class="text-[.7rem] tenue font-display uppercase tracking-[.16em] whitespace-nowrap hidden sm:block">Trivia Master</span>
         </span>
       </button>
       <nav class="hidden md:flex items-center gap-1 ml-auto" aria-label="Modos" id="nav-escritorio"></nav>
@@ -227,7 +228,7 @@
   </main>
 
   <footer class="gutter max-w-6xl mx-auto w-full py-6 text-sm tenue flex flex-wrap gap-x-4 gap-y-1 justify-between border-t border-linea">
-    <span>LoboQuiz UAD · Preparación para el concurso LoboSabio</span>
+    <span>Loboitos · Creado por el <strong style="color:var(--tinta)">Ing. Luis Angel Díaz Bernal</strong> · © 2026</span>
     <span id="pie-banco"></span>
   </footer>
 </div>
@@ -240,7 +241,7 @@
        categorias:[{ id, codigo, nombre, preguntas:[{ id, pregunta, respuesta, alias[], puntos, nota? }] }],
        encuestas:[{ id, categoria, pregunta, respuestas:[{ texto, alias[], puntos, ref }] }]
      }
-     · puntos (preguntas): relevancia 20–100, ordena el tablero como en "100 Mexicanos Dijeron".
+     · puntos (preguntas): relevancia 20–100, ordena el tablero de mayor a menor, como en un concurso de encuestas.
      · alias: otras formas aceptadas al calificar (la comparación ignora acentos, artículos y mayúsculas).
      · encuestas: tableros de respuesta múltiple; puntos suman 100; ref = id de la pregunta de la guía.
      ============================================================ -->
@@ -431,7 +432,7 @@ const BASE = JSON.parse($('#banco-base').textContent);
 /* ---------- estado ---------- */
 const S = {
   vista: 'inicio',
-  tema: almacen.get('tema', 'sistema'),
+  tema: almacen.get('tema', 'dark') === 'light' ? 'light' : 'dark',
   sonido: almacen.get('sonido', true),
   stats: almacen.get('stats', {}),
   docs: almacen.get('docs', []),
@@ -572,7 +573,7 @@ function sonar(tipo) {
 let logoN = 0;
 function logoSVG(size = 44, vivo = true) {
   const k = 'lq' + (logoN++);
-  return `<svg class="logo ${vivo ? 'logo-vivo' : ''}" width="${size}" height="${size}" viewBox="0 0 240 240" role="img" aria-label="Logotipo LoboQuiz UAD: lobo con red neuronal" data-logo>
+  return `<svg class="logo ${vivo ? 'logo-vivo' : ''}" width="${size}" height="${size}" viewBox="0 0 240 240" role="img" aria-label="Logotipo Loboitos: lobo con red neuronal" data-logo>
   <defs>
     <linearGradient id="${k}e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#94243F"/><stop offset="1" stop-color="#4A0E1E"/></linearGradient>
     <linearGradient id="${k}o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6DE95"/><stop offset=".55" stop-color="#C8A04A"/><stop offset="1" stop-color="#8F6B22"/></linearGradient>
@@ -612,13 +613,13 @@ function logoSVG(size = 44, vivo = true) {
 
 /* ---------- navegación ---------- */
 const VISTAS = [
-  ['inicio', 'Inicio'], ['tablero', 'Tablero Lobo'], ['concurso', 'Concurso UAD'], ['estudio', 'Estudio'], ['documentos', 'Documentos']
+  ['inicio', 'Inicio'], ['tablero', 'Tablero Lobo'], ['concurso', 'Modo Concurso'], ['estudio', 'Estudio'], ['documentos', 'Documentos']
 ];
 function pintarNav() {
   const html = VISTAS.map(([id, txt]) => `<button type="button" class="nav-btn" data-accion="ir" data-vista="${id}" ${S.vista === id ? 'aria-current="page"' : ''}>${txt}</button>`).join('');
   $('#nav-escritorio').innerHTML = html; $('#nav-movil').innerHTML = html;
-  const b = $('#btn-sonido'); b.textContent = S.sonido ? 'Sonido' : 'Silencio'; b.setAttribute('aria-pressed', String(S.sonido));
-  $('#btn-tema').textContent = { sistema: 'Auto', light: 'Claro', dark: 'Oscuro' }[S.tema];
+  const b = $('#btn-sonido'); b.innerHTML = `<span aria-hidden="true">${S.sonido ? '♪' : '✕'}</span><span class="hidden sm:inline">${S.sonido ? 'Sonido' : 'Silencio'}</span>`; b.setAttribute('aria-label', S.sonido ? 'Silenciar' : 'Activar sonido'); b.setAttribute('aria-pressed', String(S.sonido));
+  const bt = $('#btn-tema'); bt.innerHTML = S.tema === 'dark' ? '<span aria-hidden="true">☀</span><span class="hidden sm:inline">Modo claro</span>' : '<span aria-hidden="true">☾</span><span class="hidden sm:inline">Modo oscuro</span>'; bt.setAttribute('aria-label', S.tema === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'); bt.setAttribute('aria-pressed', String(S.tema === 'dark'));
   const n = todasPreguntas().length;
   $('#pie-banco').textContent = `${n} preguntas activas · ${banco().cats.length} categorías · ${banco().encs.length} encuestas`;
 }
@@ -683,18 +684,19 @@ function renderInicio() {
         <div class="min-w-0">
           <p class="eyebrow">Concurso universitario LoboSabio</p>
           <h1 class="text-[2.6rem] md:text-[3.4rem] font-extrabold mt-1">Domina la guía <span style="color:var(--guinda)">al 100&nbsp;%</span></h1>
-          <p class="tenue mt-2 max-w-[56ch]">Juega rondas al estilo <em>100 Mexicanos Dijeron</em>, simula el concurso con preguntas rápidas y repasa cada error con la respuesta oficial de la guía. Una pregunta cuenta como dominada cuando la contestas bien dos veces seguidas.</p>
+          <p class="text-sm mt-1" style="color:var(--oro)">Creado por el Ing. Luis Angel Díaz Bernal</p>
+          <p class="tenue mt-2 max-w-[56ch]">Juega rondas de encuesta con respuestas ocultas en el tablero, simula el concurso con preguntas rápidas y repasa cada error con la respuesta oficial de la guía. Una pregunta cuenta como dominada cuando la contestas bien dos veces seguidas.</p>
         </div>
       </div>
       <div class="grid sm:grid-cols-3 gap-3">
         <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-1" data-accion="ir" data-vista="tablero">
-          <span class="chip chip-cod self-start">Feud</span>
+          <span class="chip chip-cod self-start">Encuesta</span>
           <strong class="font-display text-xl uppercase tracking-wide">Tablero Lobo</strong>
           <span class="text-sm tenue">Respuestas ocultas por puntos, tres strikes y fuera.</span>
         </button>
         <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-1" data-accion="ir" data-vista="concurso">
           <span class="chip chip-oro self-start">Relámpago</span>
-          <strong class="font-display text-xl uppercase tracking-wide">Concurso UAD</strong>
+          <strong class="font-display text-xl uppercase tracking-wide">Modo Concurso</strong>
           <span class="text-sm tenue">Preguntas rápidas contra reloj, como el día del concurso.</span>
         </button>
         <button type="button" class="panel tarjeta-opcion p-4 flex flex-col gap-1" data-accion="ir" data-vista="estudio">
@@ -736,7 +738,7 @@ function renderInicio() {
 }
 
 /* ============================================================
-   TABLERO LOBO (100 Mexicanos Dijeron)
+   TABLERO LOBO (concurso de encuestas)
    ============================================================ */
 function renderTablero() {
   if (S.juego) return renderJuego();
@@ -747,7 +749,7 @@ function renderTablero() {
     <div class="flex flex-col gap-6 min-w-0">
       <div>
         <p class="eyebrow">Tablero Lobo</p>
-        <h2 class="text-4xl font-extrabold">¡Lobos UAD dijeron!</h2>
+        <h2 class="text-4xl font-extrabold">¡Los Loboitos dijeron!</h2>
         <p class="tenue mt-1 max-w-[62ch]">Elige un tablero. En los de categoría, cada casilla esconde la respuesta a una pregunta de la guía; en las encuestas, adivina todas las respuestas posibles a una sola pregunta.</p>
       </div>
       <div>
@@ -1013,7 +1015,7 @@ function renderJuego() {
 }
 
 /* ============================================================
-   CONCURSO UAD (ronda relámpago)
+   MODO CONCURSO (ronda relámpago)
    ============================================================ */
 function renderConcurso() {
   const C = S.concurso;
@@ -1026,7 +1028,7 @@ function renderConcurso() {
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
         <button type="button" class="text-sm tenue hover:underline" data-accion="abandonar-concurso">← Abandonar</button>
-        <p class="eyebrow mt-1">Concurso UAD · Pregunta ${C.i + 1} de ${C.lista.length}</p>
+        <p class="eyebrow mt-1">Modo Concurso · Pregunta ${C.i + 1} de ${C.lista.length}</p>
         <div class="flex gap-1 mt-2" aria-hidden="true">${C.lista.map((_, k) => `<span style="width:${Math.max(6, 280 / C.lista.length)}px;height:6px;border-radius:9px;background:${k < C.i ? (C.res[k] ? 'var(--exito)' : 'var(--error)') : k === C.i ? 'var(--oro)' : 'var(--linea)'}"></span>`).join('')}</div>
       </div>
       <div class="flex items-center gap-4">
@@ -1062,7 +1064,7 @@ function renderConfigConcurso() {
   <div class="grid lg:grid-cols-[1fr_320px] gap-6 entrar">
     <div class="tablero flex flex-col gap-5 justify-center min-h-[18rem]">
       <p class="eyebrow" style="color:var(--oro-vivo)">Simulador del concurso</p>
-      <h2 class="text-4xl md:text-5xl font-extrabold">Concurso UAD</h2>
+      <h2 class="text-4xl md:text-5xl font-extrabold">Modo Concurso</h2>
       <p class="max-w-[58ch]" style="color:var(--tablero-tenue)">Preguntas rápidas de todas las categorías, una tras otra. Ganas los puntos de la pregunta más un bono por velocidad, y tu racha multiplica: ×1.5 desde 3 aciertos seguidos y ×2 desde 5.</p>
       <div class="flex flex-wrap gap-2"><button type="button" class="btn btn-oro" data-accion="iniciar-concurso" ${disp ? '' : 'disabled'}>Empezar ronda</button></div>
     </div>
@@ -1594,7 +1596,7 @@ document.addEventListener('click', e => {
   const a = b.dataset.accion;
   const acciones = {
     'ir': () => ir(b.dataset.vista),
-    'tema': () => { S.tema = { sistema: 'light', light: 'dark', dark: 'sistema' }[S.tema]; almacen.set('tema', S.tema); aplicarTema(); pintarNav(); },
+    'tema': () => { S.tema = S.tema === 'dark' ? 'light' : 'dark'; almacen.set('tema', S.tema); aplicarTema(); pintarNav(); },
     'sonido': () => { S.sonido = !S.sonido; almacen.set('sonido', S.sonido); pintarNav(); if (S.sonido) sonar('ok'); },
     'estudiar-cat': () => { detenerRelojes(); S.juego = null; S.estudio.cat = b.dataset.cat; S.estudio.tab = 'practica'; armarCola(); ir('estudio'); },
     'jugar-cat': () => iniciarJuegoCategoria(b.dataset.cat),
@@ -1720,7 +1722,7 @@ if (VISTAS.some(([id]) => id === ancla)) S.vista = ancla;
 render();
 
 // Expuesto para pruebas y depuración desde la consola.
-window.LoboQuiz = { evaluar, parsearTexto, banco: () => bancoExportable(), BASE };
+window.Loboitos = { evaluar, parsearTexto, banco: () => bancoExportable(), BASE };
 })();
 </script>
 </body>
